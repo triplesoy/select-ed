@@ -20,6 +20,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.string :occupation
       t.string :instagram_handle
 
+      ## Custom fields admin
+      t.boolean :is_admin, default: false
 
       ## Recoverable
       t.string   :reset_password_token
@@ -55,4 +57,5 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
   end
+  
 end
