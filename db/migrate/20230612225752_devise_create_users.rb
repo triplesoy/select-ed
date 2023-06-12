@@ -20,6 +20,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.string :occupation
       t.string :instagram_handle
 
+      ## Custom fields admin
+      t.boolean :is_admin, default: false
 
       ## Recoverable
       t.string   :reset_password_token
