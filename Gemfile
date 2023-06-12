@@ -8,6 +8,9 @@ gem "rqrcode_png"
 gem "mini_magick"
 gem "geocoder"
 gem "mapbox-sdk"
+gem "cloudinary"
+
+
 
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
