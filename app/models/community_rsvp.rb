@@ -1,0 +1,2 @@
+class CommunityRsvp < ApplicationRecord
+end
