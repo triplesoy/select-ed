@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  COUNTRIES = ['United States', 'France', 'Portugal']
+
   has_many :tickets
   has_many :events
   has_many :communities
