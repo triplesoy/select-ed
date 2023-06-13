@@ -1,2 +1,11 @@
 <h1>Communities#index</h1>
-<p>Find me in app/views/communities/index.html.erb</p>
+
+Existing commuinities:
+<%  @communities.each do |community| %>
+<%= community.title %>
+<%=link_to "View community", community_path(community) %>
+<% end %>
+<p>
+
+<hr>
+<%= link_to "Create a community", new_community_path %>
