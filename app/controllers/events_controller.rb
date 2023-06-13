@@ -9,7 +9,7 @@ class EventsController < ApplicationController
   def show
     authorize @event
       unless @event.user == current_user
-      redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
+     # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
     end
   end
 
