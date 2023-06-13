@@ -22,12 +22,13 @@
           <%= f.input :phone_number, label: "Phone Number" %>
           <%= f.input :address, label: "Address" %>
           <%= f.input :city, label: "City" %>
-          <%= f.input :country, label: "Country" %>
+          <%= f.input :country, label: "Country", collection: ['United States', 'France', 'Portugal'] %>
           <%= f.input :state, label: "State" %>
           <%= f.input :zip_code, label: "Zip Code" %>
           <%= f.input :occupation, label: "Occupation" %>
           <%= f.input :instagram_handle, label: "Instagram Handle" %>
         </div>
+
 
 
         <div class="form-actions">
