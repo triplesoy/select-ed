@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  get 'community_join_request/index'
-  get 'community_join_request/show'
-  get 'community_join_request/new'
-  get 'community_join_request/create'
-  get 'community_join_request/edit'
-  get 'community_join_request/update'
-  get 'community_join_request/destroy'
   devise_for :users
 
   resources :communities do
