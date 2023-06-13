@@ -10,6 +10,8 @@ class Community < ApplicationRecord
   validates :category, presence: true
   #validates :country, presence: true
   #validates :city, presence: true
-
   validates :title, uniqueness: true
+
+  has_many_attached :photos
+  has_one_attached :video
 end
