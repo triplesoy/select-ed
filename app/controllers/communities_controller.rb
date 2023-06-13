@@ -6,12 +6,13 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
   end
 
   def show
+    authorize @community
   end
 
   def new
     @community = Community.new
     authorize @community
-    
+
   end
 
   def create
