@@ -1,2 +1,27 @@
 <h1>Events#show</h1>
 <p>Find me in app/views/events/show.html.erb</p>
+<div class="container">
+  <h1><%= @event.title %></h1>
+  <div class="row">
+      <div class="col-12 col-lg-8 my-3">
+        <div class="card">
+          <div class="banner">
+            <div class="card-body">
+              <h5 class="card-title"><%= @event.title %></h5>
+              <h6 class="card-subtitle mb-2 text-muted"></h6>
+              <p class="card-text"><%= @event.description %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% if policy(@event).edit? %>
+          <%= link_to "Edit", edit_community_event_path(@community, @event), class: "btn btn-outline-dark" %>
+      <% end %>
+
+       <% if policy(@event).destroy? %>
+          <%= link_to "Delete", community_event_path(@community, @event), class: "btn btn-outline-danger",
+          data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
+      <% end %>
+
+      <%= link_to "Go back", community_events_path(@community), class: "btn btn-outline-dark" %>
