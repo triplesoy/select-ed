@@ -8,6 +8,7 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
 
   def show
     authorize @community
+    @events = @community.events
   end
 
   def new
@@ -18,6 +19,7 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
 
   def create
     @community = Community.new(community_params)
+    @community.user = current_user
     if @community.save
       redirect_to community_path(@community)
     else
@@ -37,12 +39,15 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
   end
 
   def destroy
+    @community.destroy
+    redirect_to communities_path, status: :see_other
+    authorize @community
   end
 
   private
 
   def community_params
-    params.require(:community).permit(:title, :description, :category, :country, :city, :is_public, :is_visible)
+    params.require(:community).permit(:title, :description, :category, :country, :city, :is_public, :is_visible, :video, photos: [])
   end
 
   def set_community
