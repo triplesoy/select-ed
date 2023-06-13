@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_12_235400) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_06_13_000022) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -71,6 +72,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_12_235400) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tickets", force: :cascade do |t|
+    t.string "type"
+    t.integer "price"
+    t.integer "user_id"
+    t.integer "event_id"
+    t.bigint "users_id", null: false
+    t.bigint "events_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["events_id"], name: "index_tickets_on_events_id"
+    t.index ["users_id"], name: "index_tickets_on_users_id"
+  end
+
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -99,4 +114,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_12_235400) do
   add_foreign_key "community_rsvps", "users", column: "users_id"
   add_foreign_key "event_rsvps", "events", column: "events_id"
   add_foreign_key "event_rsvps", "users", column: "users_id"
+
+  add_foreign_key "tickets", "events", column: "events_id"
+  add_foreign_key "tickets", "users", column: "users_id"
+
 end
