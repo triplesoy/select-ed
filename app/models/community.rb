@@ -1,4 +1,5 @@
 class Community < ApplicationRecord
+  belongs_to :user
   has_many :events
   has_many :community_users
   has_many :users, through: :community_users
@@ -7,9 +8,8 @@ class Community < ApplicationRecord
   validates :title, presence: true
   validates :description, presence: true
   validates :category, presence: true
-  validates :country, presence: true
-  validates :city, presence: true
-  validates :is_public, presence: true
-  validates :is_visible, presence: true
+  #validates :country, presence: true
+  #validates :city, presence: true
+
   validates :title, uniqueness: true
 end

@@ -33,5 +33,5 @@ class CommunityPolicy < ApplicationPolicy
   def destroy?
     record.user == user
   end
-  
+
 end

@@ -2,8 +2,10 @@
 
 Existing commuinities:
 <%  @communities.each do |community| %>
+<ul>
 <%= community.title %>
 <%=link_to "View community", community_path(community) %>
+</ul>
 <% end %>
 <p>
 
