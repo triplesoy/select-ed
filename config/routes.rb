@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root to: 'communities#index'
   devise_for :users
 
   resources :communities do
@@ -10,5 +11,4 @@ Rails.application.routes.draw do
     end
   end
 
-  root to: 'communities#index'
 end
