@@ -27,7 +27,7 @@ class CommunitiesController < ApplicationController
   end
 
   def set_community
-    @community = Community.find(params[:id])
+    @community = Community.find_by(id: params[:id])
   end
 
   def set_event
