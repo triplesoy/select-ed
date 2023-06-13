@@ -13,6 +13,7 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
   def new
     @community = Community.new
     authorize @community
+
   end
 
   def create
