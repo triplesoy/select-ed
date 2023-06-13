@@ -5,6 +5,31 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+User.create(
+  first_name: "Miguel",
+  last_name: "Bartolomeu",
+  email: "miguel@aol.com",
+  password: "password",
+  password_confirmation: "password"
+)
+
+User.create(
+  first_name: "Guillaume",
+  last_name: "Soyer",
+  email: "guillaumel@aol.com",
+  password: "password",
+  password_confirmation: "password"
+)
+
+User.create(
+  first_name: "Salim",
+  last_name: "Atyieh",
+  email: "salim@aol.com",
+  password: "password",
+  password_confirmation: "password"
+)
+
 Community.create(
   title: "Tech Enthusiasts",
   description: "A community for technology enthusiasts to discuss the latest trends and innovations.",
@@ -12,7 +37,8 @@ Community.create(
   city: "San Francisco",
   is_public: true,
   is_visible: true,
-  category: "Technology"
+  category: "Technology",
+  user_id: 1
 )
 
 Community.create(
@@ -22,7 +48,8 @@ Community.create(
   city: "Toronto",
   is_public: true,
   is_visible: true,
-  category: "Sports"
+  category: "Sports",
+  user_id: 1
 )
 
 Community.create(
@@ -32,7 +59,8 @@ Community.create(
   city: "London",
   is_public: true,
   is_visible: true,
-  category: "Literature"
+  category: "Literature",
+  user_id: 2
 )
 
 Community.create(
@@ -42,7 +70,8 @@ Community.create(
   city: "Sydney",
   is_public: true,
   is_visible: true,
-  category: "Art"
+  category: "Art",
+  user_id: 2
 )
 
 Community.create(
@@ -52,25 +81,6 @@ Community.create(
   city: "New York",
   is_public: true,
   is_visible: true,
-  category: "Food"
-)
-
-Community.create(
-  title: "Outdoor Explorers",
-  description: "Connect with nature enthusiasts and plan exciting outdoor adventures like hiking, camping, and more.",
-  country: "Canada",
-  city: "Vancouver",
-  is_public: true,
-  is_visible: true,
-  category: "Travel"
-)
-
-Community.create(
-  title: "Film Fanatics",
-  description: "A community for movie buffs to discuss their favorite films, actors, and upcoming releases.",
-  country: "United Kingdom",
-  city: "Manchester",
-  is_public: true,
-  is_visible: true,
-  category: "Entertainment"
+  category: "Food",
+  user_id: 3
 )

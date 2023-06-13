@@ -1,4 +1,5 @@
 class CommunitiesController < ApplicationController
+skip_before_action :authenticate_user!, only: [:index, :show]
 before_action :set_community, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -17,9 +18,8 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
 
   def create
     @community = Community.new(community_params)
-    @community.user = current_user
     if @community.save
-      redirect_to community_path(@communities)
+      redirect_to community_path(@community)
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,9 +27,13 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
   end
 
   def edit
+    authorize @community
   end
 
   def update
+    @community.update(community_params)
+    redirect_to community_path(@community)
+    authorize @community
   end
 
   def destroy

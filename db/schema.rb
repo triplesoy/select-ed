@@ -21,62 +21,68 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_13_180112) do
     t.string "city"
     t.boolean "is_public"
     t.boolean "is_visible"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "category"
+    t.index ["user_id"], name: "index_communities_on_user_id"
   end
 
   create_table "community_join_requests", force: :cascade do |t|
     t.string "status"
-    t.bigint "users_id", null: false
-    t.bigint "communities_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "community_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["communities_id"], name: "index_community_join_requests_on_communities_id"
-    t.index ["users_id"], name: "index_community_join_requests_on_users_id"
+    t.index ["community_id"], name: "index_community_join_requests_on_community_id"
+    t.index ["user_id"], name: "index_community_join_requests_on_user_id"
   end
 
   create_table "community_users", force: :cascade do |t|
     t.string "role"
     t.boolean "status"
-    t.integer "id_users"
-    t.integer "id_communities"
+    t.bigint "user_id", null: false
+    t.bigint "community_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_community_users_on_community_id"
+    t.index ["user_id"], name: "index_community_users_on_user_id"
   end
 
   create_table "event_rsvps", force: :cascade do |t|
-    t.bigint "users_id", null: false
-    t.bigint "events_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["events_id"], name: "index_event_rsvps_on_events_id"
-    t.index ["users_id"], name: "index_event_rsvps_on_users_id"
+    t.index ["event_id"], name: "index_event_rsvps_on_event_id"
+    t.index ["user_id"], name: "index_event_rsvps_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
     t.string "title"
-    t.integer "start_date"
-    t.integer "end_date"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.string "address"
     t.string "description"
     t.float "price"
     t.integer "capacity"
-    t.integer "id_users"
-    t.integer "id_communities"
+    t.bigint "user_id", null: false
+    t.bigint "community_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_events_on_community_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "tickets", force: :cascade do |t|
     t.string "type"
     t.integer "price"
-    t.bigint "users_id", null: false
-    t.bigint "events_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["events_id"], name: "index_tickets_on_events_id"
-    t.index ["users_id"], name: "index_tickets_on_users_id"
+    t.index ["event_id"], name: "index_tickets_on_event_id"
+    t.index ["user_id"], name: "index_tickets_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -103,10 +109,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_13_180112) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "community_join_requests", "communities", column: "communities_id"
-  add_foreign_key "community_join_requests", "users", column: "users_id"
-  add_foreign_key "event_rsvps", "events", column: "events_id"
-  add_foreign_key "event_rsvps", "users", column: "users_id"
-  add_foreign_key "tickets", "events", column: "events_id"
-  add_foreign_key "tickets", "users", column: "users_id"
+  add_foreign_key "communities", "users"
+  add_foreign_key "community_join_requests", "communities"
+  add_foreign_key "community_join_requests", "users"
+  add_foreign_key "community_users", "communities"
+  add_foreign_key "community_users", "users"
+  add_foreign_key "event_rsvps", "events"
+  add_foreign_key "event_rsvps", "users"
+  add_foreign_key "events", "communities"
+  add_foreign_key "events", "users"
+  add_foreign_key "tickets", "events"
+  add_foreign_key "tickets", "users"
 end

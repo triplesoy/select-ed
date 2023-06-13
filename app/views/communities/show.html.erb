@@ -1,10 +1,18 @@
-<div class="container">
-  <h1><%= @community.title %></h1>
-    </div>
-    <div class="col-12 col-lg-4 my-3">
 
-        <%= link_to "Go back", communities_path, class: "btn btn-outline-dark" %>
-  </div>
-  </div>
-</div>
-<br><br><br>
+<h3>Communities#show</h3>
+
+
+<h1><%= @community.title %></h1>
+ <hr> <ul>
+  <li><%= @community.description %></li>
+  <li><%= @community.category %></li>
+  <li><%= @community.country %></li>
+  <li><%= @community.city %></li>
+  <li>Is public ?<%= @community.is_public %></li>
+  <li>is visible ?<%= @community.is_visible %></li>
+  <hr>
+  Admin panel:<br>
+  <%= link_to "Edit", edit_community_path(@community) %>
+  <%= link_to "Delete", community_path(@community), method: :delete, data: { confirm: "Are you sure?" } %>
+<hr>
+<%= link_to "Back",  communities_path %>
