@@ -14,9 +14,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def new?
-    community = Community.find(params[:community_id])
-    # record.community.user == user
-    # You may want to implement appropriate authorization logic here
+    record.community.user_id == user.id
   end
 
   def create?

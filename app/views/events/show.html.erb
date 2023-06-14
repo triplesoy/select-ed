@@ -15,13 +15,14 @@
         </div>
       </div>
 
-      <% if policy(@event).edit? %>
-          <%= link_to "Edit", edit_community_event_path(@community, @event), class: "btn btn-outline-dark" %>
-      <% end %>
+      <% if @event.user == current_user %>
+        <% if policy(@event).edit? %>
+            <%= link_to "Edit", edit_community_event_path(@community, @event), class: "btn btn-outline-dark" %>
+        <% end %>
 
-       <% if policy(@event).destroy? %>
-          <%= link_to "Delete", community_event_path(@community, @event), class: "btn btn-outline-danger",
-          data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
+        <% if policy(@event).destroy? %>
+            <%= link_to "Delete", community_event_path(@community, @event), class: "btn btn-outline-danger",
+            data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
+        <% end %>
       <% end %>
-
       <%= link_to "Go back", community_events_path(@community), class: "btn btn-outline-dark" %>
