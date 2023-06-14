@@ -1,9 +1,15 @@
 
-<h3>Communities#show</h3>
-
-
+<h2>
+Communities#show
+</h2>
 
 <h1><%= @community.title %></h1>
+<% if @community.is_public? %>
+  Public <span class=""><b>Join now!</b></span>
+<% else %>
+  Private <span class=""><b>Request to join</b></span>
+<% end %>
+
  <hr> <ul>
   <li><%= @community.description %></li>
 
