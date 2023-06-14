@@ -17,7 +17,7 @@ User.create(
 User.create(
   first_name: "Guillaume",
   last_name: "Soyer",
-  email: "guillaumel@aol.com",
+  email: "guillaume@aol.com",
   password: "password",
   password_confirmation: "password"
 )
