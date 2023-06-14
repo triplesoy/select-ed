@@ -1,2 +1,18 @@
 <h1>Events#new</h1>
-<p>Find me in app/views/events/new.html.erb</p>
+<div class="position-relative m-3">
+  <div class="col-12 col-md-6 offset-lg-3">
+    <div class="bg-white rounded p-3 shadow">
+      <%= simple_form_for @event do |f| %>
+        <%= f.input :title, label: "Title" %>
+        <%= f.input :description, label: "Description" %>
+        <%= f.input :address, label: "Address" %>
+        <%= f.input :price, label: "Price" %>
+        <%= f.input :capacity, label: "Capacity" %>
+        <%= f.input :start_date, as: :date_select, label: "Start Date" %>
+        <%= f.input :end_date, as: :date_select, label: "End Date" %>
+        <%= f.submit "Create Event", class: "btn btn-outline-dark" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
