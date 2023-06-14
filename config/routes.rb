@@ -11,4 +11,6 @@ Rails.application.routes.draw do
     end
   end
 
+get "my_communities", to: "communities#my_communities", as: :my_communities
+get "my_events", to: "events#my_events", as: :my_events
 end
