@@ -41,9 +41,8 @@ class EventsController < ApplicationController
 
   def destroy
     @event.destroy
-    redirect_to community_events_path, status: :see_other
+    redirect_to community_path(@community), status: :see_other
     authorize @event
-
   end
 
   def my_events
