@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:new, :create, :edit, :update, :show, :total_price]
+  before_action :set_event, only: [:edit, :update, :show, :destroy]
   before_action :set_community, only: [:index, :show, :destroy, :edit, :update]
 
   def index
@@ -12,16 +12,21 @@ class EventsController < ApplicationController
      # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
     end
   end
-
+  
   def new
+    @community = Community.find(params[:community_id])
     @event = Event.new
+    authorize [@community, @event]
   end
+
 
   def create
     @event = Event.new(event_params)
-    @event.community = Venue.find(params[:venue_id])
+    @event.community = Community.find(params[:community_id])
     @event.user = current_user
     @event.save!
+    authorize @event
+
   end
 
   def edit
@@ -29,15 +34,16 @@ class EventsController < ApplicationController
   end
 
   def update
-    authorize @event
     @event.update(event_params)
     redirect_to event_path(@event)
+    authorize @event
   end
 
   def destroy
-    authorize @event
     @event.destroy
     redirect_to community_events_path, status: :see_other
+    authorize @event
+
   end
 
   def my_events
