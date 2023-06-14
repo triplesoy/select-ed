@@ -32,4 +32,13 @@ class EventPolicy < ApplicationPolicy
   def destroy?
     record.community.user == user
   end
+
+  def my_events?
+    true
+  end
+
+  def events_owned?
+    true
+  end
+
 end
