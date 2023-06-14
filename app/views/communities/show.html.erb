@@ -41,14 +41,17 @@
     <% end %>
 
 
+<% if @community.user == current_user %>
 <hr>
   <h2>Admin panel:</h2>
+        <% if policy(@community).edit? %>
+          <%= link_to "Edit my commuinity", edit_community_path(@community) %>
+        <% end %>
 
-  <br>
-  <%= link_to 'Create an event', new_community_event_path(@community)%>
-  <%= link_to "Edit my commuinity", edit_community_path(@community) %>
+        <% if policy(@community).destroy? %>
   <%= link_to "Delete my community ", community_path(@community),   data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
-
-
+        <% end %>
+<% end %>
 <hr>
-<%= link_to "Back",  communities_path %>
+<%= link_to "Back",  communities_path, class:"" %>
+
