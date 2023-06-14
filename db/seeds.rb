@@ -94,3 +94,45 @@ Event.create!(
   capacity: 500,
   user_id:User.first.id,
   community_id:Community.first.id)
+
+  Event.create!(
+    title: "cook 2024",
+    start_time: DateTime.new(2023, 9, 15, 9, 0),
+    end_time: DateTime.new(2023, 9, 17, 18, 0),
+    address: "123 Main Street, San Francisco",
+    description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+    price: 99.99,
+    capacity: 500,
+    user_id:User.first.id,
+    community_id:Community.first.id)
+
+    Event.create!(
+      title: "music festival",
+      start_time: DateTime.new(2023, 9, 15, 9, 0),
+      end_time: DateTime.new(2023, 9, 17, 18, 0),
+      address: "123 Main Street, San Francisco",
+      description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+      price: 99.99,
+      capacity: 500,
+      user_id:User.last.id,
+      community_id:Community.first.id)
+
+  EventRsvp.create!(
+    user:User.first,
+    event: Event.first
+  )
+
+  EventRsvp.create!(
+    user:User.first,
+    event: Event.second
+  )
+
+  EventRsvp.create!(
+    user:User.first,
+    event: Event.third
+  )
+
+  EventRsvp.create!(
+    user:User.last,
+    event: Event.first
+  )
