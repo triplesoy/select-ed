@@ -12,11 +12,11 @@ class EventsController < ApplicationController
      # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
     end
   end
-  
+
   def new
     @community = Community.find(params[:community_id])
-    @event = Event.new
-    authorize [@community, @event]
+    @event = Event.new(community: @community)
+    authorize @event
   end
 
 
