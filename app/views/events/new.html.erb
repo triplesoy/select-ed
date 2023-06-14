@@ -2,7 +2,7 @@
 <div class="position-relative m-3">
   <div class="col-12 col-md-6 offset-lg-3">
     <div class="bg-white rounded p-3 shadow">
-      <%= simple_form_for @event do |f| %>
+      <%= simple_form_for @community, @event do |f| %>
         <%= f.input :title, label: "Title" %>
         <%= f.input :description, label: "Description" %>
         <%= f.input :address, label: "Address" %>
