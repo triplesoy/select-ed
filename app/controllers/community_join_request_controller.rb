@@ -1,4 +1,7 @@
 class CommunityJoinRequestController < ApplicationController
+before_action :authenticate_user!, only: [:create]
+before_action :set_community_join_request_params, only: [:create]
+
   def index
   end
 
@@ -9,6 +12,14 @@ class CommunityJoinRequestController < ApplicationController
   end
 
   def create
+    @join_request = @community.join_requests.new(user: current_user)
+    authorize @join_request
+
+    if @join_request.save
+      redirect_to @community, notice: 'Your request to join this community has been submitted.'
+    else
+      redirect_to @community, alert: 'There was an error submitting your request to join this community.'
+    end
   end
 
   def edit
@@ -22,11 +33,7 @@ class CommunityJoinRequestController < ApplicationController
 
   private
 
-  def community_join_request_params
-    params.require(:community_join_request).permit(:title, :description, :country, :city, :is_public, :is_visible)
-  end
-
-  def set_community
+  def set_community_join_request_params
     @community = Community.find(params[:id])
   end
 end
