@@ -11,7 +11,8 @@ User.create(
   last_name: "Bartolomeu",
   email: "miguel@aol.com",
   password: "password",
-  password_confirmation: "password"
+  password_confirmation: "password",
+  admin: true
 )
 
 User.create(
@@ -19,7 +20,8 @@ User.create(
   last_name: "Soyer",
   email: "guillaume@aol.com",
   password: "password",
-  password_confirmation: "password"
+  password_confirmation: "password",
+  admin: true
 )
 
 User.create(
@@ -27,7 +29,17 @@ User.create(
   last_name: "Atyieh",
   email: "salim@aol.com",
   password: "password",
-  password_confirmation: "password"
+  password_confirmation: "password",
+  admin: true
+)
+
+User.create(
+  first_name: "John",
+  last_name: "Doe",
+  email: "john@aol.com",
+  password: "password",
+  password_confirmation: "password",
+  admin: false
 )
 
 Community.create(

@@ -18,7 +18,7 @@ class Community < ApplicationRecord
   has_one_attached :video
 
 
-
-
-
+  def pending_community_join_requests
+    CommunityJoinRequest.where(community: self, status: "pending")
+  end
 end
