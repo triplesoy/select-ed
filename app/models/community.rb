@@ -5,12 +5,12 @@ class Community < ApplicationRecord
   has_many :users, through: :community_users
   has_many :community_join_requests
   has_many :users, through: :community_join_requests
-  validates :title, presence: true
 
+  validates :title, presence: true
   validates :description, presence: true
   validates :category, presence: true
-  #validates :country, presence: true
-  #validates :city, presence: true
+  # validates :country, presence: true
+  # validates :city, presence: true
   validates :title, uniqueness: true
 
   has_many :events, dependent: :destroy
@@ -18,7 +18,7 @@ class Community < ApplicationRecord
   has_one_attached :video
 
 
-
-
-
+  def pending_community_join_requests
+    CommunityJoinRequest.where(community: self, status: "pending")
+  end
 end

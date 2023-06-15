@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-
+gem "geocoder"
 ruby "3.1.2"
 gem "pundit"
 gem "rqrcode"
@@ -9,6 +9,12 @@ gem "mini_magick"
 gem "geocoder"
 gem "mapbox-sdk"
 gem "cloudinary"
+
+gem 'simple-form-datepicker'
+gem "split_datetime"
+
+gem "rails_admin", "3.0"
+
 
 
 gem "activestorage"
@@ -86,3 +92,4 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+gem "sassc-rails"

@@ -1,3 +1,41 @@
 <h1>Events#new</h1>
+<div class="position-relative m-3">
+  <div class="col-12 col-md-6 offset-lg-3">
+    <div class="bg-white rounded p-3 shadow">
+      <%= simple_form_for [@community, @event] do |f| %>
+        <%= f.input :title, label: "Title" %>
+        <%= f.input :description, label: "Description" %>
+        <%= f.input :address,input_html: {data: {address_autocomplete_target: "address"}},wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}%>
+        <%= f.input :price, label: "Price" %>
+        <%= f.input :capacity, label: "Capacity" %>
+        <%= f.input :start_time, html5: true,  input_html: { min: Date.current.to_s, id: 'start-date' } %>
+        <%= f.input :end_time, html5: true, input_html: { id: 'end-date' } %>
+        <%= f.submit "Create Event", class: "btn btn-outline-dark" %>
+      <% end %>
+    </div>
+    <%= link_to "Back",  community_path(@community), class:"" %>
+  </div>
+</div>
+
+
+
+
+
+
+
+
 <p>Find me in app/views/events/new.html.erb</p>
-<%= link_to "Back",  community_path(@community), class:"" %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var startDateInput = document.getElementById('start-date');
+    var endDateInput = document.getElementById('end-date');
+
+    startDateInput.addEventListener("input", function() {
+      endDateInput.min = startDateInput.value;
+      if (endDateInput.value < startDateInput.value) {
+        endDateInput.value = startDateInput.value;
+      }
+    });
+  });
+</script>
