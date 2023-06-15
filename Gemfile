@@ -9,8 +9,8 @@ gem "mini_magick"
 gem "geocoder"
 gem "mapbox-sdk"
 gem "cloudinary"
-
-
+gem 'simple-form-datepicker'
+gem "split_datetime"
 gem "activestorage"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
