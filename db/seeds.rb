@@ -141,6 +141,19 @@ Event.create!(
         user_id:User.last.id,
         community_id:Community.first.id)
 
+      Event.create!(
+        title: "Tech Conference 2023",
+        start_time: DateTime.new(2023, 9, 15, 9, 0),
+        end_time: DateTime.new(2023, 9, 17, 18, 0),
+        address: "Av. Álvaro Obregón 213, 06700 Ciudad de México, Ciudad de México",
+        description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+        price: 99.99,
+        capacity: 500,
+        user_id:User.last.id,
+        community_id:Community.first.id)
+
+
+
 
   EventRsvp.create!(
     user:User.first,
