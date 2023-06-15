@@ -80,7 +80,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_165350) do
   create_table "event_rsvps", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "event_id", null: false
-    t.boolean "status"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_event_rsvps_on_event_id"

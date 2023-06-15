@@ -28,8 +28,9 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.community = Community.find(params[:community_id])
+    @community = Community.find(params[:community_id])
     @event.user = current_user
-    redirect_to community_event_path(@community,@event) if @event.save!
+    redirect_to community_event_path(@community, @event) if @event.save!
     authorize @event
   end
 
