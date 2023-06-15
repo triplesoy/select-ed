@@ -9,7 +9,12 @@ gem "mini_magick"
 gem "geocoder"
 gem "mapbox-sdk"
 gem "cloudinary"
+
+gem 'simple-form-datepicker'
+gem "split_datetime"
+
 gem "rails_admin", "3.0"
+
 
 
 gem "activestorage"
