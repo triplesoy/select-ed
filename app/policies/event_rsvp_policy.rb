@@ -1,4 +1,4 @@
-class EnventRsvpPolicy < ApplicationPolicy
+class EventRsvpPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope.all

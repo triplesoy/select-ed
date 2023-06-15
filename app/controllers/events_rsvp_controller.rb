@@ -15,7 +15,8 @@ class EventsRsvpController < ApplicationController
   end
 
   def create
-    @event_rsvp = EventRsvp.new(event__rsvp_params)
+    raise
+    @event_rsvp = EventRsvp.new(event_rsvp_params)
     @event_rsvp.user = current_user
     redirect_to communities_path if @event_rsvp.save!
     #community_event_path(@community, @event) if @event_rsvp.save!
