@@ -4,5 +4,5 @@ class CommunityUser < ApplicationRecord
 
   validates :role, presence: true
   validates :community, presence: true
-
+  validates :user, uniqueness: { scope: :community }
 end

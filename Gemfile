@@ -9,8 +9,14 @@ gem "mini_magick"
 gem "geocoder"
 gem "mapbox-sdk"
 gem "cloudinary"
+
 gem 'simple-form-datepicker'
 gem "split_datetime"
+
+gem "rails_admin", "3.0"
+
+
+
 gem "activestorage"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
@@ -86,3 +92,4 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+gem "sassc-rails"

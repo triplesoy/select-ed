@@ -17,14 +17,17 @@ class CommunityJoinRequestsController < ApplicationController
   end
 
 
-
   def update
     @join_request = CommunityJoinRequest.find(params[:id])
     authorize @join_request
-    if @join_request.update(status: "accepted")
-      CommunityUser.create(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member")
-    elsif @join_request.update(status: "rejected")
-      redirect_to community_path(@community), notice: 'Your request to join this community has been rejected.'
+    if params[:status] == "accepted"
+      @join_request.update(status: "accepted")
+      CommunityUser.create!(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member", status: "accepted" )
+      redirect_to community_path(@community), notice: 'Member added to community.'
+    else
+      @join_request.update(status: "rejected")
+      redirect_to community_path(@community), notice: 'Member request has been rejected.'
+      community_user.destroy if community_user.present?
     end
   end
 
@@ -32,5 +35,10 @@ class CommunityJoinRequestsController < ApplicationController
 
   def set_community
     @community = Community.find(params[:community_id])
+  end
+
+  def community_user
+    @join_request = CommunityJoinRequest.find(params[:id])
+    CommunityUser.find_by(user_id: @join_request.user_id, community_id: @join_request.community_id)
   end
 end
