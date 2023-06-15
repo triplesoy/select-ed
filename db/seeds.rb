@@ -84,6 +84,18 @@ Community.create(
   category: "Food",
   user_id: 3
 )
+
+Community.create(
+  title: "PRIVATE C",
+  description: "PRIVATE TEST.",
+  country: "NEPAL",
+  city: "BANGLADESH",
+  is_public: false,
+  is_visible: true,
+  category: "TECH MOTHERFUCKER",
+  user_id: 2
+)
+
 Event.create!(
   title: "Tech Conference 2023",
   start_time: DateTime.new(2023, 9, 15, 9, 0),
@@ -94,6 +106,17 @@ Event.create!(
   capacity: 500,
   user_id:User.first.id,
   community_id:Community.first.id)
+
+  Event.create!(
+    title: "TEST",
+    start_time: DateTime.new(2023, 9, 15, 9, 0),
+    end_time: DateTime.new(2023, 9, 17, 18, 0),
+    address: "123 rua do caralho",
+    description: "TESTE.",
+    price: 99.99,
+    capacity: 500,
+    user_id:User.second.id,
+    community_id:Community.last.id)
 
   Event.create!(
     title: "cook 2024",
@@ -132,20 +155,24 @@ Event.create!(
 
   EventRsvp.create!(
     user:User.first,
-    event: Event.first
+    event: Event.first,
+    status: "accepted"
   )
 
   EventRsvp.create!(
     user:User.first,
-    event: Event.second
+    event: Event.second,
+    status: "accepted"
   )
 
   EventRsvp.create!(
     user:User.first,
-    event: Event.third
+    event: Event.third,
+    status: "accepted"
   )
 
   EventRsvp.create!(
     user:User.last,
-    event: Event.first
+    event: Event.first,
+    status: "accepted"
   )

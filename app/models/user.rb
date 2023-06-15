@@ -13,6 +13,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_one_attached :avatar
 
+  def has_rsvp_with_event?(event)
+    self.event_rsvps.any? { |rsvp| rsvp.event == event }
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end

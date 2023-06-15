@@ -15,11 +15,17 @@ class EventsRsvpController < ApplicationController
   end
 
   def create
-    raise
-    @event_rsvp = EventRsvp.new(event_rsvp_params)
+    @community = Community.find(params[:community_id])
+    @event = Event.find(params[:event_id])
+    @event_rsvp = EventRsvp.new(event: @event)
+    @event_rsvp.status = @community.is_public? ? "accepted" : "pending"
     @event_rsvp.user = current_user
-    redirect_to communities_path if @event_rsvp.save!
-    #community_event_path(@community, @event) if @event_rsvp.save!
+    if @event_rsvp.save
+      redirect_to "/events/show", alert: "You have successfully joined the event!"
+    else
+      redirect_to "/events/show", alert: "Failed to join the event."
+    end
+
     authorize @event_rsvp
   end
 
