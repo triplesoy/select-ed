@@ -9,6 +9,7 @@ gem "mini_magick"
 gem "geocoder"
 gem "mapbox-sdk"
 gem "cloudinary"
+gem "rails_admin", "3.0"
 
 
 gem "activestorage"
@@ -86,3 +87,4 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+gem "sassc-rails"
