@@ -1,6 +1,6 @@
 class CommunitiesController < ApplicationController
-skip_before_action :authenticate_user!, only: [:index, :show]
-before_action :set_community, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:index, :show]
+  before_action :set_community, only: [:show, :edit, :update, :destroy]
 
   def index
     @communities = policy_scope(Community)
@@ -9,23 +9,28 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
   def show
     authorize @community
     @events = @community.events
+    @join_request = CommunityJoinRequest.new
+  
+
+
   end
 
   def new
     @community = Community.new
     authorize @community
-
   end
 
   def create
     @community = Community.new(community_params)
     @community.user = current_user
-    if @community.save
-      redirect_to community_path(@community)
+    authorize @community
+
+    if @community.save!
+      @community.community_users.create!(user: current_user, role: "admin", community: @community)
+      redirect_to community_path(@community), notice: 'Community was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
-    authorize @community
   end
 
   def edit
@@ -53,9 +58,4 @@ before_action :set_community, only: [:show, :edit, :update, :destroy]
   def set_community
     @community = Community.find(params[:id])
   end
-
-  def set_event
-    @event = Event.find(params[:id])
-  end
-
 end

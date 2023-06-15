@@ -5,10 +5,19 @@ Communities#show
 
 <h1><%= @community.title %></h1>
 <% if @community.is_public? %>
-  Public <span class=""><b>Join now!</b></span>
-<% else %>
-  Private <span class=""><b>Request to join</b></span>
+  Public <span class=""><b><%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+  <%= f.hidden_field :community_id, value: @community.id %>
+  <%= f.submit "Join", class: "btn btn-outline-dark" %>
 <% end %>
+</b></span>
+<% else %>
+  Private <span class=""><b><%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+  <%= f.hidden_field :community_id, value: @community.id %>
+  <%= f.submit "Request to Join", class: "btn btn-outline-dark" %>
+<% end %>
+</b></span>
+<% end %>
+
 
  <hr> <ul>
   <li><%= @community.description %></li>
