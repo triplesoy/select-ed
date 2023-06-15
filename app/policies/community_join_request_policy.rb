@@ -1,24 +1,16 @@
 class CommunityJoinRequestPolicy < ApplicationPolicy
   def create?
-    user.present? # only allow logged in users to create join requests
+    # Any logged-in user can create a join request
+    user.present?
   end
 
   def update?
-    user.community_users.find_by(community: record.community)&.admin? # only allow community admins to update join requests
-
+    # Only admins of the community or the user who created the join request can update it
+    record.community.admin == user || record.user == user
   end
 
   def destroy?
-    update? # same permissions as for updating
-  end
-
-  class Scope < Scope
-    def resolve
-      if user.admin?
-        scope.all # if the user is an admin, they can see all join requests
-      else
-        scope.where(user: user) # otherwise, a user can only see their own join requests
-      end
-    end
+    # Only admins of the community or the user who created the join request can destroy it
+    record.community.admin == user || record.user == user
   end
 end
