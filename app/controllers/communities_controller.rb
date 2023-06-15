@@ -10,7 +10,6 @@ class CommunitiesController < ApplicationController
     authorize @community
     @events = @community.events
     @join_request = CommunityJoinRequest.new
-  
 
 
   end
