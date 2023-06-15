@@ -8,8 +8,8 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
-      unless @event.user == current_user
-     # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
+       unless @event.user == current_user
+       # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
     end
   end
 
@@ -19,18 +19,12 @@ class EventsController < ApplicationController
     authorize @event
   end
 
-
   def create
     @event = Event.new(event_params)
     @event.community = Community.find(params[:community_id])
     @event.user = current_user
-
-    if @event.save!
-      redirect_to community_event_path(@community,@event)
-    end
-
+    redirect_to community_event_path(@community,@event) if @event.save!
     authorize @event
-
   end
 
   def edit
@@ -50,7 +44,13 @@ class EventsController < ApplicationController
   end
 
   def my_events
-    @my_events = current_user.events
+    @my_events = current_user.my_events
+    authorize @my_events
+  end
+
+  def events_owned
+    @events_owned = current_user.events
+    authorize @events_owned
   end
 
   private

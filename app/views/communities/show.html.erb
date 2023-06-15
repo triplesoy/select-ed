@@ -1,9 +1,36 @@
 
-<h3>Communities#show</h3>
-
-
+<h2>
+Communities#show
+</h2>
 
 <h1><%= @community.title %></h1>
+
+  <% if @community.is_public? %>
+    Public <span class=""><b>
+<% if CommunityJoinRequest.exists?(user_id: current_user.id, community_id: @community.id) %>
+<button class="btn btn-outline-success" disabled>Joined</button>
+<% else %>
+  <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+    <%= f.submit "Join", class: "btn btn-outline-dark" %>
+  <% end %>
+<% end %>
+</b></span>
+<% else %>
+
+  Private <span class=""><b>
+<% if CommunityJoinRequest.exists?(user_id: current_user.id, community_id: @community.id) %>
+  <button class="btn btn-outline-dark" disabled>Request Submitted</button>
+<% else %>
+  <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+    <%= f.submit "Join", class: "btn btn-outline-dark" %>
+  <% end %>
+<% end %>
+
+
+</b></span>
+<% end %>
+
+
  <hr> <ul>
   <li><%= @community.description %></li>
 

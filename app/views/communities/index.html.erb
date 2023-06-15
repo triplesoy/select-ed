@@ -1,14 +1,34 @@
+<<<<<<< HEAD
 
 <h1>Communities#index</h1>
+=======
+<div class="container">
+  <h1>Communities#index</h1>
+>>>>>>> master
 
-Existing commuinities:
-<%  @communities.each do |community| %>
-<ul>
-<%= community.title %>
-<%=link_to "View community", community_path(community) %>
-</ul>
-<% end %>
-<p>
+  <p>Existing communities:</p>
 
-<hr>
-<%= link_to "Create a community", new_community_path %>
+  <div class="row">
+    <% @communities.each do |community| %>
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><%= link_to community.title, community_path(community) %></li>
+              Community type:
+              <% if community.is_public? %>
+                Public<span class=""><b>Join now!</b></span>
+              <% else %>
+                Private <span class=""><b>Request to join</b></span>
+              <% end %>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <hr>
+  <%= link_to "Create a community", new_community_path %>
+</div>

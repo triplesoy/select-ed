@@ -1,4 +1,5 @@
 class CommunityJoinRequest < ApplicationRecord
-  belongs_to :users
-  belongs_to :communities
+  belongs_to :user
+  belongs_to :community
+
 end

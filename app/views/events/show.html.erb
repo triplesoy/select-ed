@@ -24,5 +24,8 @@
             <%= link_to "Delete", community_event_path(@community, @event),
             data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
         <% end %>
+        <% else %>
+        <%= link_to "JOIN", { controller: :events_rsvp, action: :create }%>
+
       <% end %>
       <%= link_to "Go back", community_path(@community) %>
