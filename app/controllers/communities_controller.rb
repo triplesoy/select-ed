@@ -10,8 +10,7 @@ class CommunitiesController < ApplicationController
     authorize @community
     @events = @community.events
     @join_request = CommunityJoinRequest.new
-
-
+    @community_user = CommunityUser.new
   end
 
   def new
