@@ -1,20 +1,17 @@
-<% if @community.user == current_user %>
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) %>
 <div class="container-fluid ">
   <div class="card text-white bg-dark shadow mb-1" style="width: 100vw;">
     <div class="card-body text-center">
-      <h5 class="card-title"><strong><span style="color: white;">You are the owner of this community.</span></strong></h5>
+      <h5 class="card-title"><strong><span style="color: white;">You are the <%= current_user.role_of_this(@community) %> of this community.</span></strong></h5>
       <%= link_to "Go to the community dashboard", dashboard_path(@community), class: "btn btn-light" %>
     </div>
   </div>
 </div>
-
-
 <h1><%= @community.title %></h1>
 
 
-
-
 <% else %>
+<h1><%= @community.title %></h1>
   <p>
     <%= @community.is_public? ? 'This community is public' : 'This community is private' %><br>
     <span class="">
@@ -25,7 +22,7 @@
             <%= f.submit status, class: "btn btn-outline-dark" %>
           <% end %>
         <% else %>
-          <button class="btn btn-outline-<%= status == 'Joined' ? 'success' : 'dark' %>" disabled><%= status %></button>
+          <button class="btn btn-outline-success" disabled><%= status %></button>
         <% end %>
       </b>
     </span>
@@ -53,12 +50,14 @@
 </ul>
 
 <hr>
-
 <h2>Events:</h2>
+
+<% if (current_user.is_member_of?(@community) || current_user.is_moderator_of?(@community) || @community.user) %>
+
 <div class="row">
   <% @events.each do |event| %>
     <div class="col-lg-3 my-3">
-      <div class="card" style="width: 18rem; height: 22rem;">
+      <div class="card" style="width: 1u8rem; height: 22rem;">
         <div class="card-body position-relative">
           <h5 class="card-title"><%= event.title %></h5>
           <h6 class="card-subtitle mb-2 text-muted"></h6>
@@ -73,28 +72,26 @@
   <% end %>
 </div>
 
-<% if @community.user == current_user %>
-  <hr>
-  <h2><b>Admin panel:</b></h2>
-  <h3>Community settings</h3>
-
-  <ul>
- <% if policy(@community).new? %>
-  <li>   <%= link_to "Create Event", new_community_event_path(@community) %> </li>
-  <% end %>
-
-  <% if policy(@community).edit? %>
-  <li> <%= link_to "Edit my community", edit_community_path(@community) %> </li>
-  <% end %>
-
-  <% if policy(@community).destroy? %>
-   <li> <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> </li>
-  <% end %>
-</ul>
+<% else %>
+You are not allowed to see the events of this community.
 <% end %>
 
 
 
-
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) %>
+<hr>
+<h3>Community settings</h3>
+<ul>
+  <% if policy(@community).new? %>
+    <li><%= link_to "Create Event", new_community_event_path(@community) %></li>
+  <% end %>
+  <% if policy(@community).edit? %>
+    <li><%= link_to "Edit my community", edit_community_path(@community) %></li>
+  <% end %>
+  <% if policy(@community).destroy? %>
+    <li><%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></li>
+  <% end %>
+</ul>
+<%end%>
 <hr>
 <%= link_to "Back", communities_path %>

@@ -20,4 +20,18 @@ class User < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  def is_member_of?(community)
+    self.community_users.any? { |cu| cu.community == community }
+  end
+
+  def is_moderator_of?(community)
+    self.community_users.any? { |cu| cu.community == community && cu.role == "moderator" }
+  end
+
+  def role_of_this(community)
+    return "owner" if community.user == self
+
+    self.community_users.find_by(community: community).role
+  end
 end

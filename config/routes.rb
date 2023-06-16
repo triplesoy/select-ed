@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       resources :tickets, only: [:index, :show, :create]
     end
   end
+patch "make-moderator", to: "community_users#make_moderator", as: :make_moderator
+patch "remove-moderator", to: "community_users#remove_moderator", as: :remove_moderator
 
 get "my_communities", to: "communities#my_communities", as: :my_communities
 get "my_events", to: "events#my_events", as: :my_events
