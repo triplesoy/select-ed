@@ -1,24 +1,40 @@
-<h1>Events#new</h1>
-<div class="position-relative m-3">
-  <div class="col-12 col-md-6 offset-lg-3">
-    <div class="bg-white rounded p-3 shadow">
-      <%= simple_form_for [@community, @event] do |f| %>
-        <%= f.input :title, label: "Title" %>
-        <%= f.input :description, label: "Description" %>
-        <%= f.input :address,input_html: { data: { address_autocomplete_target: "address" } }, wrapper_html: { data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }%>
-        <%= f.input :price, label: "Price" %>
-        <%= f.input :capacity, label: "Capacity" %>
-        <%= f.input :start_time, html5: true,  input_html: { min: Date.current.to_s, id: 'start-date' } %>
-        <%= f.input :end_time, html5: true, input_html: { id: 'end-date' } %>
-        <%= f.submit "Create Event", class: "btn btn-outline-dark" %>
-      <% end %>
+<h1>Create an event</h1>
+<div class="col-12 position-relative m-3 container">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6">
+      <div class="bg-white rounded p-3 shadow">
+      <h2>Event details:</h2>
+        <%= simple_form_for [@community, @event] do |f| %>
+          <%= f.input :title, label: "Title" %>
+          <%= f.input :description, label: "Description" %>
+          <%= f.input :address,input_html: { data: { address_autocomplete_target: "address" } }, wrapper_html: { data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }%>
+          <%= f.input :price, label: "Price" %>
+          <%= f.input :capacity, label: "Capacity" %>
+          <%= f.input :start_time, html5: true,  input_html: { min: Date.current.to_s, id: 'start-date' } %>
+          <%= f.input :end_time, html5: true, input_html: { id: 'end-date' } %>
+          <%= f.submit "Create Event", class: "btn btn-outline-dark" %>
+        <% end %>
+      </div>
     </div>
-    <%= link_to "Back",  community_path(@community), class:"" %>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+      <div class="bg-white rounded p-3 shadow">
+      <h2>Ticket details:</h2>
+        <%= form_with url: :tickets, method: :post, class: "form", data: { controller: "ticket-create" } do |form| %>
+          <%= form.fields_for :ticket_details, index: nil do |ticket_fields| %>
+            <%= ticket_fields.text_field :name, name: 'ticket_details[0][name]' %>
+            <%= ticket_fields.text_field :quantity, name: 'ticket_details[0][quantity]' %>
+            <%= ticket_fields.text_field :name, name: 'ticket_details[1][name]' %>
+            <%= ticket_fields.text_field :quantity, name: 'ticket_details[1][quantity]' %>
+            <button type="button" class="btn" data-action="click->ticket-create#addTicketField"> <i class="fa-solid fa-circle-plus"></i></button>
+          <% end %>
+          <%= form.submit "Create ticket" %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
 
-
-
+<%= link_to "Back",  community_path(@community), class:"" %>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     var startDateInput = document.getElementById('start-date');

@@ -77,16 +77,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_165350) do
     t.index ["user_id"], name: "index_community_users_on_user_id"
   end
 
-  create_table "event_rsvps", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "event_id", null: false
-    t.string "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_event_rsvps_on_event_id"
-    t.index ["user_id"], name: "index_event_rsvps_on_user_id"
-  end
-
   create_table "events", force: :cascade do |t|
     t.string "title"
     t.datetime "start_time"
@@ -106,14 +96,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_165350) do
   end
 
   create_table "tickets", force: :cascade do |t|
-    t.string "type"
+    t.string "model"
     t.integer "price"
-    t.bigint "user_id", null: false
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_tickets_on_event_id"
-    t.index ["user_id"], name: "index_tickets_on_user_id"
+  end
+
+  create_table "user_tickets", force: :cascade do |t|
+    t.integer "paid_amount"
+    t.boolean "scanned?"
+    t.bigint "user_id", null: false
+    t.bigint "ticket_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ticket_id"], name: "index_user_tickets_on_ticket_id"
+    t.index ["user_id"], name: "index_user_tickets_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -130,6 +129,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_165350) do
     t.string "country"
     t.string "occupation"
     t.string "instagram_handle"
+    t.date "birthdate"
     t.boolean "admin", default: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -140,6 +140,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_165350) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "communities", "users"
@@ -147,10 +148,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_165350) do
   add_foreign_key "community_join_requests", "users"
   add_foreign_key "community_users", "communities"
   add_foreign_key "community_users", "users"
-  add_foreign_key "event_rsvps", "events"
-  add_foreign_key "event_rsvps", "users"
   add_foreign_key "events", "communities"
   add_foreign_key "events", "users"
   add_foreign_key "tickets", "events"
-  add_foreign_key "tickets", "users"
+  add_foreign_key "user_tickets", "tickets"
+  add_foreign_key "user_tickets", "users"
 end

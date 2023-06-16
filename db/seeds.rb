@@ -12,7 +12,9 @@ User.create(
   email: "miguel@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: true
+  admin: true,
+  birthdate: DateTime.new(1970, 9, 15)
+
 )
 
 User.create(
@@ -21,7 +23,8 @@ User.create(
   email: "guillaume@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: true
+  admin: true,
+  birthdate: DateTime.new(1988, 9, 15)
 )
 
 User.create(
@@ -30,7 +33,8 @@ User.create(
   email: "salim@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: true
+  admin: true,
+  birthdate: DateTime.new(1999, 9, 15)
 )
 
 User.create(
@@ -39,7 +43,45 @@ User.create(
   email: "john@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: false
+  instagram_handle: "soyjr",
+  admin: false,
+  birthdate: DateTime.new(1976, 9, 15)
+)
+
+User.create(
+  first_name: "Paul",
+  last_name: "Doe",
+  email: "paul@aol.com",
+  password: "password",
+  password_confirmation: "password",
+  instagram_handle: "google",
+  admin: false,
+  birthdate: DateTime.new(2003, 9, 15)
+)
+
+User.create(
+  first_name: "Jack",
+  last_name: "Doe",
+  email: "jack@aol.com",
+  password: "password",
+  password_confirmation: "password",
+  instagram_handle: "cuevitasg",
+  admin: false,
+  birthdate: DateTime.new(1950, 9, 15)
+
+)
+
+User.create(
+  first_name: "Tom",
+  last_name: "Doe",
+  email: "tom@aol.com",
+  password: "password",
+  password_confirmation: "password",
+  instagram_handle: "sundaysundaymx",
+  admin: false,
+  birthdate: DateTime.new(1993, 9, 15)
+
+
 )
 
 Community.create(
@@ -80,10 +122,10 @@ Community.create(
   description: "A community for artists of all kinds to showcase their work and collaborate with fellow creatives.",
   country: "Australia",
   city: "Sydney",
-  is_public: true,
+  is_public: false,
   is_visible: true,
   category: "Art",
-  user_id: 2
+  user_id: 3
 )
 
 Community.create(
@@ -91,20 +133,20 @@ Community.create(
   description: "Join us on culinary journeys as we explore different cuisines and share delicious recipes.",
   country: "United States",
   city: "New York",
-  is_public: true,
+  is_public: false,
   is_visible: true,
   category: "Food",
-  user_id: 3
+  user_id: 2
 )
 
 Community.create(
-  title: "PRIVATE C",
-  description: "PRIVATE TEST.",
-  country: "NEPAL",
-  city: "BANGLADESH",
+  title: "La fiesta de la noche",
+  description: "Party all night long",
+  country: "Spain",
+  city: "Madrid",
   is_public: false,
   is_visible: true,
-  category: "TECH MOTHERFUCKER",
+  category: "Party",
   user_id: 2
 )
 
@@ -116,88 +158,196 @@ Event.create!(
   description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
   price: 99.99,
   capacity: 500,
-  user_id:User.first.id,
-  community_id:Community.first.id)
+  user_id: User.first.id,
+  community_id: Community.first.id
+)
 
-  Event.create!(
-    title: "TEST",
-    start_time: DateTime.new(2023, 9, 15, 9, 0),
-    end_time: DateTime.new(2023, 9, 17, 18, 0),
-    address: "123 rua do caralho",
-    description: "TESTE.",
-    price: 99.99,
-    capacity: 500,
-    user_id:User.second.id,
-    community_id:Community.last.id)
+Event.create!(
+  title: "TEST",
+  start_time: DateTime.new(2023, 9, 15, 9, 0),
+  end_time: DateTime.new(2023, 9, 17, 18, 0),
+  address: "123 rua do caralho",
+  description: "TESTE.",
+  price: 99.99,
+  capacity: 500,
+  user_id: User.second.id,
+  community_id: Community.last.id
+)
 
-  Event.create!(
-    title: "cook 2024",
-    start_time: DateTime.new(2023, 9, 15, 9, 0),
-    end_time: DateTime.new(2023, 9, 17, 18, 0),
-    address: "123 Main Street, San Francisco",
-    description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
-    price: 99.99,
-    capacity: 500,
+Event.create!(
+  title: "cook 2024",
+  start_time: DateTime.new(2023, 9, 15, 9, 0),
+  end_time: DateTime.new(2023, 9, 17, 18, 0),
+  address: "123 Main Street, San Francisco",
+  description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+  price: 99.99,
+  capacity: 500,
+  user_id: User.first.id,
+  community_id: Community.first.id
+)
+
+Event.create!(
+  title: "music festival",
+  start_time: DateTime.new(2023, 9, 15, 9, 0),
+  end_time: DateTime.new(2023, 9, 17, 18, 0),
+  address: "123 Main Street, San Francisco",
+  description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+  price: 99.99,
+  capacity: 500,
+  user_id: 2,
+  community_id: 6
+)
+
+Event.create!(
+  title: "forest walk",
+  start_time: DateTime.new(2023, 9, 15, 9, 0),
+  end_time: DateTime.new(2023, 9, 17, 18, 0),
+  address: "123 Main Street, San Francisco",
+  description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+  price: 99.99,
+  capacity: 500,
+  user_id: User.last.id,
+  community_id: Community.first.id
+)
+
+Event.create!(
+  title: "Tech Conference 2023",
+  start_time: DateTime.new(2023, 9, 15, 9, 0),
+  end_time: DateTime.new(2023, 9, 17, 18, 0),
+  address: "Av. Álvaro Obregón 213, 06700 Ciudad de México, Ciudad de México",
+  description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+  price: 99.99,
+  capacity: 500,
+  user_id: User.last.id,
+  community_id: Community.first.id
+)
+Ticket.create!(
+  event_id: Event.first.id,
+  model: "free",
+  price: 0
+)
+
+CommunityJoinRequest.create!(
+  user_id: 4,
+  community_id: 1,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 4,
+  community_id: 2,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 4,
+  community_id: 3,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 4,
+  community_id: 4,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 5,
+  community_id: 1,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 5,
+  community_id: 2,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 5,
+  community_id: 2,
+  status: "pending"
+)
+CommunityJoinRequest.create!(
+  user_id: 4,
+  community_id: 3,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 3,
+  community_id: 6,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 4,
+  community_id: 6,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 5,
+  community_id: 6,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 6,
+  community_id: 6,
+  status: "pending"
+)
+
+CommunityJoinRequest.create!(
+  user_id: 7,
+  community_id: 6,
+  status: "pending"
+)
+
+Ticket.create!(
+  event_id: Event.second.id,
+  model: "free",
+  price: 0
+)
+
+Ticket.create!(
+  event_id: Event.third.id,
+  model: "free",
+  price: 0
+)
+
+Ticket.create!(
+  event_id: Event.fourth.id,
+  model: "free",
+  price: 0
+)
+
+  UserTicket.create!(
     user_id:User.first.id,
-    community_id:Community.first.id)
-
-    Event.create!(
-      title: "music festival",
-      start_time: DateTime.new(2023, 9, 15, 9, 0),
-      end_time: DateTime.new(2023, 9, 17, 18, 0),
-      address: "123 Main Street, San Francisco",
-      description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
-      price: 99.99,
-      capacity: 500,
-      user_id:User.last.id,
-      community_id:Community.first.id)
-
-
-      Event.create!(
-        title: "forest walk",
-        start_time: DateTime.new(2023, 9, 15, 9, 0),
-        end_time: DateTime.new(2023, 9, 17, 18, 0),
-        address: "123 Main Street, San Francisco",
-        description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
-        price: 99.99,
-        capacity: 500,
-        user_id:User.last.id,
-        community_id:Community.first.id)
-
-      Event.create!(
-        title: "Tech Conference 2023",
-        start_time: DateTime.new(2023, 9, 15, 9, 0),
-        end_time: DateTime.new(2023, 9, 17, 18, 0),
-        address: "Av. Álvaro Obregón 213, 06700 Ciudad de México, Ciudad de México",
-        description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
-        price: 99.99,
-        capacity: 500,
-        user_id:User.last.id,
-        community_id:Community.first.id)
-
-
-
-
-  EventRsvp.create!(
-    user:User.first,
-    event: Event.first,
-    status: "accepted"
+    ticket_id: Ticket.first.id,
+    scanned?: false,
+    paid_amount: 0
   )
 
-  EventRsvp.create!(
-    user:User.first,
-    event: Event.second,
-    status: "accepted"
+  UserTicket.create!(
+    user_id:User.first.id,
+    ticket_id: Ticket.second.id,
+    scanned?: false,
+    paid_amount: 0
   )
 
-  EventRsvp.create!(
-    user:User.first,
-    event: Event.third,
-    status: "accepted"
+  UserTicket.create!(
+    user_id:User.first.id,
+    ticket_id: Ticket.third.id,
+    scanned?: false,
+    paid_amount: 0
   )
 
-  EventRsvp.create!(
-    user:User.last,
-    event: Event.first,
-    status: "accepted"
+  UserTicket.create!(
+    user_id:User.last.id,
+    ticket_id: Ticket.fourth.id,
+    scanned?: false,
+    paid_amount: 0
   )
+
+  puts "Seed data has been created successfully!"
