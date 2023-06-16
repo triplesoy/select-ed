@@ -14,7 +14,6 @@ User.create(
   password_confirmation: "password",
   admin: true,
   birthdate: DateTime.new(1970, 9, 15)
-
 )
 
 User.create(
