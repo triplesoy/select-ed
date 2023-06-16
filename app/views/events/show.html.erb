@@ -3,8 +3,7 @@
 <div class="container">
   <h1><%= @event.title %></h1>
   <div class="row">
-
-      <div class="col-12 col-lg-8 my-3">
+      <div class="col-lg-6 col-md-6 my-3">
         <div class="card">
           <div class="banner">
             <div class="card-body">
@@ -14,11 +13,18 @@
               <p class="card-text"><%= @event.start_time %></p>
               <p class="card-text"><%= @event.end_time %></p>
             </div>
-
           </div>
         </div>
       </div>
     </div>
+
+<div class="col-lg-6 col-md-4 my-3" style="width: 30%; height: 600px;"
+  data-controller="map"
+  data-map-markers-value="<%= @markers.to_json %>"
+  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+</div>
+
+
     <% if flash[:success] %>
       <div class="alert alert-success">
         <%= flash[:success] %>
@@ -51,10 +57,4 @@
     <% end %>
   </div>
   <%= link_to "Go back", community_path(@community) %>
-</div>
-
-<div class="col-12 col-lg-4 my-3" style="width: 30%; height: 600px;"
-  data-controller="map"
-  data-map-markers-value="<%= @markers.to_json %>"
-  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
 </div>
