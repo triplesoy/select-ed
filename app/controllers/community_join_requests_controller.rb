@@ -1,6 +1,6 @@
 class CommunityJoinRequestsController < ApplicationController
   before_action :authenticate_user!, only: [:create]
-  before_action :set_community, only: [:create, :update]
+  before_action :set_community, only: [:create, :update, :destroy]
 
   def create
     authorize CommunityJoinRequest
@@ -25,10 +25,18 @@ class CommunityJoinRequestsController < ApplicationController
       CommunityUser.create!(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member", status: "accepted" )
       redirect_to dashboard_path(@community), notice: 'Member added to community.'
     else
-      @join_request.update(status: "rejected")
+      @join_request.destroy
       redirect_to dashboard_path(@community), notice: 'Member request has been rejected.'
       community_user.destroy if community_user.present?
     end
+  end
+
+  def destroy
+    @join_request = CommunityJoinRequest.find(params[:id])
+    authorize @join_request
+    @join_request.destroy
+    redirect_to dashboard_path(@community), notice: 'Member request has been rejected.'
+    community_user.destroy if community_user.present?
   end
 
   private

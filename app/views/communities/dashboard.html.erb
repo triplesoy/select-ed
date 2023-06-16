@@ -41,7 +41,7 @@
               <td><%= jr.status %></td>
               <td>
                 <%=  link_to "Accept", community_community_join_request_path(@community, jr, status: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success" %>
-                <%= link_to "Reject", community_community_join_request_path(@community, jr, status: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject that person ?"}, class: "btn btn-danger" %>
+                <%= link_to "Reject", community_community_join_request_path(@community, jr, status: "rejected"), data: {turbo_method: :delete, turbo_confirm: "Are you sure you want to reject that person ?"}, class: "btn btn-danger" %>
               </td>
             </tr>
           <% end %>
@@ -52,7 +52,7 @@
 
   </div>
 
-
+<% end %>
 <div class="shadow-lg p-3 mb-5 bg-white rounded">
 
   <div class="card">
@@ -77,9 +77,15 @@
             <th scope="col">Actions</th>
           </tr>
         </thead>
+
+
         <tbody>
           <% @community.community_users.each_with_index do |c, index| %>
-            <tr>
+            <% if c.role == "moderator" %>
+            <tr class="table-warning">
+            <% else %>
+              <tr>
+            <% end %>
               <td><%= index + 1 %></td>
               <td><%= c.user_id %></td>
               <td><%= c.user.first_name %></td>
@@ -90,19 +96,31 @@
               <td><%= c.user.occupation %></td>
               <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
               <td>
+
                 <div class="btn-group dropdown">
                   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Action
+                    Select
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="#">View history</a>
+                    <a class="dropdown-item" href="#"></a>
+                    <% unless c.role == "moderator" =%>
+                    <%= link_to "Set as moderator", make_moderator_path(id: c.id), data: {turbo_method: :patch}, class: "dropdown-item"%>
+                    <% else %>
+                    <%= link_to "Revoke moderator", remove_moderator_path(id: c.id), data: {turbo_method: :patch}, class: "dropdown-item"%>
+                    <% end %>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
+                    <% unless c.role == "moderator" %>
+                      <%= link_to "Delete user", community_community_user_path(@community, c), data: {turbo_method: :delete, turbo_confirm: "Are you sure you want to remove the user from the community?"}, class: "dropdown-item", method: :delete %>
+                    <% else %>
+                      <%= link_to "Delete user", "#", class: "dropdown-item", disabled: true, data: { toggle: "tooltip", placement: "right", title: "Moderators cannot delete other moderators" } %>
+                    <% end %>
+                   <a class="dropdown-item" href="#"><b>Ban user</b></a>
+
+
                   </div>
                 </div>
               </td>
-              <%# <td><%= link_to "Remove", community_community_user_path(@community, c), data: {turbo_method: :delete}, class: "btn btn-danger" %></tr> %>
           <% end %>
         </tbody>
       </table>
@@ -110,7 +128,7 @@
   </div>
  </div>
 
-<% end %>
+
 
 
   <%= link_to "Go back", community_path(@community) %>

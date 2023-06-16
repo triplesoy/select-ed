@@ -1,2 +1,32 @@
-<h1>Tickets#new</h1>
-<p>Find me in app/views/tickets/new.html.erb</p>
+ <div class="col-lg-6 col-md-6 col-sm-6 ticket-form">
+      <div class="sticky-top">
+        <div class="bg-white rounded p-3 shadow m-3">
+          <h2>Ticket Details</h2>
+          <%= form_with url: :community_event_tickets, method: :post, class: "form", data: { controller: "ticket-create" } do |form| %>
+            <%= form.fields_for :ticket_details, index: nil do |ticket_fields| %>
+              <div class="mb-3">
+                <%= form.label :name, "Free tickets" %>
+                <%= ticket_fields.text_field :quantity, name: 'ticket_details[free][quantity]', placeholder: 'Quantity', class: "form-control m-2" %>
+              </div>
+              <div class="mb-3">
+                <%= form.label :quantity, "Regular Admission tickets" %>
+                <div class="d-flex">
+                  <%= ticket_fields.text_field :quantity, name: 'ticket_details[regular][quantity]', placeholder: 'Quantity', class: "form-control m-2" %>
+                  <%= ticket_fields.text_field :price, name: 'ticket_details[regular][price]', placeholder: 'price', class: "form-control m-2" %>
+                </div>
+              </div>
+              <div class="mb-3">
+                <%= form.label :quantity, "Vip" %>
+                <div class="d-flex">
+                  <%= ticket_fields.text_field :quantity, name: 'ticket_details[vip][quantity]', placeholder: 'Quantity', class: "form-control m-2" %>
+                  <%= ticket_fields.text_field :code, name: 'ticket_details[vip][price]', placeholder: 'redeem code', class: "form-control m-2" %>
+                </div>
+              </div>
+            <% end %>
+            <%= form.submit "Create Tickets", class: "btn btn-outline-dark" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,6 +14,23 @@ class CommunityUsersController < ApplicationController
     end
   end
 
+  def make_moderator
+    @community_user = CommunityUser.find(params[:id])
+    authorize @community_user
+    @community_user.update(role: "moderator")
+    redirect_to dashboard_path(@community_user.community), notice: 'User successfully made moderator.'
+  end
+
+  def remove_moderator
+    @community_user = CommunityUser.find(params[:id])
+    authorize @community_user
+    @community_user.update(role: "member")
+    redirect_to dashboard_path(@community_user.community), notice: 'User successfully removed as moderator.'
+  end
+
+
+
+
   def update
     authorize @community_user
 
@@ -27,6 +44,7 @@ class CommunityUsersController < ApplicationController
   def destroy
     authorize @community_user
     @community_user.destroy
+    CommunityJoinRequest.find_by(user: @community_user.user, community: @community).destroy
     redirect_to dashboard_path(@community), notice: 'Community user successfully removed.'
   end
 

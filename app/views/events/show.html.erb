@@ -1,9 +1,21 @@
-<h1>Events#show</h1>
-<p>Find me in app/views/events/show.html.erb</p>
 <div class="container">
   <h1><%= @event.title %></h1>
+
+  <% if @event.user == current_user %>
+      <% if policy(@event).edit? %>
+        <%= link_to "Edit", edit_community_event_path(@community, @event) %>
+      <% end %>
+
+      <% if policy(@event).destroy? %>
+        <%= link_to "Delete", community_event_path(@community, @event),
+          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+      <% end %>
+    <% end %>
+  </div>
+
+
   <div class="row">
-      <div class="col-lg-6 col-md-6 my-3">
+      <div class="col-6 col-lg-8 my-3">
         <div class="card">
           <div class="banner">
             <div class="card-body">
@@ -34,27 +46,51 @@
         <%= flash[:error] %>
       </div>
     <% end %>
-    <% if @event.user == current_user %>
-      <% if policy(@event).edit? %>
-        <%= link_to "Edit", edit_community_event_path(@community, @event) %>
-      <% end %>
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  get tickets
+</button>
 
-      <% if policy(@event).destroy? %>
-        <%= link_to "Delete", community_event_path(@community, @event),
-          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-      <% end %>
-    <% else %>
-      <% if current_user.event_rsvps.find_by(event: @event, status: "pending") %>
-        <%= link_to "WAITING..", community_event_path(@community, @event) %>
-        <%elsif current_user.event_rsvps.find_by(event: @event, status: "accepted")%>
-        <%= link_to "accepted", community_event_path(@community, @event) %>
-        <%elsif current_user.event_rsvps.find_by(event: @event, status: "rejected")%>
-        <%= link_to "rejected", communities_path(@community, @event) %>
-      <% else %>
-        <%= link_to "JOIN", community_event_create_events_rsvp_path(community_id: @community.id, event_id: @event.id),
-        data: { turbo_method: :post, confirm: "Are you sure you want to join this event?" } %>
-      <%end %>
-    <% end %>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Tickets</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <div class="col-12 col-lg-6 my-3">
+          <div class="banner">
+            <div class="card my-3">
+              <div><%= link_to "GENERAL ADMISSION", community_event_user_tickets_path(community: @community, event_id: @event.id),
+                  data: { turbo_method: :post} %></div>
+        <button type="button" class="ticket-btn">Buy</button>
+
+            </div>
+              <div class="card my-3 d-flex">
+                    <div><%= link_to "EARLY BIRD", community_event_user_tickets_path(community: @community, event_id: @event.id),
+              data: { turbo_method: :post} %></div>
+        <button type="button" class="ticket-btn">Buy</button>
+
+              </div>
+              <div class="card my-3">
+                    <div><%= link_to "VIP", community_event_user_tickets_path(community: @community, event_id: @event.id),
+                    data: { turbo_method: :post} %></div>
+                  <button type="button" class="ticket-btn">Buy</button>
+
+              </div>
+            </div>
+
+          </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Buy</button>
+      </div>
+    </div>
   </div>
+</div>
   <%= link_to "Go back", community_path(@community) %>
 </div>
