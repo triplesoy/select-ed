@@ -14,8 +14,6 @@ class UserTicketsController < ApplicationController
   end
 
   def create
-    raise
-
     @user_ticket = UserTicket.new(ticket: @ticket)
     @user_ticket.user = current_user
     if @user_ticket.save

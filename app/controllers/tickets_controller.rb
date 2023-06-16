@@ -16,6 +16,9 @@ class TicketsController < ApplicationController
 
   def create
     raise
+    params["ticket_details"].each do |ticket_params|
+      create_ticket()
+    end
     @event = Event.find(params[:event_id])
     @ticket = Ticket.new(event: @event)
     @ticket.user = current_user

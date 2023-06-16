@@ -6,11 +6,11 @@ Rails.application.routes.draw do
   resources :communities do
     resources :community_join_requests, only: [:index, :create, :update, :destroy]
     resources :community_users, only: [:index, :create, :update, :destroy]
-    resources :events do
+    resources :events, except: [:index] do
       resources :user_tickets, only: [:index, :create, :new, :destroy]
+      resources :tickets, only: [:index, :show, :create, :new, :destroy]
     end
   end
-  resources :tickets, only: [:index, :show, :create, :new, :destroy]
 
 #post "create/user_ticket", to: "Usertickets#create", as: :create_user_ticket
 get "my_communities", to: "communities#my_communities", as: :my_communities

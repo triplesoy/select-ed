@@ -1,10 +1,20 @@
-<h1>Events#show</h1>
-<p>Find me in app/views/events/show.html.erb</p>
 <div class="container">
   <h1><%= @event.title %></h1>
-  <div class="row">
+  <% if @event.user == current_user %>
+      <% if policy(@event).edit? %>
+        <%= link_to "Edit", edit_community_event_path(@community, @event) %>
+      <% end %>
 
-      <div class="col-12 col-lg-8 my-3">
+      <% if policy(@event).destroy? %>
+        <%= link_to "Delete", community_event_path(@community, @event),
+          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+      <% end %>
+    <% end %>
+  </div>
+
+
+  <div class="row">
+      <div class="col-6 col-lg-8 my-3">
         <div class="card">
           <div class="banner">
             <div class="card-body">
@@ -28,17 +38,6 @@
         <%= flash[:error] %>
       </div>
     <% end %>
-    <% if @event.user == current_user %>
-      <% if policy(@event).edit? %>
-        <%= link_to "Edit", edit_community_event_path(@community, @event) %>
-      <% end %>
-
-      <% if policy(@event).destroy? %>
-        <%= link_to "Delete", community_event_path(@community, @event),
-          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-      <% end %>
-    <% end %>
-  </div>
   <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
   get tickets

@@ -220,30 +220,3 @@ Event.create!(
         capacity: 500,
         user_id:User.last.id,
         community_id:Community.first.id)
-
-
-
-
-  EventRsvp.create!(
-    user:User.first,
-    event: Event.first,
-    status: "accepted"
-  )
-
-  EventRsvp.create!(
-    user:User.first,
-    event: Event.second,
-    status: "accepted"
-  )
-
-  EventRsvp.create!(
-    user:User.first,
-    event: Event.third,
-    status: "accepted"
-  )
-
-  EventRsvp.create!(
-    user:User.last,
-    event: Event.first,
-    status: "accepted"
-  )

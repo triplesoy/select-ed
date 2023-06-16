@@ -1,7 +1,7 @@
 <h1>Create an Event</h1>
 <div class="container">
   <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-6">
+    <div class="col-lg-12 col-md-6 col-sm-6">
       <div class="bg-white rounded p-3 shadow m-3">
         <h2>Event Details</h2>
         <%= simple_form_for [@community, @event] do |f| %>
@@ -9,7 +9,6 @@
           <%= f.input :description, label: "Description" %>
           <%= f.input :address, input_html: { data: { address_autocomplete_target: "address" }, class: "d-none" },
                             wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } } %>
-          <%= f.input :price, label: "Price" %>
           <%= f.input :capacity, label: "Capacity" %>
           <%= f.input :start_time, html5: true, input_html: { min: Date.current.to_s, id: 'start-date' } %>
           <%= f.input :end_time, html5: true, input_html: { id: 'end-date' } %>
@@ -17,36 +16,10 @@
         <% end %>
       </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6">
-      <div class="bg-white rounded p-3 shadow m-3">
-        <h2>Ticket Details</h2>
-        <%= form_with url: :tickets, method: :post, class: "form", data: { controller: "ticket-create" } do |form| %>
-          <%= form.fields_for :ticket_details, index: nil do |ticket_fields| %>
-            <div class="mb-3">
-              <%= form.label :name, "Ticket Name" %>
-              <%= ticket_fields.text_field :name, name: 'ticket_details[0][name]', placeholder: 'Ticket name', class: "form-control" %>
-            </div>
-            <div class="mb-3">
-              <%= form.label :quantity, "Quantity" %>
-              <%= ticket_fields.text_field :quantity, name: 'ticket_details[0][quantity]', placeholder: 'Quantity', class: "form-control" %>
-            </div>
-            <div class="mb-3">
-              <%= form.label :price, "Price" %>
-              <%= ticket_fields.text_field :price, name: 'ticket_details[0][price]', placeholder: 'Price', class: "form-control" %>
-            </div>
-            <div class="mb-3">
-              <%= form.label :hidden, "Hidden" %>
-              <%= ticket_fields.check_box :hidden, name: 'ticket_details[0][hidden]' %>
-            </div>
-          <% end %>
-          <%= form.submit "Create Ticket", class: "btn btn-outline-dark" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
 
 <%= link_to "Back", community_path(@community), class: "btn btn-secondary mt-3" %>
+
+<h3>footnote</h3>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
