@@ -130,6 +130,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_165350) do
     t.string "country"
     t.string "occupation"
     t.string "instagram_handle"
+    t.date "birthdate"
     t.boolean "admin", default: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"

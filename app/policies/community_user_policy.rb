@@ -1,8 +1,5 @@
 class CommunityUserPolicy < ApplicationPolicy
-  class Scope < Scope
-    # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+  def destroy?
+    record.community.user == user || record.user == user || record.community.moderator.include?(user)
   end
 end

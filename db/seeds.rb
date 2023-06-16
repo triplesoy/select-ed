@@ -12,7 +12,9 @@ User.create(
   email: "miguel@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: true
+  admin: true,
+  birthdate: DateTime.new(1970, 9, 15)
+
 )
 
 User.create(
@@ -21,7 +23,8 @@ User.create(
   email: "guillaume@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: true
+  admin: true,
+  birthdate: DateTime.new(1988, 9, 15)
 )
 
 User.create(
@@ -30,7 +33,8 @@ User.create(
   email: "salim@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: true
+  admin: true,
+  birthdate: DateTime.new(1999, 9, 15)
 )
 
 User.create(
@@ -39,7 +43,9 @@ User.create(
   email: "john@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: false
+  instagram_handle: "soyjr",
+  admin: false,
+  birthdate: DateTime.new(1976, 9, 15)
 )
 
 User.create(
@@ -48,7 +54,9 @@ User.create(
   email: "paul@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: false
+  instagram_handle: "google",
+  admin: false,
+  birthdate: DateTime.new(2003, 9, 15)
 )
 
 User.create(
@@ -57,7 +65,10 @@ User.create(
   email: "jack@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: false
+  instagram_handle: "cuevitasg",
+  admin: false,
+  birthdate: DateTime.new(1950, 9, 15)
+
 )
 
 User.create(
@@ -66,7 +77,11 @@ User.create(
   email: "tom@aol.com",
   password: "password",
   password_confirmation: "password",
-  admin: false
+  instagram_handle: "sundaysundaymx",
+  admin: false,
+  birthdate: DateTime.new(1993, 9, 15)
+
+
 )
 
 Community.create(
@@ -77,7 +92,7 @@ Community.create(
   is_public: true,
   is_visible: true,
   category: "Technology",
-  user_id: User.first.id
+  user_id: 1
 )
 
 Community.create(
@@ -88,7 +103,7 @@ Community.create(
   is_public: true,
   is_visible: true,
   category: "Sports",
-  user_id: User.first.id
+  user_id: 1
 )
 
 Community.create(
@@ -99,7 +114,7 @@ Community.create(
   is_public: true,
   is_visible: true,
   category: "Literature",
-  user_id: User.second.id
+  user_id: 2
 )
 
 Community.create(
@@ -110,7 +125,7 @@ Community.create(
   is_public: false,
   is_visible: true,
   category: "Art",
-  user_id: User.second.id
+  user_id: 3
 )
 
 Community.create(
@@ -121,18 +136,18 @@ Community.create(
   is_public: false,
   is_visible: true,
   category: "Food",
-  user_id: User.third.id
+  user_id: 2
 )
 
 Community.create(
-  title: "PRIVATE C",
-  description: "PRIVATE TEST.",
-  country: "NEPAL",
-  city: "BANGLADESH",
+  title: "La fiesta de la noche",
+  description: "Party all night long",
+  country: "Spain",
+  city: "Madrid",
   is_public: false,
   is_visible: true,
-  category: "TECH MOTHERFUCKER",
-  user_id: User.second.id
+  category: "Party",
+  user_id: 2
 )
 
 Event.create!(
@@ -179,8 +194,8 @@ Event.create!(
   description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
   price: 99.99,
   capacity: 500,
-  user_id: User.last.id,
-  community_id: Community.first.id
+  user_id: 2,
+  community_id: 6
 )
 
 Event.create!(
@@ -231,80 +246,82 @@ EventRsvp.create!(
   status: "accepted"
 )
 
-fourth_user = User.find_by(email: "john@aol.com")
-fifth_user = User.find_by(email: "paul@aol.com")
 
-if fourth_user && fifth_user
   CommunityJoinRequest.create!(
-    user_id: fourth_user.id,
-    community_id: Community.first.id,
+    user_id: 4,
+    community_id: 1,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fourth_user.id,
-    community_id: Community.second.id,
+    user_id: 4,
+    community_id: 2,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fourth_user.id,
-    community_id: Community.third.id,
+    user_id: 4,
+    community_id: 3,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fourth_user.id,
-    community_id: Community.fourth.id,
+    user_id: 4,
+    community_id: 4,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fourth_user.id,
-    community_id: Community.fifth.id,
+    user_id: 5,
+    community_id: 1,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fourth_user.id,
-    community_id: Community.last.id,
+    user_id: 5,
+    community_id: 2,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: 1,
-    community_id: Community.last.id,
+    user_id: 5,
+    community_id: 2,
     status: "pending"
   )
   CommunityJoinRequest.create!(
     user_id: 4,
-    community_id: Community.last.id,
+    community_id: 3,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fifth_user.id,
-    community_id: Community.first.id,
+    user_id: 3,
+    community_id: 6,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fifth_user.id,
-    community_id: Community.second.id,
+    user_id: 4,
+    community_id: 6,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fifth_user.id,
-    community_id: Community.third.id,
+    user_id: 5,
+    community_id: 6,
     status: "pending"
   )
 
   CommunityJoinRequest.create!(
-    user_id: fifth_user.id,
-    community_id: Community.fifth.id,
+    user_id: 6,
+    community_id: 6,
     status: "pending"
   )
-end
+
+  CommunityJoinRequest.create!(
+    user_id: 7,
+    community_id: 6,
+    status: "pending"
+  )
 
 puts "Seed data has been created successfully!"
