@@ -27,7 +27,7 @@ class CommunityUsersController < ApplicationController
   def destroy
     authorize @community_user
     @community_user.destroy
-    redirect_to @community, notice: 'Community user successfully removed.'
+    redirect_to dashboard_path(@community), notice: 'Community user successfully removed.'
   end
 
   private
