@@ -13,11 +13,20 @@ class EventsController < ApplicationController
   end
 
   def show
+    @events = Event.where(id: params[:id])
+    @markers = @events.geocoded.map do |event|
+      {
+        lat: event.latitude,
+        lng: event.longitude
+      }
+    end
     authorize @event
-       unless @event.user == current_user
-       # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
+    unless @event.user == current_user
+        # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
+
     end
   end
+
 
   def new
     @community = Community.find(params[:community_id])

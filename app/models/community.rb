@@ -21,4 +21,8 @@ class Community < ApplicationRecord
   def pending_community_join_requests
     CommunityJoinRequest.where(community: self, status: "pending")
   end
+
+  def moderator
+    self.community_users.where(role: "moderator")
+  end
 end

@@ -19,6 +19,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.string :country
       t.string :occupation
       t.string :instagram_handle
+      t.date :birthdate
 
       ## Custom fields admin
       t.boolean :admin, default: false

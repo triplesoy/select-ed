@@ -210,144 +210,40 @@ Event.create!(
   community_id: Community.first.id
 )
 
-Event.create!(
-  title: "Tech Conference 2023",
-  start_time: DateTime.new(2023, 9, 15, 9, 0),
-  end_time: DateTime.new(2023, 9, 17, 18, 0),
-  address: "Av. Álvaro Obregón 213, 06700 Ciudad de México, Ciudad de México",
-  description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
-  price: 99.99,
-  capacity: 500,
-  user_id: User.last.id,
-  community_id: Community.first.id
-)
-Ticket.create!(
-  event_id: Event.first.id,
-  model: "free",
-  price: 0
-)
+      Event.create!(
+        title: "Tech Conference 2023",
+        start_time: DateTime.new(2023, 9, 15, 9, 0),
+        end_time: DateTime.new(2023, 9, 17, 18, 0),
+        address: "Av. Álvaro Obregón 213, 06700 Ciudad de México, Ciudad de México",
+        description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+        price: 99.99,
+        capacity: 500,
+        user_id:User.last.id,
+        community_id:Community.first.id)
 
-CommunityJoinRequest.create!(
-  user_id: 4,
-  community_id: 1,
-  status: "pending"
-)
 
-CommunityJoinRequest.create!(
-  user_id: 4,
-  community_id: 2,
-  status: "pending"
-)
 
-CommunityJoinRequest.create!(
-  user_id: 4,
-  community_id: 3,
-  status: "pending"
-)
 
-CommunityJoinRequest.create!(
-  user_id: 4,
-  community_id: 4,
-  status: "pending"
-)
-
-CommunityJoinRequest.create!(
-  user_id: 5,
-  community_id: 1,
-  status: "pending"
-)
-
-CommunityJoinRequest.create!(
-  user_id: 5,
-  community_id: 2,
-  status: "pending"
-)
-
-CommunityJoinRequest.create!(
-  user_id: 5,
-  community_id: 2,
-  status: "pending"
-)
-CommunityJoinRequest.create!(
-  user_id: 4,
-  community_id: 3,
-  status: "pending"
-)
-
-CommunityJoinRequest.create!(
-  user_id: 3,
-  community_id: 6,
-  status: "pending"
-)
-
-CommunityJoinRequest.create!(
-  user_id: 4,
-  community_id: 6,
-  status: "pending"
-)
-
-CommunityJoinRequest.create!(
-  user_id: 5,
-  community_id: 6,
-  status: "pending"
-)
-
-CommunityJoinRequest.create!(
-  user_id: 6,
-  community_id: 6,
-  status: "pending"
-)
-
-CommunityJoinRequest.create!(
-  user_id: 7,
-  community_id: 6,
-  status: "pending"
-)
-
-Ticket.create!(
-  event_id: Event.second.id,
-  model: "free",
-  price: 0
-)
-
-Ticket.create!(
-  event_id: Event.third.id,
-  model: "free",
-  price: 0
-)
-
-Ticket.create!(
-  event_id: Event.fourth.id,
-  model: "free",
-  price: 0
-)
-
-  UserTicket.create!(
-    user_id:User.first.id,
-    ticket_id: Ticket.first.id,
-    scanned?: false,
-    paid_amount: 0
+  EventRsvp.create!(
+    user:User.first,
+    event: Event.first,
+    status: "accepted"
   )
 
-  UserTicket.create!(
-    user_id:User.first.id,
-    ticket_id: Ticket.second.id,
-    scanned?: false,
-    paid_amount: 0
+  EventRsvp.create!(
+    user:User.first,
+    event: Event.second,
+    status: "accepted"
   )
 
-  UserTicket.create!(
-    user_id:User.first.id,
-    ticket_id: Ticket.third.id,
-    scanned?: false,
-    paid_amount: 0
+  EventRsvp.create!(
+    user:User.first,
+    event: Event.third,
+    status: "accepted"
   )
 
-  UserTicket.create!(
-    user_id:User.last.id,
-    ticket_id: Ticket.fourth.id,
-    scanned?: false,
-    paid_amount: 0
+  EventRsvp.create!(
+    user:User.last,
+    event: Event.first,
+    status: "accepted"
   )
-
-  puts "Seed data has been created successfully!"
