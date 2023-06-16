@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 get "my_communities", to: "communities#my_communities", as: :my_communities
 get "my_events", to: "events#my_events", as: :my_events
 get "events_owned", to: "events#events_owned", as: :events_owned
+get "communities/:id/dashboard", to: "communities#dashboard", as: :dashboard
+
 end
 
 # Rails.application.routes.draw do

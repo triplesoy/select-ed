@@ -1,0 +1,79 @@
+<h1>Community dashboard</h1>
+<hr>
+<% unless @community.is_public? %>
+
+
+  <div class="card">
+    <div class="card-header" id="membersRequestsHeading">
+      <h3 class="mb-0">Members requests</h3>
+    </div>
+
+    <div class="card-body">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">User ID</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Instagram Handle</th>
+            <th scope="col">Request status</th>
+            <th scope="col">Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @community.pending_community_join_requests.each_with_index do |jr, index| %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= jr.user_id %></td>
+              <td><%= jr.user.first_name %></td>
+              <td><%= jr.user.last_name %></td>
+              <td><%= jr.user.instagram_handle %></td>
+              <td><%= jr.status %></td>
+              <td>
+                <%=  link_to "Accept", community_community_join_request_path(@community, jr, status: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success" %>
+                <%= link_to "Reject", community_community_join_request_path(@community, jr, status: "rejected"), data: {turbo_method: :patch}, class: "btn btn-danger" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="communityMembersHeading">
+      <h3 class="mb-0">Community Members</h3>
+    </div>
+
+    
+    <div class="card-body">
+      <table class="table">
+        <thead class="table-success">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">User ID</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Instagram Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @community.community_users.each_with_index do |c, index| %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= c.user_id %></td>
+              <td><%= c.user.first_name %></td>
+              <td><%= c.user.last_name %></td>
+              <td><%= c.user.instagram_handle %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<% end %>
+
+
+  <%= link_to "Go back", community_path(@community) %>

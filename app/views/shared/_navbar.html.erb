@@ -14,6 +14,9 @@
       <ul class="navbar-nav me-auto">
 
         <% if user_signed_in? %>
+          <li>
+            <p class="nav-link"><%= "Logged in as #{current_user.email}" %></p>
+          </li>
 
           <li class="nav-item ">
             <%= link_to "My communities", my_communities_path(current_user), class: "nav-link" %>

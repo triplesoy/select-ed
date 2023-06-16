@@ -1,12 +1,28 @@
-<h2>Community Details</h2>
+
+<% if @community.user == current_user %>
+
+
+<div class="container-fluid">
+  <div class="card text-white bg-dark shadow mb-3" style="width: 100vw;">
+    <div class="card-body text-center">
+      <h5 class="card-title"><strong><span style="color: white;">You are the owner of this community.</span></strong></h5>
+      <%= link_to "Go to the community dashboard", dashboard_path(@community), class: "btn btn-light" %>
+    </div>
+  </div>
+</div>
+
+
 
 <h1><%= @community.title %></h1>
 
-<% if @community.user == current_user %>
-<p><strong><span style="color: red;">You are the owner of this community.</span></strong></p>
+
+
+
+
+
 <% else %>
   <p>
-    <%= @community.is_public? ? 'Public' : 'Private' %>
+    <%= @community.is_public? ? 'This community is public' : 'This community is private' %><br>
     <span class="">
       <b>
         <% status = user_community_status(@community, current_user) %>
@@ -81,77 +97,9 @@
    <li> <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> </li>
   <% end %>
 </ul>
-
 <% end %>
 
 
- <% unless @community.is_public? %>
-
-  <h3>Members requests: </h3>
-
-
-<%# inserting a table to view user requests%>
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">User ID</th>
-      <th scope="col">First name</th>
-      <th scope="col">Last name</th>
-      <th scope="col">Instagram Handle</th>
-      <th scope="col">Request status</th>
-      <th scope="col">Decision</th>
-    </tr>
-  </thead>
-  <tbody>
-      <% @community.pending_community_join_requests.each_with_index do |jr, index| %>
-    <tr>
-      <td><%= index + 1 %></td>
-      <td><%= jr.user_id %></td>
-      <td><%= jr.user.first_name %></td>
-      <td><%= jr.user.last_name %></td>
-      <td><%= jr.user.instagram_handle %></td>
-      <td><%= jr.status %></td>
-      <td>
-        <%=  link_to "Accept", community_community_join_request_path(@community, jr, status: "accepted"), data: {turbo_method: :patch},
-        class: jr.status == "accepted" ? "btn btn-success disabled" : "btn btn-success" %>
-
-        <%= link_to "Reject", community_community_join_request_path(@community, jr, status: "rejected"), data: {turbo_method: :patch}, class: "btn btn-danger"%>
-    <% end %>
-        </tr>
-  </tbody>
-</table>
-
-<% end %>
-
-  <h3>Community members</h3>
-
-<table class="table">
-  <thead class="table-success">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">User ID</th>
-      <th scope="col">First name</th>
-      <th scope="col">Last name</th>
-      <th scope="col">Instagram Handle</th>
-
-    </tr>
-  </thead>
-
-  <tbody>
-  <% @community.community_users.each_with_index do |c, index| %>
-    <tr>
-      <td><%= index + 1 %></td>
-      <td><%= c.user_id %></td>
-      <td><%= c.user.first_name %></td>
-      <td><%= c.user.last_name %></td>
-      <td><%= c.user.email %></td>
-
-
-      <td><%= c.user.instagram_handle %></td>
-
-
-  <% end %>
 
 
 <hr>

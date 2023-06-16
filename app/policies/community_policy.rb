@@ -34,4 +34,8 @@ class CommunityPolicy < ApplicationPolicy
     record.user == user
   end
 
+  def dashboard?
+    record.user == user
+  end
+
 end
