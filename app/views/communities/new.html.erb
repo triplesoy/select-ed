@@ -1,6 +1,3 @@
-<h1>Communities#new</h1>
-
-
 
 <div class="position-relative m-3">
   <div class="col-12 col-md-6 offset-lg-3">
@@ -13,7 +10,7 @@
         <%= f.input :photos, as: :file, input_html: { multiple: true } %>
 
 
-       <%= f.input :country, label: "Country" %>
+        <%= f.input :country, label: "Country" %>
         <%= f.input :city, label: "City" %>
         <%= f.input :is_public, label: "Public?", as: :boolean %>
         <%= f.input :is_visible, label: "Visible?", as: :boolean %>
@@ -24,7 +21,4 @@
 </div>
 
 
- <%= link_to "Back",  communities_path %>
-
-
-<p>Find me in app/views/communities/new.html.erb</p>
+<%= link_to "Back",  communities_path %>
