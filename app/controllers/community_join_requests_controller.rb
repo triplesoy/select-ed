@@ -23,10 +23,10 @@ class CommunityJoinRequestsController < ApplicationController
     if params[:status] == "accepted"
       @join_request.update(status: "accepted")
       CommunityUser.create!(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member", status: "accepted" )
-      redirect_to community_path(@community), notice: 'Member added to community.'
+      redirect_to dashboard_path(@community), notice: 'Member added to community.'
     else
       @join_request.update(status: "rejected")
-      redirect_to community_path(@community), notice: 'Member request has been rejected.'
+      redirect_to dashboard_path(@community), notice: 'Member request has been rejected.'
       community_user.destroy if community_user.present?
     end
   end

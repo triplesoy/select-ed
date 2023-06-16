@@ -1,12 +1,28 @@
-<h2>Community Details</h2>
+
+<% if @community.user == current_user %>
+
+
+<div class="container-fluid">
+  <div class="card text-white bg-dark shadow mb-3" style="width: 100vw;">
+    <div class="card-body text-center">
+      <h5 class="card-title"><strong><span style="color: white;">You are the owner of this community.</span></strong></h5>
+      <%= link_to "Go to the community dashboard", dashboard_path(@community), class: "btn btn-light" %>
+    </div>
+  </div>
+</div>
+
+
 
 <h1><%= @community.title %></h1>
 
-<% if @community.user == current_user %>
-<p><strong><span style="color: red;">You are the owner of this community.</span></strong></p>
+
+
+
+
+
 <% else %>
   <p>
-    <%= @community.is_public? ? 'Public' : 'Private' %>
+    <%= @community.is_public? ? 'This community is public' : 'This community is private' %><br>
     <span class="">
       <b>
         <% status = user_community_status(@community, current_user) %>

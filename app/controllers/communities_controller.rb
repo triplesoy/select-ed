@@ -53,7 +53,7 @@ class CommunitiesController < ApplicationController
     authorize @community
     @events = @community.events
     @join_requests = @community.community_join_requests
-    @community_users = @community.community_users   
+    @community_users = @community.community_users
 
   end
 
