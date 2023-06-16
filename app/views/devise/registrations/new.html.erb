@@ -28,7 +28,7 @@
           input_html: {data: {address_autocomplete_target: "address"}, class: "d-none"},
           wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
           %>
-          <%= f.input :country, class: "countries", placeholder: "Select country" %>
+          <%= f.input :country, label: "Nationality", class: "country", placeholder: "Select country" %>
           <%= f.input :phone_number, label: "Phone Number" %>
           <%= f.input :instagram_handle, label: "Instagram Handle" %>
           <!--<%= f.input :address, label: "Address" %>-->

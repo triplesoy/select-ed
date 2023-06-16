@@ -1,29 +1,19 @@
-<h1>Events#index</h1>
-<p>Find me in app/views/events/index.html.erb</p>
 <div class="container mx-auto mt-4">
   <h1>EVENTS</h1>
   <div class="row">
     <% @events.each do |event| %>
-      <div class="col-lg-3 my-3">
-        <div class="card" style="width: 18rem; height: 22rem;">
-          <div class="card-body position-relative">
+      <div class="col-lg-4 m-2">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1477862096227-3a1bb3b08330?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60" alt="" class="card-img-top">
+          <div class="card-body">
+            <div class="flex-begin">
             <h5 class="card-title"><%= event.title %></h5>
-            <h6 class="card-subtitle mb-2 text-muted"></h6>
-            <p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= event.description %></p>
-            <div class="d-flex justify-content-center" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
-              <%= event.capacity %>
-              <%= event.start_time %> - <%= event.end_time %>
             </div>
-            <%= link_to "Details", community_event_path(@community, event), class: "btn btn-outline-dark position-absolute bottom-0 end-0 m-2" %>
+            <p class="card-text"><%= event.description %></p>
+            <a href="" class="btn btn-outline-success btn-sm">Details</a>
           </div>
         </div>
       </div>
     <% end %>
-
-    <div style="width: 100%; height: 600px;"
-      data-controller="map"
-      data-map-markers-value="<%= @markers.to_json %>"
-      data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
-    </div>
   </div>
 </div>
