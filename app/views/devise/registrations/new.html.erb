@@ -7,6 +7,9 @@
         <%= f.error_notification %>
 
         <div class="form-inputs">
+          <%= f.input :first_name, label: "First Name" %>
+          <%= f.input :last_name, label: "Last Name" %>
+          <%= f.input :birthdate %>
           <%= f.input :email,
                       required: true,
                       autofocus: true,
@@ -18,15 +21,18 @@
           <%= f.input :password_confirmation,
                       required: true,
                       input_html: { autocomplete: "new-password" } %>
-          <%= f.input :nationality, label: "Nationality" %>
+          <%= f.input :address,
+          input_html: {data: {address_autocomplete_target: "address"}, class: "d-none"},
+          wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
+          %>
+          <%= f.input :country, label: "Nationality" %>
           <%= f.input :phone_number, label: "Phone Number" %>
-          <%= f.input :address, label: "Address" %>
-          <%= f.input :city, label: "City" %>
-          <%= f.input :country, label: "Country" %>
-          <%= f.input :state, label: "State" %>
-          <%= f.input :zip_code, label: "Zip Code" %>
-          <%= f.input :occupation, label: "Occupation" %>
           <%= f.input :instagram_handle, label: "Instagram Handle" %>
+          <!--<%= f.input :address, label: "Address" %>-->
+          <!--<%= f.input :city, label: "City" %>
+          <%= f.input :state, label: "State" %>
+          <%= f.input :zip_code, label: "Zip Code" %>-->
+          <%= f.input :occupation, label: "Occupation" %>
         </div>
 
 
