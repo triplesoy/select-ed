@@ -219,3 +219,82 @@ Event.create!(
         capacity: 500,
         user_id:User.last.id,
         community_id:Community.first.id)
+
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 1,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 2,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 3,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 4,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 5,
+          community_id: 1,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 5,
+          community_id: 2,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 5,
+          community_id: 2,
+          status: "pending"
+        )
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 3,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 3,
+          community_id: 6,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 6,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 5,
+          community_id: 6,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 6,
+          community_id: 6,
+          status: "pending"
+        )
+
+        CommunityJoinRequest.create!(
+          user_id: 7,
+          community_id: 6,
+          status: "pending"
+        )
+
+      puts "Seed data has been created successfully!"
