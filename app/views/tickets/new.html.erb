@@ -1,4 +1,4 @@
- <div class="col-lg-6 col-md-6 col-sm-6 ticket-form">
+ <div class="col-lg-12 col-md-6 col-sm-6 ticket-form">
       <div class="sticky-top">
         <div class="bg-white rounded p-3 shadow m-3">
           <h2>Ticket Details</h2>
@@ -19,7 +19,7 @@
                 <%= form.label :quantity, "Vip" %>
                 <div class="d-flex">
                   <%= ticket_fields.text_field :quantity, name: 'ticket_details[vip][quantity]', placeholder: 'Quantity', class: "form-control m-2" %>
-                  <%= ticket_fields.text_field :code, name: 'ticket_details[vip][price]', placeholder: 'redeem code', class: "form-control m-2" %>
+                  <%= ticket_fields.text_field :code, name: 'ticket_details[vip][r_code]', placeholder: 'redeem code', class: "form-control m-2" %>
                 </div>
               </div>
             <% end %>

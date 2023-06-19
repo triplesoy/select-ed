@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'communities#index'
   devise_for :users
 
-  resources :communities, except: :index do
+  resources :communities do
     resources :community_join_requests, only: [:index, :create, :update, :destroy]
     resources :community_users, only: [:index, :create, :update, :destroy]
     resources :events, except: [:index] do
