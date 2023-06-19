@@ -9,9 +9,8 @@
         <div class="form-inputs">
           <%= f.input :first_name, label: "First Name" %>
           <%= f.input :last_name, label: "Last Name" %>
-          <%= f.label :birthdate, "Birthdate" %>
           <div class="birthdate-inputs">
-          <%= f.date_select :birthdate, { end_year: Date.today.year - 100, start_year: Date.today.year, prompt: true }, class: "form-control" %>
+            <%= f.input :birthdate, html5: true, input_html: { min: Date.today - 100.years } %>
           </div>
           <%= f.input :email,
                       required: true,
