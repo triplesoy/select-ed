@@ -1,1 +1,5 @@
 CONFIRMATION LANDING PAGE
+<% if @user_ticket.qrcode.attached? %>
+   <%= cl_image_tag(@user_ticket.qrcode.key, width: 300, alt: "QR code for booking") %>
+<% end %>
+</div>

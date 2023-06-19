@@ -29,11 +29,12 @@ class UserTicketPolicy < ApplicationPolicy
     true
   end
 
-  def confirmation
+  def confirmation?
     true
   end
 
-  def validation
+  def validation?
     true
   end
+
 end
