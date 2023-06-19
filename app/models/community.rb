@@ -9,9 +9,10 @@ class Community < ApplicationRecord
   validates :title, presence: true
   validates :description, presence: true
   validates :category, presence: true
-  # validates :country, presence: true
-  # validates :city, presence: true
+  validates :country, presence: true
+  validates :city, presence: true
   validates :title, uniqueness: true
+  validates :photos, presence: true
 
   has_many :events, dependent: :destroy
   has_many_attached :photos

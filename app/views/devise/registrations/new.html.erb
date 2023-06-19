@@ -13,24 +13,21 @@
             <%= f.input :birthdate, required: true, html5: true, input_html: { min: Date.today - 100.years } %>
           </div>
           <%= f.input :email,
-                      required: true,
                       autofocus: true,
                       input_html: { autocomplete: "email" } %>
           <%= f.input :password,
-                      required: true,
                       hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
                       input_html: { autocomplete: "new-password" } %>
           <%= f.input :password_confirmation,
-                      required: true,
                       input_html: { autocomplete: "new-password" } %>
-          <%= f.input :address, required: true,
+          <%= f.input :address,
           input_html: {data: {address_autocomplete_target: "address"}, class: "d-none"},
           wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
           %>
           <%= f.input :country, required: true, label: "Nationality", class: "country", placeholder: "Select country" %>
           <%= f.input :phone_number, label: "Phone Number" %>
           <%= f.input :instagram_handle, required: true, label: "Instagram Handle" %>
-          <%= f.input :occupation, required: true, label: "Occupation" %>
+          <%= f.input :occupation, required: true, required: true, label: "Occupation" %>
         </div>
         <div class="form-actions">
           <%= f.button :submit, "Sign up", class: "btn btn-outline-dark" %>
