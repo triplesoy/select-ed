@@ -1,1 +1,9 @@
-CONFIRMATION LANDING PAGE
+<h1>Thank you for purchasing a ticket for <%#= @event.title %></h1>
+<h2><%=@event.description  %></h2>
+<h3><%= @event.start_time %> to <%= @event.end_time %></h3>
+
+<div>
+<% if @user_ticket.qrcode.attached? %>
+   <%= cl_image_tag(@user_ticket.qrcode.key, width: 300, alt: "QR code for booking") %>
+<% end %>
+</div>

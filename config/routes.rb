@@ -23,6 +23,6 @@ end
   get "my_events", to: "events#my_events", as: :my_events
   get "events_owned", to: "events#events_owned", as: :events_owned
   get "communities/:id/dashboard", to: "communities#dashboard", as: :dashboard
-  get "tickets/:id/user:ticket/confirmation", to: "user_ticket#confirmation", as: :confirmation_page
-  get "tickets/:id/user:ticket/validation", to: "user_ticket#validation", as: :validation_page
+  get "user_tickets/:id/confirmation", to: "user_tickets#confirmation", as: :confirmation_page
+  get "user_tickets/:id/validation", to: "user_tickets#validation", as: :validation_page
 end

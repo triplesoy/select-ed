@@ -1,6 +1,6 @@
 class UserTicketsController < ApplicationController
   before_action :set_ticket, only: [:edit, :update, :show, :new, :create]
-  before_action :set_user_ticket, only: [:edit, :update, :show, :destroy]
+  before_action :set_user_ticket, only: [:edit, :update, :show, :destroy, :confirmation, :validation]
 
   def index
   end
@@ -22,7 +22,7 @@ class UserTicketsController < ApplicationController
 
     if @user_ticket.save!
     ##QR CODE
-        link = ticket_user_ticket_url(ticket_id: @ticket.id, id: @user_ticket.user.id)
+        link = validation_page_url(ticket_id: @ticket.id, id: @user_ticket.user.id)
         qrcode = RQRCode::QRCode.new(link)
         png = qrcode.as_png(
           bit_depth: 1,
@@ -101,9 +101,11 @@ class UserTicketsController < ApplicationController
   end
 
   def confirmation
+    authorize @user_ticket
   end
 
   def validation
+    authorize @user_ticket
   end
 
   private
