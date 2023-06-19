@@ -108,7 +108,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
 
   create_table "user_tickets", force: :cascade do |t|
     t.integer "paid_amount"
-    t.string "scanned"
+    t.string "scanned", default: "pending"
     t.bigint "user_id", null: false
     t.bigint "ticket_id", null: false
     t.datetime "created_at", null: false
