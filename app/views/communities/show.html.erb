@@ -52,8 +52,7 @@
 <hr>
 <h2>Events:</h2>
 
-<% if (current_user.is_member_of?(@community) || current_user.is_moderator_of?(@community) || @community.user) %>
-
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || current_user.is_member_of?(@community) %>
 <div class="row">
   <% @events.each do |event| %>
     <div class="col-lg-3 my-3">
@@ -76,9 +75,7 @@
 You are not allowed to see the events of this community.
 <% end %>
 
-
-
-<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) %>
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community))%>
 <hr>
 <h3>Community settings</h3>
 <ul>
@@ -92,6 +89,7 @@ You are not allowed to see the events of this community.
     <li><%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></li>
   <% end %>
 </ul>
-<%end%>
+
 <hr>
+<% end %>
 <%= link_to "Back", communities_path %>
