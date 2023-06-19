@@ -79,7 +79,7 @@ class UserTicketsController < ApplicationController
 
       @user_ticket.save!
 
-      redirect_to confirmation_path(@user_ticket), alert: "You have successfully purchased a ticket!"
+      redirect_to confirmation_page_path(@user_ticket), alert: "You have successfully purchased a ticket!"
 
     else
       render :new, status: :unprocessable_entity, alert: "Failed to buy the tickets."
