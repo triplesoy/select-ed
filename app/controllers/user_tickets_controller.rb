@@ -101,6 +101,9 @@ class UserTicketsController < ApplicationController
   end
 
   def confirmation
+   @ticket = @user_ticket.ticket
+   @event = @ticket.event
+    @user_ticket
     authorize @user_ticket
   end
 
