@@ -6,7 +6,7 @@ class CommunityJoinRequestPolicy < ApplicationPolicy
 
   def update?
     # Only admins of the community or the user who created the join request can update it
-    record.community.user == user
+    record.community.user == user || current_user.admin
   end
 
   def destroy?
