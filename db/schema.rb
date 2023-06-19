@@ -98,7 +98,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
   create_table "tickets", force: :cascade do |t|
     t.string "model"
     t.integer "price"
-    t.integer "capacity"
+
+    t.integer "quantity"
+    t.string "r_code"
+
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
