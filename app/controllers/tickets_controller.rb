@@ -15,6 +15,7 @@ class TicketsController < ApplicationController
   end
 
   def create
+    @community = Community.find(params[:community_id])
     @free_quantity = params["ticket_details"]["free"]["quantity"]
     @regular_quantity = params["ticket_details"]["regular"]["quantity"]
     @regular_price = params["ticket_details"]["regular"]["price"]
@@ -28,12 +29,14 @@ class TicketsController < ApplicationController
     @vip_ticket = Ticket.new(event: @event, model: "vip", quantity: @vip_quantity, price: 0, r_code: @vip_r_code)
 
     if @free_ticket.save && @regular_ticket.save && @vip_ticket.save
-      redirect_to community_path, alert: "You have successfully joined the event!"
+      redirect_to community_path(@community), alert: "You have successfully created the event!"
     else
-      redirect_to community_path, alert: "Failed to join the event."
+      render :new, status: :unprocessable_entity, alert: "Failed to create the tickets."
     end
 
-    authorize @ticket
+    authorize @free_ticket
+    authorize @regular_ticket
+    authorize @vip_ticket
   end
 
   def edit

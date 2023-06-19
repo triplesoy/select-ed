@@ -5,6 +5,10 @@ class UserTicketPolicy < ApplicationPolicy
     end
   end
 
+  def show?
+    true
+  end
+
   def new?
     true
   end
@@ -25,4 +29,11 @@ class UserTicketPolicy < ApplicationPolicy
     true
   end
 
+  def confirmation
+    true
+  end
+
+  def validation
+    true
+  end
 end
