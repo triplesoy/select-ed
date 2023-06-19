@@ -37,9 +37,12 @@ class User < ApplicationRecord
     self.community_users.any? { |cu| cu.community == community && cu.role == "moderator" }
   end
 
+  def is_admin_of?(community)
+    self.community_users.any? { |cu| cu.community == community && cu.role == "admin" }
+  end
+
   def role_of_this(community)
     return "owner" if community.user == self
-
-    self.community_users.find_by(community: community).role
+    self.community_users.find_by(community: community).role if self.community_users.find_by(community: community)
   end
 end

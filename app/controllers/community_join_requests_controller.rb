@@ -7,11 +7,14 @@ class CommunityJoinRequestsController < ApplicationController
     existing_request = CommunityJoinRequest.find_by(user_id: current_user.id, community_id: @community.id)
 
     unless existing_request.present?
-      @join_request = CommunityJoinRequest.new(user_id: current_user.id, community_id: @community.id, status: "pending")
-      if @join_request.save!
-        redirect_to community_path(@community), notice: 'Your request has been sent.'
+      if @community.is_public?
+        @community.community_users.create!(user_id: current_user.id, community_id: @community.id, role: "member", status: "accepted" )
+       redirect_to community_path(@community), notice: 'You are now a member of this community.'
       else
-        redirect_to community_path(@community), notice: 'Your request to join this community has failed.'
+        @join_request = CommunityJoinRequest.new(user_id: current_user.id, community_id: @community.id, status: "pending")
+          if @join_request.save!
+           redirect_to community_path(@community), notice: 'Your request has been sent.'
+          end
       end
     end
   end
@@ -23,7 +26,7 @@ class CommunityJoinRequestsController < ApplicationController
     if params[:status] == "accepted"
       @join_request.update(status: "accepted")
       CommunityUser.create!(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member", status: "accepted" )
-      redirect_to dashboard_path(@community), notice: 'Member added to community.'
+      redirect_to dashboard_path(@community), notice:'Member added to community.'
     else
       @join_request.destroy
       redirect_to dashboard_path(@community), notice: 'Member request has been rejected.'
