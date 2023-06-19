@@ -15,6 +15,9 @@ gem "split_datetime"
 
 gem "rails_admin", "3.0"
 
+
+gem 'htmlbeautifier'
+
 gem "activestorage"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"

@@ -1,24 +1,30 @@
 <h1>Communities#edit</h1>
 <p>Find me in app/views/communities/edit.html.erb</p>
 
-<%= simple_form_for(@community) do |f| %>
-  <%= f.error_notification %>
+<div class="position-relative m-3">
+  <div class="col-12 col-md-6 offset-lg-3">
+    <div class="bg-white rounded p-3 shadow">
+      <%= simple_form_for(@community) do |f| %>
+        <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :title, label: "Title" %>
-    <%= f.input :description, label: "Description" %>
-    <%= f.input :category, label: "Category" %>
-    <%= f.input :photos, as: :file, input_html: { multiple: true } %>
-    <%= f.input :country, label: "Country" %>
-    <%= f.input :city, label: "City" %>
-    <%= f.input :is_public, label: "Public?", as: :boolean %>
-    <%= f.input :is_visible, label: "Visible?", as: :boolean %>
+        <div class="form-inputs">
+          <%= f.input :title, label: "Title" %>
+          <%= f.input :description, label: "Description" %>
+          <%= f.input :category, label: "Category" %>
+          <%= f.input :photos, as: :file, input_html: { multiple: true } %>
+          <%= f.input :country, label: "Country" %>
+          <%= f.input :city, label: "City" %>
+          <%= f.input :is_public, label: "Public?", as: :boolean %>
+          <%= f.input :is_visible, label: "Visible?", as: :boolean %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.button :submit %>
+
+          <% end %>
+        </div>
+
+        <%= link_to "Back",  community_path(@community) %>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
-
-    <% end %>
-  </div>
-
-<%= link_to "Back",  community_path(@community) %>
+</div>
