@@ -14,7 +14,6 @@ User.create(
   password_confirmation: "password",
   admin: true,
   birthdate: DateTime.new(1970, 9, 15)
-
 )
 
 User.create(
@@ -210,118 +209,92 @@ Event.create!(
   community_id: Community.first.id
 )
 
-Event.create!(
-  title: "Tech Conference 2023",
-  start_time: DateTime.new(2023, 9, 15, 9, 0),
-  end_time: DateTime.new(2023, 9, 17, 18, 0),
-  address: "Av. Álvaro Obregón 213, 06700 Ciudad de México, Ciudad de México",
-  description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
-  price: 99.99,
-  capacity: 500,
-  user_id: User.last.id,
-  community_id: Community.first.id
-)
+      Event.create!(
+        title: "Tech Conference 2023",
+        start_time: DateTime.new(2023, 9, 15, 9, 0),
+        end_time: DateTime.new(2023, 9, 17, 18, 0),
+        address: "Av. Álvaro Obregón 213, 06700 Ciudad de México, Ciudad de México",
+        description: "Join us for the biggest tech conference of the year, featuring keynote speakers and tech demos.",
+        price: 99.99,
+        capacity: 500,
+        user_id:User.last.id,
+        community_id:Community.first.id)
 
-EventRsvp.create!(
-  user_id: User.first.id,
-  event_id: Event.first.id,
-  status: "accepted"
-)
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 1,
+          status: "pending"
+        )
 
-EventRsvp.create!(
-  user_id: User.first.id,
-  event_id: Event.second.id,
-  status: "accepted"
-)
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 2,
+          status: "pending"
+        )
 
-EventRsvp.create!(
-  user_id: User.first.id,
-  event_id: Event.third.id,
-  status: "accepted"
-)
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 3,
+          status: "pending"
+        )
 
-EventRsvp.create!(
-  user_id: User.last.id,
-  event_id: Event.first.id,
-  status: "accepted"
-)
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 4,
+          status: "pending"
+        )
 
+        CommunityJoinRequest.create!(
+          user_id: 5,
+          community_id: 1,
+          status: "pending"
+        )
 
-  CommunityJoinRequest.create!(
-    user_id: 4,
-    community_id: 1,
-    status: "pending"
-  )
+        CommunityJoinRequest.create!(
+          user_id: 5,
+          community_id: 2,
+          status: "pending"
+        )
 
-  CommunityJoinRequest.create!(
-    user_id: 4,
-    community_id: 2,
-    status: "pending"
-  )
+        CommunityJoinRequest.create!(
+          user_id: 5,
+          community_id: 2,
+          status: "pending"
+        )
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 3,
+          status: "pending"
+        )
 
-  CommunityJoinRequest.create!(
-    user_id: 4,
-    community_id: 3,
-    status: "pending"
-  )
+        CommunityJoinRequest.create!(
+          user_id: 3,
+          community_id: 6,
+          status: "pending"
+        )
 
-  CommunityJoinRequest.create!(
-    user_id: 4,
-    community_id: 4,
-    status: "pending"
-  )
+        CommunityJoinRequest.create!(
+          user_id: 4,
+          community_id: 6,
+          status: "pending"
+        )
 
-  CommunityJoinRequest.create!(
-    user_id: 5,
-    community_id: 1,
-    status: "pending"
-  )
+        CommunityJoinRequest.create!(
+          user_id: 5,
+          community_id: 6,
+          status: "pending"
+        )
 
-  CommunityJoinRequest.create!(
-    user_id: 5,
-    community_id: 2,
-    status: "pending"
-  )
+        CommunityJoinRequest.create!(
+          user_id: 6,
+          community_id: 6,
+          status: "pending"
+        )
 
-  CommunityJoinRequest.create!(
-    user_id: 5,
-    community_id: 2,
-    status: "pending"
-  )
-  CommunityJoinRequest.create!(
-    user_id: 4,
-    community_id: 3,
-    status: "pending"
-  )
+        CommunityJoinRequest.create!(
+          user_id: 7,
+          community_id: 6,
+          status: "pending"
+        )
 
-  CommunityJoinRequest.create!(
-    user_id: 3,
-    community_id: 6,
-    status: "pending"
-  )
-
-  CommunityJoinRequest.create!(
-    user_id: 4,
-    community_id: 6,
-    status: "pending"
-  )
-
-  CommunityJoinRequest.create!(
-    user_id: 5,
-    community_id: 6,
-    status: "pending"
-  )
-
-  CommunityJoinRequest.create!(
-    user_id: 6,
-    community_id: 6,
-    status: "pending"
-  )
-
-  CommunityJoinRequest.create!(
-    user_id: 7,
-    community_id: 6,
-    status: "pending"
-  )
-
-puts "Seed data has been created successfully!"
+      puts "Seed data has been created successfully!"

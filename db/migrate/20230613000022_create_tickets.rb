@@ -1,9 +1,10 @@
 class CreateTickets < ActiveRecord::Migration[7.0]
   def change
     create_table :tickets do |t|
-      t.string :type
+      t.string :model
       t.integer :price
-      t.references :user, null: false, foreign_key: true
+      t.integer :quantity
+      t.string :r_code
       t.references :event, null: false, foreign_key: true
 
       t.timestamps

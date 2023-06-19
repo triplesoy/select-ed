@@ -1,42 +1,23 @@
 Rails.application.routes.draw do
-  mount RailsAdmin::Engine => '//admin', as: 'rails_admin'
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: 'communities#index'
   devise_for :users
 
   resources :communities do
     resources :community_join_requests, only: [:index, :create, :update, :destroy]
     resources :community_users, only: [:index, :create, :update, :destroy]
-    resources :events do
-      resources :events_rsvp, only: [:index, :new, :destroy]
-      post 'events_rsvp', to: 'events_rsvp#create', as: 'create_events_rsvp'
-      resources :tickets, only: [:index, :show, :create]
+    resources :events, except: [:index] do
+      resources :user_tickets, only: [:index, :create, :new, :destroy]
+      resources :tickets, only: [:index, :show, :create, :new, :destroy]
     end
   end
+  patch "make-moderator", to: "community_users#make_moderator", as: :make_moderator
+  patch "remove-moderator", to: "community_users#remove_moderator", as: :remove_moderator
 
-get "my_communities", to: "communities#my_communities", as: :my_communities
-get "my_events", to: "events#my_events", as: :my_events
-get "events_owned", to: "events#events_owned", as: :events_owned
-get "communities/:id/dashboard", to: "communities#dashboard", as: :dashboard
+  # post "create/user_ticket", to: "Usertickets#create", as: :create_user_ticket
+  get "my_communities", to: "communities#my_communities", as: :my_communities
+  get "my_events", to: "events#my_events", as: :my_events
+  get "events_owned", to: "events#events_owned", as: :events_owned
+  get "communities/:id/dashboard", to: "communities#dashboard", as: :dashboard
 
 end
-
-# Rails.application.routes.draw do
-#   root to: 'communities#index'
-#   devise_for :users
-
-#   resources :communities do
-#     resources :community_join_requests, only: [:index, :update, :destroy]
-#     resources :community_users, only: [:index, :create, :update, :destroy]
-#     resources :events, except: [:edit, :update, :destroy]
-#   end
-
-#   resources :events, only: :destroy do
-#     resources :events_rsvp, only: [:index, :new, :destroy]
-
-#     resources :tickets, only: [:index, :show, :create]
-#   end
-# get "my_communities", to: "communities#my_communities", as: :my_communities
-# get "my_events", to: "events#my_events", as: :my_events
-# get "events_owned", to: "events#events_owned", as: :events_owned
-
-# end

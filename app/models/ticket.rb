@@ -1,4 +1,6 @@
 class Ticket < ApplicationRecord
-  belongs_to :users
-  belongs_to :events
+  validates :model, inclusion: { in: %w(free regular vip),
+    message: "%{value} is not a valid ticket type" }
+  belongs_to :event
+  has_many :user_tickets
 end
