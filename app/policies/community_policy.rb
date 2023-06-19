@@ -35,7 +35,7 @@ class CommunityPolicy < ApplicationPolicy
   end
 
   def dashboard?
-    record.user == user
+    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
 end

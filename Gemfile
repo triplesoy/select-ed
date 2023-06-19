@@ -16,6 +16,7 @@ gem "split_datetime"
 gem "rails_admin", "3.0"
 
 
+gem 'htmlbeautifier'
 
 gem "activestorage"
 
