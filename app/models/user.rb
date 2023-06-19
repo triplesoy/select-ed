@@ -13,6 +13,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_one_attached :avatar
 
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :birthdate, presence: true
+  validates :address, presence: true
+  validates :country, presence: true
+  validates :instagram_handle, presence: true
+  validates :occupation, presence: true
+
   def has_ticket_with_event?(event)
     self.user_tickets.any? { |ticket| ticket.event == event }
   end
