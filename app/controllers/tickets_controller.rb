@@ -31,7 +31,7 @@ class TicketsController < ApplicationController
     if @free_ticket.save && @regular_ticket.save && @vip_ticket.save
       redirect_to community_path(@community), alert: "You have successfully created the event!"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity, alert: "Failed to create the tickets."
     end
 
     authorize @free_ticket

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
 resources :tickets, only: [:edit, :update] do
-  resources :user_tickets, only: [:index, :create, :destroy]
+  resources :user_tickets, only: [:index, :show, :new, :create, :destroy]
 end
 
   patch "make-moderator", to: "community_users#make_moderator", as: :make_moderator
@@ -23,5 +23,6 @@ end
   get "my_events", to: "events#my_events", as: :my_events
   get "events_owned", to: "events#events_owned", as: :events_owned
   get "communities/:id/dashboard", to: "communities#dashboard", as: :dashboard
-
+  get "tickets/:id/user:ticket/confirmation", to: "user_ticket#confirmation", as: :confirmation_page
+  get "tickets/:id/user:ticket/validation", to: "user_ticket#validation", as: :validation_page
 end

@@ -14,6 +14,7 @@ class EventsController < ApplicationController
 
   def show
     @events = Event.where(id: params[:id])
+    @ticket = Ticket.where(id: params[:id])
     @markers = @events.geocoded.map do |event|
       {
         lat: event.latitude,
