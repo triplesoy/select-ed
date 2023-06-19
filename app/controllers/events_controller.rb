@@ -73,7 +73,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title, :start_date, :end_date, :address, :description, :price, :capacity)
+    params.require(:event).permit(:title, :start_date, :end_date, :address, :description, :price, :capacity, photos: [])
   end
 
   def set_community
