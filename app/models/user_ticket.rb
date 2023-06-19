@@ -1,5 +1,5 @@
 class UserTicket < ApplicationRecord
-  validates :model, inclusion: { in: %w(accepted pending rejected),
+  validates :scanned, inclusion: { in: %w(accepted pending rejected),
     message: "%{value} is not a valid status" }
   belongs_to :user
   belongs_to :ticket

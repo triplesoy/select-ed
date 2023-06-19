@@ -1,9 +1,9 @@
-<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || current_user.admin %>
-  <div class="container-fluid ">
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+  <div class="container-fluid">
     <div class="card text-white bg-dark shadow mb-1" style="width: 100vw;">
       <div class="card-body text-center">
         <% if current_user.admin %>
-          <h5 class="card-title"><strong><span style="color: white;">As a website admin, you can access the dashboard of this community. Do not modify anything without consent of the community admin</span></strong></h5>
+          <h5 class="card-title"><strong><span style="color: white;">As a website admin, you can access the dashboard of this community. Do not modify anything without the consent of the community admin</span></strong></h5>
         <% else %>
           <h5 class="card-title"><strong><span style="color: white;">You are the <%= current_user.role_of_this(@community) %> of this community.</span></strong></h5>
         <% end %>
@@ -46,11 +46,33 @@
 </ul>
 <hr>
 <h2>Events:</h2>
-<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || current_user.is_member_of?(@community) %>
+<% unless @community.is_public? %>
+  <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) %>
+    <div class="row">
+      <% @events.each do |event| %>
+        <div class="col-lg-3 my-3">
+          <div class="card" style="width: 18rem; height: 22rem;">
+            <div class="card-body position-relative">
+              <h5 class="card-title"><%= event.title %></h5>
+              <h6 class="card-subtitle mb-2 text-muted"></h6>
+              <p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= event.description %></p>
+              <div class="d-flex justify-content-center" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
+                <%= event.capacity %>
+              </div>
+              <%= link_to "Details", community_event_path(@community, event), class: "btn btn-outline-dark position-absolute bottom-0 end-0 m-2" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    You are not allowed to see the events of this community.
+  <% end %>
+<% else %>
   <div class="row">
     <% @events.each do |event| %>
       <div class="col-lg-3 my-3">
-        <div class="card" style="width: 1u8rem; height: 22rem;">
+        <div class="card" style="width: 18rem; height: 22rem;">
           <div class="card-body position-relative">
             <h5 class="card-title"><%= event.title %></h5>
             <h6 class="card-subtitle mb-2 text-muted"></h6>
@@ -64,10 +86,8 @@
       </div>
     <% end %>
   </div>
-<% else %>
-  You are not allowed to see the events of this community.
 <% end %>
-<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community))%>
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) %>
   <hr>
   <h3>Community settings</h3>
   <ul>
