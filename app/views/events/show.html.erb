@@ -59,20 +59,17 @@
         <div class="col-12 col-lg-6 my-3">
           <div class="banner">
             <div class="card my-3">
-              <div><%= link_to "FREE TICKET", community_event_user_tickets_path(community: @community, event_id: @event.id, user: current_user),
-                  data: { turbo_method: :post} %></div>
-                  <button type="button" class="ticket-btn">Buy</button>
-              </div>
-              <div class="card my-3 d-flex">
-                    <div><%= link_to "REGULAR TICKET", community_event_user_tickets_path(community: @community, event_id: @event.id, user: current_user),
-                      data: { turbo_method: :post} %></div>
-                      <button type="button" class="ticket-btn">Buy</button>
-              </div>
-              <div class="card my-3">
-                    <div><%= link_to "VIP", community_event_user_tickets_path(community: @community, event_id: @event.id, user: current_user),
-                    data: { turbo_method: :post} %></div>
-                  <button type="button" class="ticket-btn">Buy</button>
-              </div>
+              <% @event.tickets.each do |t| %>
+                <div>
+                  <h2><%= t.model %></h2>
+                  <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post } do %>
+                    <button class="ticket-btn" type="button">
+                      Buy
+                    </button>
+                  <% end %>
+                  <p>tickets available: <%= t.quantity %></p>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
@@ -84,15 +81,6 @@
     </div>
   </div>
 </div>
-
-
-
-<%# <% event.tickets.each |ticket| do %>
-<div><%#= link_to ticket.model, community_event_user_tickets_path(ticket: ticket, user: current_user),
-    data: { turbo_method: :post} %></div>
-    <%# <h4> Available quantity : <%#= ticket.quantity </h4>%>
-    <%# <button type="button" class="ticket-btn">Buy</button> %>
-<%# end %>
 
     <div><%= link_to "Go back", community_path(@community) %></div>
     </div>

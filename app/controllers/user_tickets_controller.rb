@@ -16,6 +16,7 @@ class UserTicketsController < ApplicationController
   def create
     @user_ticket = UserTicket.new(ticket: @ticket)
     @user_ticket.user = current_user
+    @ticket.update(quantity: @ticket.quantity - 1)
     if @user_ticket.save
       redirect_to "/events/show", alert: "You have successfully purchased a ticket!"
     else
@@ -33,22 +34,14 @@ class UserTicketsController < ApplicationController
 
   def destroy
     @user_ticket.destroy
-    redirect_to community_path(@community), status: :see_other
+    redirect_to community_path(@ticket.event.community), status: :see_other
     authorize @user_ticket
   end
 
   private
 
-  def user_ticket_params
-    params.require(:event).permit(:user_id, :event_id)
-  end
-
   def set_ticket
     @ticket = Ticket.find(params[:ticket_id])
-  end
-
-  def set_user_ticket
-    @event = UserTicket.find(params[:id])
   end
 
 end
