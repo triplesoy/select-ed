@@ -34,7 +34,7 @@
               <td><%= jr.user.nationality %></td>
               <td><%= jr.user.occupation %></td>
               <td><%= link_to jr.user.instagram_handle, "http://instagram.com/#{jr.user.instagram_handle}/",  target: "_blank"  %>
-                <td><%= jr.status %></td>
+<td><%= "Pending since #{time_ago_in_words(jr.created_at)} ago" %></td>
                 <td>
                   <%=  link_to "Accept", community_community_join_request_path(@community, jr, status: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success" %>
                   <%= link_to "Reject", community_community_join_request_path(@community, jr, status: "rejected"), data: {turbo_method: :delete, turbo_confirm: "Are you sure you want to reject that person ?"}, class: "btn btn-danger" %>
