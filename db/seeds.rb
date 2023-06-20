@@ -86,7 +86,7 @@ Community.create!(
   description: "A community for technology enthusiasts to discuss the latest trends and innovations.",
   country: "United States",
   city: "San Francisco",
-  is_public: true,
+  public: true,
   is_visible: true,
   category: "Technology",
   user_id: 1
@@ -97,7 +97,7 @@ Community.create!(
   description: "Join us if you're passionate about fitness and living a healthy lifestyle.",
   country: "Canada",
   city: "Toronto",
-  is_public: true,
+  public: true,
   is_visible: true,
   category: "Sports",
   user_id: 1
@@ -108,7 +108,7 @@ Community.create!(
   description: "A community for book lovers to share their favorite reads and engage in literary discussions.",
   country: "United Kingdom",
   city: "London",
-  is_public: true,
+  public: true,
   is_visible: true,
   category: "Literature",
   user_id: 2
@@ -119,7 +119,7 @@ Community.create!(
   description: "A community for artists of all kinds to showcase their work and collaborate with fellow creatives.",
   country: "Australia",
   city: "Sydney",
-  is_public: false,
+  public: false,
   is_visible: true,
   category: "Art",
   user_id: 3
@@ -130,7 +130,7 @@ Community.create!(
   description: "Join us on culinary journeys as we explore different cuisines and share delicious recipes.",
   country: "United States",
   city: "New York",
-  is_public: false,
+  public: false,
   is_visible: true,
   category: "Food",
   user_id: 2
@@ -141,7 +141,7 @@ Community.create!(
   description: "Party all night long",
   country: "Spain",
   city: "Madrid",
-  is_public: false,
+  public: false,
   is_visible: true,
   category: "Party",
   user_id: 2

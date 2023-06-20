@@ -67,7 +67,7 @@ class CommunitiesController < ApplicationController
   private
 
   def community_params
-    params.require(:community).permit(:title, :description, :category, :country, :city, :is_public, :is_visible, :video, photos: []).merge(is_public: params[:community][:is_public].present?, is_visible: params[:community][:is_visible].present?)
+    params.require(:community).permit(:title, :description, :category, :country, :city, :public, :is_visible, :video, photos: []).merge(public: params[:community][:public].present?, is_visible: params[:community][:is_visible].present?)
   end
 
   def set_community

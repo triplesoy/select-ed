@@ -18,7 +18,7 @@ class EventsRsvpController < ApplicationController
     @community = Community.find(params[:community_id])
     @event = Event.find(params[:event_id])
     @event_rsvp = EventRsvp.new(event: @event)
-    @event_rsvp.status = @community.is_public? ? "accepted" : "pending"
+    @event_rsvp.status = @community.public? ? "accepted" : "pending"
     @event_rsvp.user = current_user
     if @event_rsvp.save
       redirect_to "/events/show", alert: "You have successfully joined the event!"

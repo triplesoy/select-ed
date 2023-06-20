@@ -16,20 +16,17 @@
         <% end %>
       </div>
     </div>
-
-<%= link_to "Back", community_path(@community), class: "btn btn-secondary mt-3" %>
-
-<h3>footnote</h3>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var startDateInput = document.getElementById('start-date');
-    var endDateInput = document.getElementById('end-date');
-    startDateInput.addEventListener("input", function() {
-      endDateInput.min = startDateInput.value;
-      if (endDateInput.value < startDateInput.value) {
-        endDateInput.value = startDateInput.value;
-      }
-    });
-  });
-</script>
+    <%= link_to "Back", community_path(@community), class: "btn btn-secondary mt-3" %>
+    <h3>footnote</h3>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var startDateInput = document.getElementById('start-date');
+        var endDateInput = document.getElementById('end-date');
+        startDateInput.addEventListener("input", function() {
+          endDateInput.min = startDateInput.value;
+          if (endDateInput.value < startDateInput.value) {
+            endDateInput.value = startDateInput.value;
+          }
+        });
+      });
+    </script>

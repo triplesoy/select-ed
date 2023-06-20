@@ -12,7 +12,7 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-center mb-2"><%= link_to community.title, community_path(community) %></li>
               Community type:
-              <% if community.is_public? %>
+              <% if community.public? %>
                 Public<span class="btn btn-outline-dark"><b>Join now!</b></span>
               <% else %>
                 Private <span class="btn btn-outline-dark"><b>Request to join</b></span>

@@ -13,7 +13,6 @@ class Community < ApplicationRecord
   validates :city, presence: true, on: :create
   validates :title, uniqueness: true, on: :create
   # validates :photos, presence: true, on: :create
-  validates :is_public, presence: true, on: :create
   validates :is_visible, presence: true, on: :create
 
   has_many :events, dependent: :destroy

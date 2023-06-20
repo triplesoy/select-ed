@@ -17,9 +17,9 @@
           <%= "Community Settings" %>
           <hr>
           <div>
-            <%# <%= f.input :is_public, label: "Public?", as: :boolean %>
+            <%# <%= f.input :public, label: "Public?", as: :boolean %>
             <%# <%= f.input :is_visible, label: "Visible?", as: :boolean %>
-            <%= f.input :is_public, label: "Publicity", as: :radio_buttons, collection: [['Public(Everyone can join)', true], ['Private(Request required)', false]] %>
+            <%= f.input :public, label: "Publicity", as: :radio_buttons, collection: [['Public(Everyone can join)', true], ['Private(Request required)', false]] %>
             <%= f.input :is_visible, label: "Visibility", as: :radio_buttons, collection: [['Visible(Everyone can see)', true], ['Hidden(Only members can see)', false]] %>
           </div>
             <%= f.submit "Create Community", class: "btn btn-outline-dark" %>

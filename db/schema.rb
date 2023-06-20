@@ -47,7 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
     t.text "description"
     t.string "country"
     t.string "city"
-    t.boolean "is_public"
+    t.boolean "public", default: false
     t.boolean "is_visible"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
