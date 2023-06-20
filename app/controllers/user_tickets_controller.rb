@@ -8,6 +8,13 @@ class UserTicketsController < ApplicationController
   def show
     @event = @ticket.event
     authorize @user_ticket
+
+    @markers = [
+      {
+        lat: @event.latitude,
+        lng: @event.longitude
+      }
+    ]
   end
 
   def new
@@ -20,6 +27,7 @@ class UserTicketsController < ApplicationController
     @user_ticket.user = current_user
     @ticket.update(quantity: @ticket.quantity - 1)
     @event = @ticket.event
+    @community = @event.community
 
     if @user_ticket.save!
     ##QR CODE
@@ -35,48 +43,62 @@ class UserTicketsController < ApplicationController
           module_px_size: 6,
           resize_exactly_to: false,
           resize_gte_to: false,
-          size: 120
+          size: 480
         )
         ##Using MiniMagick to resize the QR code and place it on the venue image
 
-        qr_image = MiniMagick::Image.read(png.to_s)
-        #here i pass the main image of the venue on the QR code
-        background = MiniMagick::Image.open(@event.photos.first)
+      qr_image = MiniMagick::Image.read(png.to_s)
+      background = MiniMagick::Image.open(@event.photos.first)
 
-        # resize the QR code to be 90% of the background image's smallest dimension
-        smaller_dimension = [background.width, background.height].min
-        qr_size = (smaller_dimension * 0.9).round
+      # Resize the background image to a specific size
+      bg_width = 1200
+      bg_height = 1200
+      background.resize "#{bg_width}x#{bg_height}^"
+      background.gravity "center"
+      background.extent "#{bg_width}x#{bg_height}"
 
-        # resize the QR code
-        qr_image.resize "#{qr_size}x#{qr_size}"
+      # Resize the QR code to a specific size
+      qr_code_size = 480
+      qr_image.resize "#{qr_code_size}x#{qr_code_size}"
 
-        # calculate the position where the QR code should be placed in order to be centered
-        qr_position_x = ((background.width - qr_image.width) / 2).round
-        qr_position_y = ((background.height - qr_image.height) / 2).round
+      # Calculate the position where the QR code should be placed to be centered
+      qr_position_x = ((background.width - qr_image.width) / 2).round
+      qr_position_y = ((background.height - qr_image.height) / 2).round
 
-        result = background.composite(qr_image) do |c|
-          c.compose "Over"    # OverCompositeOp
-          c.geometry "+#{qr_position_x}+#{qr_position_y}" # position of QR code on the background image
-        end
+      result = background.composite(qr_image) do |c|
+        c.compose "Over"
+        c.geometry "+#{qr_position_x}+#{qr_position_y}"
+      end
 
-        # Draw user's name at the top
-        result.combine_options do |c|
-          c.gravity 'North'
-          c.pointsize '40'
-          c.draw "text 0,60 '#{current_user.first_name} #{current_user.last_name}'"
-          c.fill 'black'
-        end
+      # Draw community's name at the top
+      result.combine_options do |c|
+        c.gravity 'North'
+        c.pointsize '80'
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
+        c.draw "text 1,80 '#{@community.title}'"
+        c.fill 'white'
+      end
 
-        # Draw dates at the bottom
-        result.combine_options do |c|
-          c.gravity 'South'
-          c.pointsize '40'
-          c.draw "text 0,40 'From: #{@event.start_time} to #{@event.end_time}'"
-          c.fill 'black'
-        end
 
-        result.write("composite_image.png") # replace with actual path where you want to store it
-        @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
+      result.combine_options do |c|
+        c.gravity 'North'
+        c.pointsize '60'
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
+        c.draw "text 1,160 '#{@event.title}'"
+        c.fill 'white'
+      end
+
+      # Draw dates at the bottom
+      result.combine_options do |c|
+        c.gravity 'South'
+        c.pointsize '70'
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
+        c.draw "text 1,90 '#{current_user.full_name}'"
+        c.fill 'white'
+      end
+
+      result.write("composite_image.png")
+      @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
 
       @user_ticket.save!
 
@@ -109,6 +131,13 @@ class UserTicketsController < ApplicationController
    @event = @ticket.event
   @user_ticket
     authorize @user_ticket
+
+    @markers = [
+      {
+        lat: @event.latitude,
+        lng: @event.longitude
+      }
+    ]
   end
 
   def validation

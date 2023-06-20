@@ -1,19 +1,21 @@
 <div class="container">
   <div class="row">
+    <div class="col-lg-12 col-md-6 my-4 d-flex">
+      <div class="banner h-100 w-100 border border-2 border-gray shadow">
+        <h2 class="card-title"><%= @event.title %></h2>
+        <h5 class="card-text"><%= @event.description %></h5>
+        <h4>Starts:</h4>
+        <p class="card-text"><%= @event.start_time %></p>
+        <h4>Ends:</h4>
+        <p class="card-text"><%= @event.end_time %></p>
+      </div>
+    </div>
     <div class="col-lg-6 col-md-6 my-4">
       <div class="card h-100 border border-2 border-gray shadow">
         <div class="card-body">
-          <h2 class="card-title"><%= @event.title %></h2>
-          <h5 class="card-text"><%= @event.description %></h5>
-          <h4>Starts:</h4>
-          <p class="card-text"><%= @event.start_time %></p>
-          <h4>Ends:</h4>
-          <p class="card-text"><%= @event.end_time %></p>
-          <div>
-            <% if @user_ticket.qrcode.attached? %>
-              <%= cl_image_tag(@user_ticket.qrcode.key, width: 300, alt: "QR code for booking") %>
-            <% end %>
-          </div>
+          <% if @user_ticket.qrcode.attached? %>
+            <%= cl_image_tag(@user_ticket.qrcode.key, width: 600, height: 600, alt: "QR code for user_ticket") %>
+          <% end %>
         </div>
       </div>
     </div>

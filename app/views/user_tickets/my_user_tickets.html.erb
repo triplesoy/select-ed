@@ -6,12 +6,12 @@
         <div class="col-lg-3 my-3">
           <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 22rem;">
             <div class="card-body position-relative">
-              <h2 class="card-title"><%= user_ticket.ticket.event.title %></h2>
               <div class="qr-code">
                 <% if user_ticket.qrcode.attached? %>
-                  <%= cl_image_tag(user_ticket.qrcode.key, width: 250, height: 200, alt: "QR code for ticket") %>
+                  <%= cl_image_tag(user_ticket.qrcode.key, width: 250, height: 240, alt: "QR code for ticket") %>
                 <% end %>
               </div>
+              <div><h4 class="card-title position-absolute bottom-0 start-1 mb-3 me-3"><%= user_ticket.ticket.event.title %></h4></div>
               <a href="<%= ticket_user_ticket_path(ticket_id: user_ticket.ticket_id, id: user_ticket.id) %>" class="btn btn-outline-primary position-absolute bottom-0 end-0 mb-3 me-3">Details</a>
             </div>
           </div>
