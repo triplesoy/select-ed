@@ -30,8 +30,10 @@ class UserTicketsController < ApplicationController
     @community = @event.community
 
     if @user_ticket.save!
-    ##QR CODE
+    ##QR CODEexit
+
         link = validation_page_url(ticket_id: @ticket.id, id: @user_ticket.user.id)
+        raise
         qrcode = RQRCode::QRCode.new(link)
         png = qrcode.as_png(
           bit_depth: 1,
@@ -121,13 +123,13 @@ class UserTicketsController < ApplicationController
     if @user_ticket.scanned == "pending"
       @user_ticket.update!(scanned: params[:scanned])
       # redirect_to user_ticket_path(@user_ticket), alert: "You have successfully scanned the ticket!"
-      redirect_to :validation_page, alert: "Ticket marked as #{params[:scanned]}!"
+      redirect_to :new_scan, alert: "Ticket marked as #{params[:scanned]}!"
     elsif @user_ticket.scanned == "rejected"
       @user_ticket.update!(scanned: params[:scanned])
-      redirect_to :validation_page, alert: "Ticket marked as #{params[:scanned]}!"
+      redirect_to :new_scan, alert: "Ticket marked as #{params[:scanned]}!"
     else  @user_ticket.scanned == "accepted"
       @user_ticket.update!(scanned: params[:scanned])
-      redirect_to :validation_page, alert: "Ticket marked as #{params[:scanned]}!"
+      redirect_to :new_scan, alert: "Ticket marked as #{params[:scanned]}!"
     end
 
   end
@@ -161,6 +163,11 @@ class UserTicketsController < ApplicationController
     @user = current_user
     @my_user_tickets = @user.user_tickets
     authorize @my_user_tickets
+  end
+
+  def new_scan
+    @user_ticket = UserTicket.new()
+    authorize @user_ticket
   end
 
   private

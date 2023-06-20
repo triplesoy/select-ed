@@ -41,4 +41,8 @@ class UserTicketPolicy < ApplicationPolicy
     true
   end
 
+  def new_scan?
+    true
+  end
+
 end
