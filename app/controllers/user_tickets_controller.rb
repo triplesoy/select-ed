@@ -115,9 +115,19 @@ class UserTicketsController < ApplicationController
   end
 
   def update
-    @user_ticket.update!(user_ticket_params)
-    # redirect_to user_ticket_path(@user_ticket), alert: "You have successfully scanned the ticket!"
     authorize @user_ticket
+    if @user_ticket.scanned == "pending"
+      @user_ticket.update!(scanned: params[:scanned])
+      # redirect_to user_ticket_path(@user_ticket), alert: "You have successfully scanned the ticket!"
+      redirect_to :validation_page, alert: "Ticket marked as #{params[:scanned]}!"
+    elsif @user_ticket.scanned == "rejected"
+      @user_ticket.update!(scanned: params[:scanned])
+      redirect_to :validation_page, alert: "Ticket marked as #{params[:scanned]}!"
+    else  @user_ticket.scanned == "accepted"
+      @user_ticket.update!(scanned: params[:scanned])
+      redirect_to :validation_page, alert: "Ticket marked as #{params[:scanned]}!"
+    end
+
   end
 
   def destroy
@@ -162,7 +172,7 @@ class UserTicketsController < ApplicationController
   end
 
   def user_ticket_params
-    params.permit(:scanned)
+    params.require(:user_ticket).permit(:scanned)
   end
 
 end
