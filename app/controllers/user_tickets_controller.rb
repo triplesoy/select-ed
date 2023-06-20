@@ -8,6 +8,13 @@ class UserTicketsController < ApplicationController
   def show
     @event = @ticket.event
     authorize @user_ticket
+
+    @markers = [
+      {
+        lat: @event.latitude,
+        lng: @event.longitude
+      }
+    ]
   end
 
   def new
@@ -124,6 +131,13 @@ class UserTicketsController < ApplicationController
    @event = @ticket.event
   @user_ticket
     authorize @user_ticket
+
+    @markers = [
+      {
+        lat: @event.latitude,
+        lng: @event.longitude
+      }
+    ]
   end
 
   def validation
