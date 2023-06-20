@@ -1,32 +1,42 @@
+<h1>Thank you for buying a ticket for <%= @event.title %></h1>
+
 <div class="container">
   <div class="row">
-    <div class="col-lg-6 col-md-4 m-3" style="width: 40%; height: 500px;">
-      <div class="card">
-        <div class="banner">
-          <div class="card-body">
-            <h2 class="card-title"><%= @event.title %></h2>
-            <h5 class="card-text"><%= @event.description %></h5>
-            <h4>Starts:</h4>
-            <p class="card-text"><%= @event.start_time %></p>
-            <h4>Ends:</h4>
-            <p class="card-text"><%= @event.end_time %></p>
-            <div>
-              <% if @user_ticket.qrcode.attached? %>
+    <div class="col-lg-6 col-md-6 my-4">
+      <div class="card h-100 border border-2 border-gray shadow">
+        <div class="card-body">
+          <h2 class="card-title"><%= @event.title %></h2>
+          <h5 class="card-text"><%= @event.description %></h5>
+          <h4>Starts:</h4>
+          <p class="card-text"><%= @event.start_time %></p>
+          <h4>Ends:</h4>
+          <p class="card-text"><%= @event.end_time %></p>
+          <div>
+            <% if @user_ticket.qrcode.attached? %>
               <%= cl_image_tag(@user_ticket.qrcode.key, width: 300, alt: "QR code for booking") %>
-              <% end %>
-            </div>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-6 col-md-4 my-3" style="width: 40%; height: 500px;"
-      data-controller="map"
-      data-map-markers-value="<%= @markers.to_json %>"
-      data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+    <div class="col-lg-6 col-md-6 my-4">
+      <div class="card h-100 border border-2 border-gray shadow">
+        <div class="card-body">
+          <div class="col-lg-6 col-md-4 my-3" style="width: 100%; height: 500px;"
+            data-controller="map"
+            data-map-markers-value="<%= @markers.to_json %>"
+            data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-    <div>
-    <%= link_to "Go back", root_path %></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <%= link_to "Go back", root_path, class: "btn btn-secondary mt-3" %>
     </div>
   </div>
+</div>
