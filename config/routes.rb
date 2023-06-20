@@ -21,6 +21,7 @@ end
   # post "create/user_ticket", to: "Usertickets#create", as: :create_user_ticket
   get "my_communities", to: "communities#my_communities", as: :my_communities
   get "my_events", to: "events#my_events", as: :my_events
+  get "my_tickets", to: "user_tickets#my_user_tickets", as: :my_tickets
   get "events_owned", to: "events#events_owned", as: :events_owned
   get "communities/:id/dashboard", to: "communities#dashboard", as: :dashboard
   get "user_tickets/:id/confirmation", to: "user_tickets#confirmation", as: :confirmation_page

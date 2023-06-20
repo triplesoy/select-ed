@@ -40,6 +40,8 @@ class TicketsController < ApplicationController
   end
 
   def edit
+    @community = @event.community
+    authorize @ticket
   end
 
   def update
@@ -62,6 +64,6 @@ class TicketsController < ApplicationController
   end
 
   def set_ticket
-    @event = EventRsvp.find(params[:id])
+    @ticket = Ticket.find(params[:id])
   end
 end

@@ -38,4 +38,11 @@ class CommunityPolicy < ApplicationPolicy
     record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
+  def my_communities?
+    true
+  end
+
+  def communities_owned
+    true
+  end
 end
