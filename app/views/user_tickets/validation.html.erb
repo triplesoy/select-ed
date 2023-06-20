@@ -1,0 +1,20 @@
+<%# VALIDATION LANDING PAGE
+
+Name : <%= @user_ticket.full_name %>
+Validation:
+<%= link_to "Validate", ticket_user_ticket_path(@user_ticket, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-primary" %>
+<%# <%= link_to "Keep pending", ticket_user_ticket_path(@user_ticket, scanned: "pending"), data: {turbo_method: :patch}, class: "btn btn-primary" %>
+%><%= link_to "Reject", ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch}, class: "btn btn-danger" %>
+<<%# %= link_to "Reject", reject_user_ticket_path(@user_ticket), data: {turbo_method: :patch}, class: "btn btn-danger" %>
+<%# <%= link_to "Keep pending", reject_user_ticket_path(@user_ticket), data: {turbo_method: :patch}, class: "btn btn-danger" %>
+
+<%# if ticket validated SHOW "ticket alreaduy validated" %>
+
+
+
+<%# <%= if user_tickets.scanned == "accepted" %>
+<%# Sorry but this ticket hjas alreaduy been sccaned %>
+<%# <% elsif %>
+<%# <%= if user_tickets.scanned == "pending" %>
+<%# SHOW VALIDATION X
+else  %>
