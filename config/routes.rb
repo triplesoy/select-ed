@@ -24,4 +24,5 @@ end
   get "communities/:id/dashboard", to: "communities#dashboard", as: :dashboard
   get "user_tickets/:id/confirmation", to: "user_tickets#confirmation", as: :confirmation_page
   get "user_tickets/:id/validation", to: "user_tickets#validation", as: :validation_page
+  get "new_scan", to: "user_tickets#new_scan", as: :new_scan
 end
