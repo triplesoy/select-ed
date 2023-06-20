@@ -1,20 +1,22 @@
-<%# VALIDATION LANDING PAGE
-
-Name : <%= @user_ticket.full_name %>
-Validation:
-<%= link_to "Validate", ticket_user_ticket_path(@user_ticket, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-primary" %>
-<%# <%= link_to "Keep pending", ticket_user_ticket_path(@user_ticket, scanned: "pending"), data: {turbo_method: :patch}, class: "btn btn-primary" %>
-<%= link_to "Reject", ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch}, class: "btn btn-danger" %>
-<<%# %= link_to "Reject", reject_user_ticket_path(@user_ticket), data: {turbo_method: :patch}, class: "btn btn-danger" %>
-<%# <%= link_to "Keep pending", reject_user_ticket_path(@user_ticket), data: {turbo_method: :patch}, class: "btn btn-danger" %>
-
-<%# if ticket validated SHOW "ticket alreaduy validated" %>
-
-
-
-<%# <%= if user_tickets.scanned == "accepted" %>
-<%# Sorry but this ticket hjas alreaduy been sccaned %>
-<%# <% elsif %>
-<%# <%= if user_tickets.scanned == "pending" %>
-<%# SHOW VALIDATION X
-else  %>
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-3 border-0" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); border-radius: 10px;">
+        <div class="card-body">
+        <%= @user_ticket.scanned %>
+          <h5 class="card-title">Guest name:</h5>
+          <p class="card-text"><%= @user_ticket_name %></p>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <%= link_to "Validate", ticket_user_ticket_path(@user_ticket, scanned: "validated"), data: {turbo_method: :patch}, class: "btn btn-primary" %>
+            <%= link_to "Reject", ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger" %>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        Scan another ticket
+        <input type="file" accept="image/*" capture="camera">
+      </div>
+    </div>
+  </div>
+</div>

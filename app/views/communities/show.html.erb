@@ -8,17 +8,16 @@
           <h5 class="card-title"><strong><span style="color: white;">You are the <%= current_user.role_of_this(@community) %> of this community.</span></strong></h5>
         <% end %>
         <%= link_to "Go to the community dashboard", dashboard_path(@community), class: "btn btn-light" %>
-        <br> <input type="file" accept="image/*" capture="camera">
-
+        <br>
+ <input type="file" accept="image/*" capture="camera">
       </div>
     </div>
   </div>
   <h1><%= @community.title %></h1>
 <% else %>
 <% end %>
-
 <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
-[MEMBER/ADMIN OF THIS COMMUNITY] You do not need to join this community since you are the admin/moderator of it.
+  [MEMBER/ADMIN OF THIS COMMUNITY] You do not need to join this community since you are the admin/moderator of it.
 <% else %>
   <h1><%= @community.title %></h1>
   <p>
@@ -37,7 +36,6 @@
     </span>
   </p>
 <% end %>
-
 <hr>
 <ul>
   <li><%= @community.description %></li>

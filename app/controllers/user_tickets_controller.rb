@@ -1,5 +1,5 @@
 class UserTicketsController < ApplicationController
-  before_action :set_ticket, only: [:edit, :update, :show, :new, :create]
+  before_action :set_ticket, only: [:edit, :update, :show, :new, :create, :update]
   before_action :set_user_ticket, only: [:edit, :update, :show, :destroy, :confirmation, :validation]
 
   def index
@@ -93,6 +93,9 @@ class UserTicketsController < ApplicationController
   end
 
   def update
+    @user_ticket.update!(user_ticket_params)
+    # redirect_to user_ticket_path(@user_ticket), alert: "You have successfully scanned the ticket!"
+    authorize @user_ticket
   end
 
   def destroy
@@ -104,11 +107,12 @@ class UserTicketsController < ApplicationController
   def confirmation
    @ticket = @user_ticket.ticket
    @event = @ticket.event
-    @user_ticket
+  @user_ticket
     authorize @user_ticket
   end
 
   def validation
+    @user_ticket_name = @user_ticket.user.full_name
     authorize @user_ticket
   end
 
@@ -126,6 +130,10 @@ class UserTicketsController < ApplicationController
 
   def set_ticket
     @ticket = Ticket.find(params[:ticket_id])
+  end
+
+  def user_ticket_params
+    params.permit(:scanned)
   end
 
 end
