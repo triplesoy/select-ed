@@ -1,10 +1,10 @@
 # This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+# The data can then be loaded with the bin/rails db:seed command (or create!d alongside the database with db:setup).
 #
 # Examples:
 #
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+#   movies = Movie.create!([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
+#   Character.create!(name: "Luke", movie: movies.first)
 
 User.create!(
   first_name: "Miguel",
@@ -16,7 +16,7 @@ User.create!(
   birthdate: DateTime.new(1970, 9, 15)
 )
 
-User.create(
+User.create!(
   first_name: "Guillaume",
   last_name: "Soyer",
   email: "guillaume@aol.com",
@@ -26,7 +26,7 @@ User.create(
   birthdate: DateTime.new(1988, 9, 15)
 )
 
-User.create(
+User.create!(
   first_name: "Salim",
   last_name: "Atyieh",
   email: "salim@aol.com",
@@ -36,7 +36,7 @@ User.create(
   birthdate: DateTime.new(1999, 9, 15)
 )
 
-User.create(
+User.create!(
   first_name: "John",
   last_name: "Doe",
   email: "john@aol.com",
@@ -47,7 +47,7 @@ User.create(
   birthdate: DateTime.new(1976, 9, 15)
 )
 
-User.create(
+User.create!(
   first_name: "Paul",
   last_name: "Doe",
   email: "paul@aol.com",
@@ -58,7 +58,7 @@ User.create(
   birthdate: DateTime.new(2003, 9, 15)
 )
 
-User.create(
+User.create!(
   first_name: "Jack",
   last_name: "Doe",
   email: "jack@aol.com",
@@ -70,7 +70,7 @@ User.create(
 
 )
 
-User.create(
+User.create!(
   first_name: "Tom",
   last_name: "Doe",
   email: "tom@aol.com",
@@ -79,11 +79,9 @@ User.create(
   instagram_handle: "sundaysundaymx",
   admin: false,
   birthdate: DateTime.new(1993, 9, 15)
-
-
 )
 
-Community.create(
+Community.create!(
   title: "Tech Enthusiasts",
   description: "A community for technology enthusiasts to discuss the latest trends and innovations.",
   country: "United States",
@@ -94,7 +92,7 @@ Community.create(
   user_id: 1
 )
 
-Community.create(
+Community.create!(
   title: "Fitness Junkies",
   description: "Join us if you're passionate about fitness and living a healthy lifestyle.",
   country: "Canada",
@@ -105,7 +103,7 @@ Community.create(
   user_id: 1
 )
 
-Community.create(
+Community.create!(
   title: "Bookworms",
   description: "A community for book lovers to share their favorite reads and engage in literary discussions.",
   country: "United Kingdom",
@@ -116,7 +114,7 @@ Community.create(
   user_id: 2
 )
 
-Community.create(
+Community.create!(
   title: "Artists Unite",
   description: "A community for artists of all kinds to showcase their work and collaborate with fellow creatives.",
   country: "Australia",
@@ -127,7 +125,7 @@ Community.create(
   user_id: 3
 )
 
-Community.create(
+Community.create!(
   title: "Foodie Adventures",
   description: "Join us on culinary journeys as we explore different cuisines and share delicious recipes.",
   country: "United States",
@@ -138,7 +136,7 @@ Community.create(
   user_id: 2
 )
 
-Community.create(
+Community.create!(
   title: "La fiesta de la noche",
   description: "Party all night long",
   country: "Spain",
@@ -297,4 +295,4 @@ Event.create!(
           status: "pending"
         )
 
-      puts "Seed data has been created successfully!"
+      puts "Seed data has been create!d successfully!"

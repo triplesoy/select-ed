@@ -2,7 +2,7 @@
 <p>Find me in app/views/events/edit.html.erb</p>
 
 
-<h1>Create an Event</h1>
+<h1>Edit Event</h1>
 <div class="container">
   <div class="row">
     <div class="col-lg-12 col-md-6 col-sm-6">
@@ -16,7 +16,7 @@
                             wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } } %>
           <%= f.input :start_time, html5: true, input_html: { min: Date.current.to_s, id: 'start-date' } %>
           <%= f.input :end_time, html5: true, input_html: { id: 'end-date' } %>
-          <%= f.submit "Create Event", class: "btn btn-outline-dark mt-3" %>
+          <%= f.submit "Update Event", class: "btn btn-outline-dark mt-3" %>
         <% end %>
       </div>
     </div>
