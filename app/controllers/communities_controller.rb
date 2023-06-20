@@ -1,6 +1,6 @@
 class CommunitiesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :set_community, only: [:show, :edit, :update, :destroy, :dashboard, :get_instagram_image]
+  before_action :set_community, only: [:show, :edit, :update, :destroy, :dashboard]
 
   def index
     @communities = policy_scope(Community)
@@ -47,16 +47,22 @@ class CommunitiesController < ApplicationController
     authorize @community
   end
 
-
   def dashboard
     authorize @community
     @events = @community.events
     @join_requests = @community.community_join_requests
     @community_users = @community.community_users
-
   end
 
+  def my_communities
+    @my_communities = current_user.communities
+    authorize @my_communities
+  end
 
+  def events_owned
+    @events_owned = current_user.events
+    authorize @events_owned
+  end
 
   private
 

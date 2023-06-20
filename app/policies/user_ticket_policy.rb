@@ -5,6 +5,10 @@ class UserTicketPolicy < ApplicationPolicy
     end
   end
 
+  def show?
+    true
+  end
+
   def new?
     true
   end
@@ -22,6 +26,18 @@ class UserTicketPolicy < ApplicationPolicy
   end
 
   def destroy?
+    true
+  end
+
+  def confirmation?
+    true
+  end
+
+  def validation?
+    true
+  end
+
+  def my_user_tickets?
     true
   end
 

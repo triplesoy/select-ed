@@ -14,6 +14,7 @@ class EventsController < ApplicationController
 
   def show
     @events = Event.where(id: params[:id])
+    @ticket = Ticket.where(id: params[:id])
     @markers = @events.geocoded.map do |event|
       {
         lat: event.latitude,
@@ -60,7 +61,7 @@ class EventsController < ApplicationController
   end
 
   def my_events
-    @my_events = current_user.my_events
+    @my_events = current_user.events
     authorize @my_events
   end
 
@@ -72,7 +73,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title, :start_date, :end_date, :address, :description, :price, :capacity)
+    params.require(:event).permit(:title, :start_date, :end_date, :address, :description, :price, :capacity, photos: [])
   end
 
   def set_community

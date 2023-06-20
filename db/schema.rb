@@ -106,19 +106,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
   end
 
   create_table "tickets", force: :cascade do |t|
-    t.string "type"
+    t.string "model"
     t.integer "price"
-    t.bigint "user_id", null: false
+    t.integer "quantity"
+    t.string "r_code"
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_tickets_on_event_id"
-    t.index ["user_id"], name: "index_tickets_on_user_id"
   end
 
   create_table "user_tickets", force: :cascade do |t|
     t.integer "paid_amount"
-    t.boolean "scanned?"
+    t.string "scanned", default: "pending"
     t.bigint "user_id", null: false
     t.bigint "ticket_id", null: false
     t.datetime "created_at", null: false
@@ -159,12 +159,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
   add_foreign_key "community_join_requests", "users"
   add_foreign_key "community_users", "communities"
   add_foreign_key "community_users", "users"
-  add_foreign_key "event_rsvps", "events"
-  add_foreign_key "event_rsvps", "users"
   add_foreign_key "events", "communities"
   add_foreign_key "events", "users"
   add_foreign_key "tickets", "events"
-  add_foreign_key "tickets", "users"
   add_foreign_key "user_tickets", "tickets"
   add_foreign_key "user_tickets", "users"
 end

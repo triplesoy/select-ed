@@ -13,6 +13,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_one_attached :avatar
 
+  # validates :first_name, presence: true
+  # validates :last_name, presence: true
+  # validates :birthdate, presence: true
+  # validates :address, presence: true
+  # validates :country, presence: true
+  # validates :instagram_handle, presence: true
+  # validates :occupation, presence: true
+
   def has_ticket_with_event?(event)
     self.user_tickets.any? { |ticket| ticket.event == event }
   end
@@ -29,9 +37,12 @@ class User < ApplicationRecord
     self.community_users.any? { |cu| cu.community == community && cu.role == "moderator" }
   end
 
+  def is_admin_of?(community)
+    self.community_users.any? { |cu| cu.community == community && cu.role == "admin" }
+  end
+
   def role_of_this(community)
     return "owner" if community.user == self
-
-    self.community_users.find_by(community: community).role
+    self.community_users.find_by(community: community).role if self.community_users.find_by(community: community)
   end
 end

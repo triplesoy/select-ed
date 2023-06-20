@@ -1,6 +1,6 @@
 <div class="navbar sticky-top  navbar-expand-sm navbar-light navbar-lewagon">
   <div class="container-fluid">
-             <b> <%= link_to "SELECT[ED]", communities_path, class: "nav-link" %></b>
+             <b> <%= link_to "SELECT[ED]", root_path, class: "nav-link" %></b>
 
     <%# <%= link_to "#", class: "navbar-brand" do %>
      <%# <%= image_tag "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/logo.png" %>
@@ -24,6 +24,10 @@
 
           <li class="nav-item ">
             <%= link_to "My events", my_events_path(current_user), class: "nav-link" %>
+          </li>
+
+          <li class="nav-item ">
+            <%= link_to "My tickets", my_tickets_path(current_user), class: "nav-link" %>
           </li>
 
           <li class="nav-item ">
