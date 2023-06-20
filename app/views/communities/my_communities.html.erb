@@ -14,13 +14,14 @@
         <% @my_communities.each do |v| %>
           <div class="col-lg-3 my-3">
             <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 22rem;">
-              <% if v.photos.attached? %>
-                <img src="<%= cl_image_path v.photos.first.key %>" class="card-img-top" alt="Listing Image">
-              <% end %>
+              <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                <% if v.photos.attached? %>
+                  <img src="<%= cl_image_path v.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
+                <% end %>
+              </div>
               <div class="card-body position-relative">
-                <h5 class="card-title"><%= v.title %></h5>
+                <div><h5 class="card-title position-absolute bottom-0 start-1 mb-3 me-3"><%= v.title %></h5></div>
                 <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <!--p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= v.description %></p-->
                 <%= link_to "Details", community_path(v), class: "btn btn-outline-primary position-absolute bottom-0 end-0 m-2" %>
               </div>
             </div>

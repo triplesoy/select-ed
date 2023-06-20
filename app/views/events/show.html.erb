@@ -4,28 +4,29 @@
       <div class="card border shadow" style="height: 500px;">
         <div class="banner">
           <div class="card-body">
-            <h2 class="card-title"><%= @event.title %></h2>
+            <div class="image-wrapper" style="height: 300px; overflow: hidden; border-radius: 10px 10px 0px 0px;">
+              <img src="<%= cl_image_path @event.photos.first.key %>" alt="" class="card-img-top" style="object-fit: cover; width: 100%;">
+            </div>
+            <h2 class="card-title" style="margin-top: 20px;"><%= @event.title %></h2>
             <h5 class="card-text"><%= @event.description %></h5>
-            <h4>Starts:</h4>
             <p class="card-text"><%= @event.start_time %></p>
-            <h4>Ends:</h4>
             <p class="card-text"><%= @event.end_time %></p>
             <% if @event.user == current_user %>
               <% if policy(@event).edit? %>
-                <%= link_to "Edit Event", edit_community_event_path(@community, @event), class: "btn btn-outline-warning" %>
+                <%= link_to "Edit Event", edit_community_event_path(@community, @event), class: "btn btn-warning btn-sm" %>
               <% end %>
 
               <% if policy(@ticket).edit? %>
-                <%= link_to "Edit Tickets", edit_ticket_path(@community, @event), class: "btn btn-outline-warning" %>
+                <%= link_to "Edit Tickets", edit_ticket_path(@community, @event), class: "btn btn-warning btn-sm" %>
               <% end %>
 
-              <% if policy(@event).destroy? %>
-                <%= link_to "Delete", community_event_path(@community, @event), class: "btn btn-outline-danger",
+              <%# if policy(@event).destroy? %>
+                <%#= link_to "Delete", community_event_path(@community, @event), class: "btn btn-danger btn-sm",
                   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-              <% end %>
+              <%# end %>
             <% end %>
-            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              Get ticket
+            <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              Get Ticket
             </button>
           </div>
         </div>
@@ -41,13 +42,12 @@
   </div>
 </div>
 
-
 <% if flash[:success] %>
-  <div class="alert alert-success">
+  <div class="alert alert-success mt-4">
     <%= flash[:success] %>
   </div>
 <% elsif flash[:error] %>
-  <div class="alert alert-danger">
+  <div class="alert alert-danger mt-4">
     <%= flash[:error] %>
   </div>
 <% end %>
@@ -71,7 +71,7 @@
                     Buy
                   <% end %>
                 </div>
-                <p>tickets available: <%= t.quantity %></p>
+                <p>Tickets available: <%= t.quantity %></p>
               <% end %>
             </div>
           </div>
