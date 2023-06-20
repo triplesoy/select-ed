@@ -13,6 +13,11 @@
   </div>
   <h1><%= @community.title %></h1>
 <% else %>
+<% end %>
+
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+[MEMBER/ADMIN OF THIS COMMUNITY] You do not need to join this community since you are the admin/moderator of it.
+<% else %>
   <h1><%= @community.title %></h1>
   <p>
     <%= @community.is_public? ? 'This community is public' : 'This community is private' %><br>
@@ -30,6 +35,7 @@
     </span>
   </p>
 <% end %>
+
 <hr>
 <ul>
   <li><%= @community.description %></li>
