@@ -9,7 +9,7 @@
         <% end %>
         <%= link_to "Go to the community dashboard", dashboard_path(@community), class: "btn btn-light" %>
         <br>
- <input type="file" accept="image/*" capture="camera">
+        <input type="file" accept="image/*" capture="camera">
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@
     <% end %>
   </div>
 <% end %>
-<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || current_user.admin? %>
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin?) %>
   <hr>
   <h3>Community settings</h3>
   <ul>
@@ -106,7 +106,7 @@
     <% if policy(@community).destroy? %>
       <li><%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></li>
     <% end %>
-  </ul>
-  <hr>
-<% end %>
+  <% end %>
+</ul>
+<hr>
 <%= link_to "Back", communities_path %>
