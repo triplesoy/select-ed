@@ -1,4 +1,4 @@
-<h1>Create an Event</h1>
+<h1>Create Event</h1>
 <div class="container">
   <div class="row">
     <div class="col-lg-12 col-md-6 col-sm-6">
@@ -7,29 +7,26 @@
         <%= simple_form_for [@community, @event] do |f| %>
           <%= f.input :title, label: "Title" %>
           <%= f.input :description, label: "Description" %>
-        <%= f.input :photos, as: :file, input_html: { multiple: true } %>
+          <%= f.input :photos, as: :file, input_html: { multiple: true } %>
           <%= f.input :address, input_html: { data: { address_autocomplete_target: "address" }, class: "d-none" },
                             wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } } %>
-          <%= f.input :start_time, html5: true, input_html: { min: Date.current.to_s, id: 'start-date' } %>
-          <%= f.input :end_time, html5: true, input_html: { id: 'end-date' } %>
+          <%= f.input :start_time, html5: true, input_html: { min: Date.current.to_s, id: 'start-date', required: true } %>
+          <%= f.input :end_time, html5: true, input_html: { id: 'end-date', required: true } %>
           <%= f.submit "Create Event", class: "btn btn-outline-dark mt-3" %>
         <% end %>
       </div>
     </div>
-
-<%= link_to "Back", community_path(@community), class: "btn btn-secondary mt-3" %>
-
-<h3>footnote</h3>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var startDateInput = document.getElementById('start-date');
-    var endDateInput = document.getElementById('end-date');
-    startDateInput.addEventListener("input", function() {
-      endDateInput.min = startDateInput.value;
-      if (endDateInput.value < startDateInput.value) {
-        endDateInput.value = startDateInput.value;
-      }
-    });
-  });
-</script>
+    <%= link_to "Back", community_path(@community), class: "btn btn-secondary mt-3" %>
+    <h3>footnote</h3>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var startDateInput = document.getElementById('start-date');
+        var endDateInput = document.getElementById('end-date');
+        startDateInput.addEventListener("input", function() {
+          endDateInput.min = startDateInput.value;
+          if (endDateInput.value < startDateInput.value) {
+            endDateInput.value = startDateInput.value;
+          }
+        });
+      });
+    </script>

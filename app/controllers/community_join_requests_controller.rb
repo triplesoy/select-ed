@@ -7,7 +7,7 @@ class CommunityJoinRequestsController < ApplicationController
     existing_request = CommunityJoinRequest.find_by(user_id: current_user.id, community_id: @community.id)
 
     unless existing_request.present?
-      if @community.is_public?
+      if @community.public?
         @community.community_users.create!(user_id: current_user.id, community_id: @community.id, role: "member", status: "accepted" )
        redirect_to community_path(@community), notice: 'You are now a member of this community.'
       else

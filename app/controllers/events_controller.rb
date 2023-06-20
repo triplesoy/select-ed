@@ -49,8 +49,8 @@ class EventsController < ApplicationController
   end
 
   def update
-    @event.update(event_params)
-    redirect_to event_path(@event)
+    @event.update!(event_params)
+    redirect_to community_event_path(@community, @event)
     authorize @event
   end
 
