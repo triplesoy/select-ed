@@ -47,7 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
     t.text "description"
     t.string "country"
     t.string "city"
-    t.boolean "is_public"
+    t.boolean "public", default: false
     t.boolean "is_visible"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -75,16 +75,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
     t.datetime "updated_at", null: false
     t.index ["community_id"], name: "index_community_users_on_community_id"
     t.index ["user_id"], name: "index_community_users_on_user_id"
-  end
-
-  create_table "event_rsvps", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "event_id", null: false
-    t.string "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_event_rsvps_on_event_id"
-    t.index ["user_id"], name: "index_event_rsvps_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|

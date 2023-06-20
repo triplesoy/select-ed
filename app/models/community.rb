@@ -6,13 +6,14 @@ class Community < ApplicationRecord
   has_many :community_join_requests
   has_many :users, through: :community_join_requests
 
-  validates :title, presence: true
-  validates :description, presence: true
-  validates :category, presence: true
-  validates :country, presence: true
-  validates :city, presence: true
-  validates :title, uniqueness: true
-  validates :photos, presence: true
+  validates :title, presence: true, on: :create
+  validates :description, presence: true, on: :create
+  validates :category, presence: true, on: :create
+  validates :country, presence: true, on: :create
+  validates :city, presence: true, on: :create
+  validates :title, uniqueness: true, on: :create
+  # validates :photos, presence: true, on: :create
+  validates :is_visible, presence: true, on: :create
 
   has_many :events, dependent: :destroy
   has_many_attached :photos

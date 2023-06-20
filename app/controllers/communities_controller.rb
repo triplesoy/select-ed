@@ -36,13 +36,13 @@ class CommunitiesController < ApplicationController
   end
 
   def update
-    @community.update(community_params)
+    @community.update!(community_params)
     redirect_to community_path(@community)
     authorize @community
   end
 
   def destroy
-    @community.destroy
+    @community.destroy!
     redirect_to communities_path, status: :see_other
     authorize @community
   end
@@ -67,7 +67,7 @@ class CommunitiesController < ApplicationController
   private
 
   def community_params
-    params.require(:community).permit(:title, :description, :category, :country, :city, :is_public, :is_visible, :video, photos: [])
+    params.require(:community).permit(:title, :description, :category, :country, :city, :public, :is_visible, :video, photos: []).merge(public: params[:community][:public].present?, is_visible: params[:community][:is_visible].present?)
   end
 
   def set_community

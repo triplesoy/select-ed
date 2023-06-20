@@ -21,7 +21,7 @@
 <% else %>
   <h1><%= @community.title %></h1>
   <p>
-    <%= @community.is_public? ? 'This community is public' : 'This community is private' %><br>
+    <%= @community.public? ? 'This community is public' : 'This community is private' %><br>
     <span class="">
       <b>
         <% status = user_community_status(@community, current_user) %>
@@ -47,12 +47,12 @@
   <li><%= @community.category %></li>
   <li><%= @community.country %></li>
   <li><%= @community.city %></li>
-  <li>Is public? <%= @community.is_public %></li>
+  <li>Is public? <%= @community.public %></li>
   <li>Is visible? <%= @community.is_visible %></li>
 </ul>
 <hr>
 <h2>Events:</h2>
-<% unless @community.is_public? %>
+<% unless @community.public? %>
   <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user.admin?) %>
     <div class="row">
       <% @events.each do |event| %>

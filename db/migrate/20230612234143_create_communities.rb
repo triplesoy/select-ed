@@ -5,7 +5,7 @@ class CreateCommunities < ActiveRecord::Migration[7.0]
       t.text :description
       t.string :country
       t.string :city
-      t.boolean :is_public
+      t.boolean :public, default: false
       t.boolean :is_visible
       t.references :user, null: false, foreign_key: true
       t.timestamps
