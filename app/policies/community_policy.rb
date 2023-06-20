@@ -23,15 +23,15 @@ class CommunityPolicy < ApplicationPolicy
   end
 
   def edit?
-    record.user == user
+    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def update?
-    edit?
+    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def destroy?
-    record.user == user
+    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def dashboard?

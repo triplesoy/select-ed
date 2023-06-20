@@ -95,7 +95,7 @@
     <% end %>
   </div>
 <% end %>
-<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) %>
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || current_user.admin? %>
   <hr>
   <h3>Community settings</h3>
   <ul>
