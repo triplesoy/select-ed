@@ -37,4 +37,8 @@ class UserTicketPolicy < ApplicationPolicy
     true
   end
 
+  def my_user_tickets?
+    true
+  end
+
 end

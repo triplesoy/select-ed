@@ -52,7 +52,16 @@ class CommunitiesController < ApplicationController
     @events = @community.events
     @join_requests = @community.community_join_requests
     @community_users = @community.community_users
+  end
 
+  def my_communities
+    @my_communities = current_user.communities
+    authorize @my_communities
+  end
+
+  def events_owned
+    @events_owned = current_user.events
+    authorize @events_owned
   end
 
   private

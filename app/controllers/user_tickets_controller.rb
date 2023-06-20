@@ -6,6 +6,7 @@ class UserTicketsController < ApplicationController
   end
 
   def show
+    @event = @ticket.event
     authorize @user_ticket
   end
 
@@ -109,6 +110,12 @@ class UserTicketsController < ApplicationController
 
   def validation
     authorize @user_ticket
+  end
+
+  def my_user_tickets
+    @user = current_user
+    @my_user_tickets = @user.user_tickets
+    authorize @my_user_tickets
   end
 
   private

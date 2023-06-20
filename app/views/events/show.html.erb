@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-6 col-md-4 m-3" style="width: 40%; height: 500px;">
-      <div class="card">
+    <div class="col-lg-6 col-md-6 my-3">
+      <div class="card border shadow" style="height: 500px;">
         <div class="banner">
           <div class="card-body">
             <h2 class="card-title"><%= @event.title %></h2>
@@ -12,7 +12,11 @@
             <p class="card-text"><%= @event.end_time %></p>
             <% if @event.user == current_user %>
               <% if policy(@event).edit? %>
-                <%= link_to "Edit", edit_community_event_path(@community, @event), class: "btn btn-outline-warning" %>
+                <%= link_to "Edit Event", edit_community_event_path(@community, @event), class: "btn btn-outline-warning" %>
+              <% end %>
+
+              <% if policy(@ticket).edit? %>
+                <%= link_to "Edit Tickets", edit_ticket_path(@community, @event), class: "btn btn-outline-warning" %>
               <% end %>
 
               <% if policy(@event).destroy? %>
@@ -20,32 +24,33 @@
                   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
               <% end %>
             <% end %>
-        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-          get tickets
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              Get ticket
+            </button>
           </div>
         </div>
-        </button>
       </div>
     </div>
-    <div class="col-lg-6 col-md-4 my-3" style="width: 40%; height: 500px;"
-      data-controller="map"
-      data-map-markers-value="<%= @markers.to_json %>"
-      data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+    <div class="col-lg-6 col-md-6 my-3">
+      <div class="card border shadow" style="height: 500px;"
+        data-controller="map"
+        data-map-markers-value="<%= @markers.to_json %>"
+        data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+      </div>
     </div>
   </div>
 </div>
 
 
-    <% if flash[:success] %>
-      <div class="alert alert-success">
-        <%= flash[:success] %>
-      </div>
-    <% elsif flash[:error] %>
-      <div class="alert alert-danger">
-        <%= flash[:error] %>
-      </div>
-    <% end %>
-  <!-- Button trigger modal -->
+<% if flash[:success] %>
+  <div class="alert alert-success">
+    <%= flash[:success] %>
+  </div>
+<% elsif flash[:error] %>
+  <div class="alert alert-danger">
+    <%= flash[:error] %>
+  </div>
+<% end %>
 
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -62,18 +67,16 @@
               <% @event.tickets.each do |t| %>
                 <div>
                   <h2><%= t.model %></h2>
-                  <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post } do %>
-                    <button class="ticket-btn" type="button">
-                      Buy
-                    </button>
+                  <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-primary" do %>
+                    Buy
                   <% end %>
                 </div>
-                  <p>tickets available: <%= t.quantity %></p>
+                <p>tickets available: <%= t.quantity %></p>
               <% end %>
             </div>
           </div>
         </div>
-
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
@@ -81,6 +84,4 @@
   </div>
 </div>
 
-    <div><%= link_to "Go back", community_path(@community) %></div>
-    </div>
-  </div>
+<div><%= link_to "Go back", community_path(@community), class: "btn btn-secondary mt-4" %></div>
