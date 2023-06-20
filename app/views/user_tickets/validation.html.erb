@@ -1,32 +1,35 @@
-<div class="container d-flex justify-content-center align-items-center">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card mb-3 border-0" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); border-radius: 10px;">
-        <div class="card-body">
-          Ticket status: <%= @user_ticket.scanned.capitalize %> <hr>
-          <h5 class="card-title">Guest name:</h5>
-          <p class="card-text"><b><%= @user_ticket_name %></b></p>
-          <hr>
-          <div class="d-flex justify-content-between">
-            <% if @user_ticket.scanned == "pending" %>
-              <%= link_to "Validate", ticket_user_ticket_path(@user_ticket, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-primary" %>
-              <%= link_to "Reject", ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger" %>
-            <% elsif @user_ticket.scanned == "rejected" %>
-              <h4>Tickets was scanned and rejected <%= "#{time_ago_in_words(@user_ticket.updated_at)} ago" %> <hr>
-                Was it an error? <br>
-                <%= link_to "Validate", ticket_user_ticket_path(@user_ticket, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-primary" %>
-              <% else @user_ticket.scanned == "accepted" %>
-                <h4>Tickets was scanned and accepted <%= "#{time_ago_in_words(@user_ticket.updated_at)} ago" %> <hr>
-                  Was it an error? <br>
-                  <%= link_to "Reject", ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger" %>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="text-center">
-            Scan another ticket
-            <input type="file" accept="image/*" capture="camera">
-          </div>
-        </div>
+<div class="card shadow mx-auto m-3 p-3" style="width: 18rem;">
+  <div class="card-body text-center">
+    <% if @user_ticket.scanned == "pending" %>
+      <h5 class="card-title font-weight-bold text-success mb-3">This ticket hasn’t been scanned yet.</h5>
+      <p class="card-text mb-3">
+        Ticket user name:
+        <br>
+        <b><%= @user_ticket_name %></b>
+      </p>
+      <hr>
+      <div class="mt-3">
+        <%= link_to "Validate", ticket_user_ticket_path(@user_ticket, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mr-2" %>
+        <%= link_to "Reject", ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger ml-2" %>
       </div>
-    </div>
+    <% elsif @user_ticket.scanned == "accepted" || @user_ticket.scanned == "rejected" %>
+      <h5 class="card-title font-weight-bold text-danger mb-3"><b>WARNING:</b> <br> This ticket was already scanned and <%= @user_ticket.scanned %></h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary"><i><%= "#{time_ago_in_words(@user_ticket.updated_at)} ago" %></i></h6>
+      <p class="card-text">
+        <hr>
+        Ticket user name:
+        <br>
+        <b><%= @user_ticket_name %></b>
+        <br><br>
+        <hr>
+        Was it an error ?
+      </p>
+      <div class="mt-3">
+        <%= link_to "Pending", ticket_user_ticket_path(@user_ticket, scanned: "pending"), data: {turbo_method: :patch}, class: "btn btn-warning mr-2" %>
+        <%= link_to (@user_ticket.scanned == "accepted" ? "Reject" : "Validate"), ticket_user_ticket_path(@user_ticket, scanned: (@user_ticket.scanned == "accepted" ? "rejected" : "accepted")), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to change the status of this ticket?"}, class: "btn btn-#{@user_ticket.scanned == 'accepted' ? 'danger' : 'success'} ml-2" %>
+      </div>
+    <% else %>
+      <h5 class="card-title">There was an error with this ticket.</h5>
+    <% end %>
+  </div>
+</div>
