@@ -12,10 +12,15 @@
           <%= f.input :photos, as: :file, input_html: { multiple: true } %>
           <%= f.input :country, label: "Country" %>
           <%= f.input :city, label: "City" %>
-          <%= f.input :public, label: "Public?", as: :boolean %>
-          <%= f.input :is_visible, label: "Visible?", as: :boolean %>
+          <%# <%= f.input :public, label: "Public?", as: :boolean %>
+          <%# <%= f.input :is_visible, label: "Visible?", as: :boolean %>
         </div>
-
+        <div>
+            <%# <%= f.input :public, label: "Public?", as: :boolean %>
+            <%# <%= f.input :is_visible, label: "Visible?", as: :boolean %>
+            <%= f.input :public, label: "Publicity", as: :radio_buttons, collection: [['Public(Everyone can join)', true], ['Private(Request required)', false]], input_html: { checked: @community.public? } %>
+            <%= f.input :is_visible, label: "Visibility", as: :radio_buttons, collection: [['Visible(Everyone can see)', true], ['Hidden(Only members can see)', false]] %>
+          </div>
         <div class="form-actions">
           <%= f.button :submit, "Update community", class: "btn btn-outline-dark" %>
         </div>
