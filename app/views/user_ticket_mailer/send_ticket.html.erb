@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Here's your ticket, <%= @user.full_name %></h1>
+        <div class="card-body">
+          <% if @user_ticket.qrcode.attached? %>
+            <%= cl_image_tag(@user_ticket.qrcode.key, width: 600, height: 600, alt: "QR code for user_ticket") %>
+          <% end %>
+        </div>
+    <p>Thanks for joining and have a great day!</p>
+  </body>
+</html>
