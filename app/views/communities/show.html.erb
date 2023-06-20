@@ -8,6 +8,8 @@
           <h5 class="card-title"><strong><span style="color: white;">You are the <%= current_user.role_of_this(@community) %> of this community.</span></strong></h5>
         <% end %>
         <%= link_to "Go to the community dashboard", dashboard_path(@community), class: "btn btn-light" %>
+        <br> <input type="file" accept="image/*" capture="camera">
+
       </div>
     </div>
   </div>
@@ -53,7 +55,7 @@
 <hr>
 <h2>Events:</h2>
 <% unless @community.is_public? %>
-  <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) %>
+  <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user.admin?) %>
     <div class="row">
       <% @events.each do |event| %>
         <div class="col-lg-3 my-3">

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
 resources :tickets, only: [:edit, :update] do
-  resources :user_tickets, only: [:index, :show, :new, :create, :destroy]
+  resources :user_tickets, only: [:index, :show, :new, :create, :destroy, :update]
 end
 
   patch "make-moderator", to: "community_users#make_moderator", as: :make_moderator
