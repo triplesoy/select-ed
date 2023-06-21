@@ -16,6 +16,8 @@ resources :tickets, only: [:edit, :update] do
 end
 
   patch "make-moderator", to: "community_users#make_moderator", as: :make_moderator
+  patch "remove-moderator", to: "community_users#remove_moderator", as: :remove_moderator
+
   # post "create/user_ticket", to: "Usertickets#create", as: :create_user_ticket
   get "my_communities", to: "communities#my_communities", as: :my_communities
   get "my_events", to: "events#my_events", as: :my_events
