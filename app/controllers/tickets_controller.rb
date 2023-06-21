@@ -40,7 +40,7 @@ class TicketsController < ApplicationController
   end
 
   def edit
-    raise
+    #raise
     @community = @event.community
     authorize @ticket
   end
