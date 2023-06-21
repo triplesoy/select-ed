@@ -33,7 +33,7 @@ class UserTicketsController < ApplicationController
     ##QR CODEexit
 
         link = validation_page_url(ticket_id: @ticket.id, id: @user_ticket.user.id)
-        
+
         qrcode = RQRCode::QRCode.new(link)
         png = qrcode.as_png(
           bit_depth: 1,
@@ -45,7 +45,7 @@ class UserTicketsController < ApplicationController
           module_px_size: 6,
           resize_exactly_to: false,
           resize_gte_to: false,
-          size: 480
+          size: 680
         )
         ##Using MiniMagick to resize the QR code and place it on the venue image
 

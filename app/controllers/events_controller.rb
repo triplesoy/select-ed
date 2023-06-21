@@ -26,6 +26,10 @@ class EventsController < ApplicationController
         # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
 
     end
+
+    #@ticket = @event.ticket
+    #@user_ticket = @event.ticket.user_ticket
+
   end
 
 
@@ -61,8 +65,8 @@ class EventsController < ApplicationController
   end
 
   def my_events
-    @my_events = current_user.events
-    authorize @my_events
+    @my_events = current_user.events_going_to
+    @my_events.each { |event| authorize event}
   end
 
   def events_owned
