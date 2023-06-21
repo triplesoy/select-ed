@@ -33,7 +33,7 @@ class UserTicketsController < ApplicationController
     ##QR CODEexit
 
         link = validation_page_url(ticket_id: @ticket.id, id: @user_ticket.user.id)
-        
+
         qrcode = RQRCode::QRCode.new(link)
         png = qrcode.as_png(
           bit_depth: 1,
@@ -99,8 +99,8 @@ class UserTicketsController < ApplicationController
         c.fill 'white'
       end
 
-      result.write("composite_image.png")
-      @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
+      # result.write("composite_image.png")
+      # @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
 
       if @user_ticket.save!
         UserTicketMailer.with(user: @user_ticket.user, user_ticket: @user_ticket).send_ticket.deliver_later
