@@ -3,7 +3,22 @@
     <h1 class="mb-3">New scan</h1>
     <h5 class="card-title font-weight-bold mb-3">Open your smartphone camera with this button</h5>
     <p class="card-text mb-3">
-      <input type="file" accept="image/*" capture="camera">
+
+      <input type="file" accept="image/*" capture="capture">
     </p>
   </div>
 </div>
+
+Test
+<!-- Suggest using the user-facing camera -->
+<input type="file" accept="image/*" capture="user"><br>
+<!-- Suggest using the environment-facing camera -->
+<input type="file" accept="image/*" capture="environment">><br>
+<!-- No preference -->
+<input type="file" accept="image/*" capture>><br>
+<input type="file" accept="image/*" capture="camera">
+you can also try
+<input type="file" accept="image/*" capture="capture">
+or
+<input type="file" accept="image/*;capture=camera">
+

@@ -1,4 +1,58 @@
 <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 mt-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Community dashboard</h5>
+            <p class="card-text">
+              Manage join membership requests<br>
+              View users history<br>
+              Set moderator permissions<br>
+              <%= link_to "Go to the community dashboard", dashboard_path(@community), class: "btn btn-outline-dark" %>
+            </p>
+          </div>
+        </div>
+      </div>
+      <% if current_user.admin || @community.user == current_user  %>
+        <div class="col-sm-4 mt-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Community settings</h5>
+              <p class="card-text text-center">
+                <% if policy(@community).new? %>
+                  <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary" %></li>
+                <br>
+              <% end %>
+              <% if policy(@community).edit? %>
+                <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning" %></li>
+              <br>
+            <% end %>
+            <% if policy(@community).destroy? %>
+              <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger" %></li>
+            <br>
+          <% end %>
+        </p>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  <div class="col-sm-4 mt-4">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Community stat</h5>
+        <p class="card-text">
+          Members in community : <%= @community.users.count %><br>
+          Since this week: <%= @community.community_users.where("created_at > ?", Date.current.beginning_of_week).count %> <br>
+          Events created: <%= @community.events.count %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<% end %>
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container-fluid">
     <div class="card text-white bg-dark shadow mb-1" style="width: 100vw;">
       <div class="card-body text-center">
