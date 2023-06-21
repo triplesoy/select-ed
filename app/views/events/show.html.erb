@@ -27,9 +27,12 @@
                   data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
               <%# end %>
             <% end %>
-            <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              Get Ticket
-            </button>
+            <% #raise %>
+            <% unless current_user.events_going_to.map(&:id).include?(params[:id].to_i) %>
+                <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Get Ticket
+                </button>
+            <% end %>
           </div>
         </div>
       </div>
