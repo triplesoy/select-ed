@@ -95,7 +95,22 @@
   <li>Is visible? <%= @community.is_visible %></li>
 </ul>
 <hr>
-<h2>Events:</h2><% unless @community.public? %>
+<h2>Events:</h2>
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+  <% if @community.events.present? %>
+    <div class="btn-group">
+      <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Event dashboad quick access
+      </button>
+      <ul class="dropdown-menu">
+        <% @community.events.last(5).each do |event| %>
+          <li> <%= link_to event.title, event_dashboard_path(@community, event), class: "dropdown-item" %> </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>
+<% unless @community.public? %>
   <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
     <% if @community.events.present? %>
       <div class="row">
@@ -144,7 +159,6 @@
     There are no events in this community yet.
   <% end %>
 <% end %>
-
 </ul>
 <hr>
 <%= link_to "Back", communities_path %>
