@@ -1,11 +1,10 @@
 class User < ApplicationRecord
-  has_many :tickets
-  has_many :events
   has_many :user_tickets
-  has_many :my_events, through: :user_tickets, source: :event
-  has_many :communities
+  has_many :tickets, through: :user_tickets
+  has_many :my_events, through: :tickets, source: :event
   has_many :community_users
-  has_many :community_join_requests
+  has_many :communities, through: :community_users
+  has_many :community_join_requests, through: :communities
   has_many :my_communities, through: :community_join_requests, source: :community
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

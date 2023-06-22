@@ -57,7 +57,6 @@ def remove_moderator
   end
 end
 
-
   def update
     authorize @community_user
     if @community_user.update(community_user_params)
@@ -73,6 +72,7 @@ end
       redirect_to dashboard_path(@community), alert: 'Admin user cannot be removed.'
     else
       @community_user.destroy
+      CommunityJoinRequest.find_by(user: @community_user.user, community: @community).destroy
       redirect_to dashboard_path(@community), notice: 'Community user successfully removed.'
     end
   end

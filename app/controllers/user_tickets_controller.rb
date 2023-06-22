@@ -6,6 +6,7 @@ class UserTicketsController < ApplicationController
   end
 
   def show
+    @community = @ticket.event.community
     @event = @ticket.event
     authorize @user_ticket
 
