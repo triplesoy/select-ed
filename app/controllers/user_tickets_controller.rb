@@ -26,11 +26,12 @@ class UserTicketsController < ApplicationController
   def create
     @user_ticket = UserTicket.new(ticket: @ticket)
     @user_ticket.user = current_user
-    @ticket.update(quantity: @ticket.quantity - 1)
+    authorize @user_ticket
     @event = @ticket.event
     @community = @event.community
 
     if @user_ticket.save!
+      @ticket.update(quantity: @ticket.quantity - 1)
     ##QR CODEexit
 
         link = validation_page_url(ticket_id: @ticket.id, id: @user_ticket.user.id)
@@ -112,8 +113,6 @@ class UserTicketsController < ApplicationController
     else
       render :new, status: :unprocessable_entity, alert: "Failed to buy the tickets."
     end
-
-    authorize @user_ticket
   end
 
   def edit
