@@ -45,7 +45,7 @@ class UserTicketsController < ApplicationController
           module_px_size: 6,
           resize_exactly_to: false,
           resize_gte_to: false,
-          size: 480
+          size: 680
         )
         ##Using MiniMagick to resize the QR code and place it on the venue image
 

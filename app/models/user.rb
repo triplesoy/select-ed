@@ -45,4 +45,8 @@ class User < ApplicationRecord
     return "owner" if community.user == self
     self.community_users.find_by(community: community).role if self.community_users.find_by(community: community)
   end
+
+  def events_going_to
+    user_tickets.map(&:ticket).map(&:event)
+  end
 end
