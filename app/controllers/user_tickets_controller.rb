@@ -45,7 +45,7 @@ class UserTicketsController < ApplicationController
           module_px_size: 6,
           resize_exactly_to: false,
           resize_gte_to: false,
-          size: 680
+          size: 480
         )
         ##Using MiniMagick to resize the QR code and place it on the venue image
 
@@ -99,8 +99,8 @@ class UserTicketsController < ApplicationController
         c.fill 'white'
       end
 
-      # result.write("composite_image.png")
-      # @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
+      result.write("composite_image.png")
+      @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
 
       if @user_ticket.save!
         UserTicketMailer.with(user: @user_ticket.user, user_ticket: @user_ticket).send_ticket.deliver_later
