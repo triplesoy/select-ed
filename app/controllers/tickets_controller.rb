@@ -40,12 +40,22 @@ class TicketsController < ApplicationController
   end
 
   def edit
-    #raise
     @community = @event.community
-    authorize @ticket
+    # authorize @ticket
+    @ticket.each { |ticket| authorize ticket }
   end
 
   def update
+    @free_ticket  = @event.tickets.find_by(model: 'free')
+    @free_ticket.update(quantity: params["ticket_details"]["free"]["quantity"].to_i)
+    @vip_ticket     = @event.tickets.find_by(model: 'vip')
+    @vip_ticket.update(quantity: params["ticket_details"]["vip"]["quantity"].to_i)
+    @regular_ticket = @event.tickets.find_by(model: 'regular')
+    @regular_ticket.update(quantity: params["ticket_details"]["regular"]["quantity"].to_i)
+    authorize @free_ticket
+    authorize @regular_ticket
+    authorize @vip_ticket
+    redirect_to community_event_path(@event.community, @event), notice: "You have successfully updated the tickets!"
   end
 
   def destroy
@@ -57,7 +67,7 @@ class TicketsController < ApplicationController
   private
 
   def ticket_params
-    params.require(:event).permit(:user_id, :event_id, :status)
+    params.require(:event).permit(:user_id, :event_id, :status, :price, :quantity)
   end
 
   def set_event
