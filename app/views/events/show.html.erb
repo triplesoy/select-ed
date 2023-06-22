@@ -10,7 +10,6 @@
                 <li> View users history<br>
                   <li> Set moderator permissions<br>
                     <%= link_to "Go to the event dashboard", event_dashboard_path(@event), class: "btn btn-outline-dark" %>
-                    <%= link_to "Edit Tickets", edit_ticket_path(@community, @event), class: "btn btn-warning btn-sm" %>
                     <%= link_to "Edit events", edit_ticket_path(@community, @event), class: "btn btn-warning btn-sm" %>
                   </p>
                 </div>
@@ -32,7 +31,6 @@
                       <h5 class="card-text"><%= @event.description %></h5>
                       <p class="card-text"><%= @event.start_time %></p>
                       <p class="card-text"><%= @event.end_time %></p>
-
 
                       <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         Get Ticket
@@ -75,9 +73,9 @@
                         <% @event.tickets.each do |t| %>
                           <div>
                             <h2><%= t.model %></h2>
-                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-primary" do %>
-                              Buy
-                            <% end %>
+                              <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-primary #{"disabled btn-warning" if t.quantity == 0}" do %>
+                                <%= t.quantity > 0 ? "Buy" : "Sold out" %>
+                              <% end %>
                           </div>
                           <p>Tickets available: <%= t.quantity %></p>
                         <% end %>

@@ -4,30 +4,32 @@
       <div class="sticky-top">
         <div class="bg-white rounded p-3 shadow m-3">
           <h2>Edit Ticket Details</h2>
-          <%= form_with url: ticket_path, method: :patch, class: "form", data: { controller: "ticket-update" } do |form|%>
-            <%= form.fields_for :ticket_details, index: nil do |ticket_fields| %>
+          <%= simple_form_for @ticket, method: :patch, data: {turbo:false} do |form| %>
+            <% if @ticket.model == "free" %>
               <div class="mb-3">
                 <%= form.label :name, "Free tickets" %>
                 <% time = Time.now %>
-                <%= ticket_fields.number_field :quantity, name: 'ticket_details[free][quantity]', placeholder: time, class: "form-control m-2" %>
+                <%= form.number_field :quantity, placeholder: time, class: "form-control m-2" %>
               </div>
+              <% elsif @ticket.model == "regular" %>
               <div class="mb-3">
                 <%= form.label :quantity, "Regular Admission tickets" %>
                 <div class="d-flex">
-                  <%= ticket_fields.number_field :quantity, name: 'ticket_details[regular][quantity]', placeholder: 'Quantity', class: "form-control m-2" %>
-                  <%= ticket_fields.number_field :price, name: 'ticket_details[regular][price]', placeholder: 'price', class: "form-control m-2" %>
+                  <%= form.number_field :quantity, placeholder: 'Quantity', class: "form-control m-2" %>
+                  <%= form.number_field :price, placeholder: 'price', class: "form-control m-2" %>
                 </div>
               </div>
+              <% elsif @ticket.model == "vip" %>
               <div class="mb-3">
                 <%= form.label :quantity, "Vip" %>
                 <div class="d-flex">
-                  <%= ticket_fields.text_field :quantity, name: 'ticket_details[vip][quantity]', placeholder: 'Quantity', class: "form-control m-2" %>
-                  <%= ticket_fields.text_field :code, name: 'ticket_details[vip][r_code]', placeholder: 'redeem code', class: "form-control m-2" %>
+                  <%= form.text_field :quantity, placeholder: 'Quantity', class: "form-control m-2" %>
+                  <%= form.text_field :r_code, placeholder: 'redeem code', class: "form-control m-2" %>
                 </div>
               </div>
+              <% end %>
+              <%= form.submit "Update Ticket", class: "btn btn-outline-dark" %>
             <% end %>
-            <%= form.submit "Update Ticket", class: "btn btn-outline-dark" %>
-          <% end %>
         </div>
       </div>
     </div>
