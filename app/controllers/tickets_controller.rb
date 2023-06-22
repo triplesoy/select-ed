@@ -54,6 +54,9 @@ class TicketsController < ApplicationController
     authorize @ticket
   end
 
+
+
+
   private
 
   def ticket_params

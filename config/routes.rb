@@ -24,6 +24,9 @@ end
   get "my_tickets", to: "user_tickets#my_user_tickets", as: :my_tickets
   get "events_owned", to: "events#events_owned", as: :events_owned
   get "communities/:id/dashboard", to: "communities#dashboard", as: :dashboard
+
+  get "communities/:community_id/events/:id/event_dashboard", to: "events#event_dashboard", as: :event_dashboard
+  
   get "user_tickets/:id/confirmation", to: "user_tickets#confirmation", as: :confirmation_page
   get "user_tickets/:id/validation", to: "user_tickets#validation", as: :validation_page
   get "new_scan", to: "user_tickets#new_scan", as: :new_scan

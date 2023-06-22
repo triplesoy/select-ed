@@ -1,6 +1,6 @@
 class CommunityUserPolicy < ApplicationPolicy
   def destroy?
-    !record.role == 'admin' || !record.user.admin || !record.user == user
+    !record.role == 'moderator' || !record.user.admin || !record.user == user
   end
 
   def make_moderator?
