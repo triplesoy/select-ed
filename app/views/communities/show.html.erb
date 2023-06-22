@@ -110,6 +110,7 @@
     </div>
   <% end %>
 <% end %>
+
 <% unless @community.public? %>
   <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
     <% if @community.events.present? %>
