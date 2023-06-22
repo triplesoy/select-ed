@@ -8,4 +8,13 @@ class Ticket < ApplicationRecord
   # def ticket_counter(event)
   #   vip_ticket = se
   # end
+
+  def sold_tickets(event)
+    event.user_tickets.select{ |user_ticket| user_ticket.ticket.model == self.model }.count
+  end
+
+  # def released_tickets
+  #   ticket.quantity +
+  # end
+
 end

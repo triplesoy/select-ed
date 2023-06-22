@@ -33,15 +33,15 @@
                     <h5 class="card-title">Community settings</h5>
                     <p class="card-text text-center">
                       <% if policy(@community).new? %>
-                        <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary" %></li>
+                        <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary my-2" %></li>
                       <br>
                     <% end %>
                     <% if policy(@community).edit? %>
-                      <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning" %></li>
+                      <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning my-2" %></li>
                     <br>
                   <% end %>
                   <% if policy(@community).destroy? %>
-                    <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger" %></li>
+                    <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger my-2" %></li>
                   <br>
                 <% end %>
               </p>
