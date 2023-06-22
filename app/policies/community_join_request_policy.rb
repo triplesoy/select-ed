@@ -11,6 +11,6 @@ class CommunityJoinRequestPolicy < ApplicationPolicy
 
   def destroy?
     # Only admins of the community or the user who created the join request can destroy it
-    record.community.user == user
+    record.community.user == user || user.admin || user.is_moderator_of?(record.community)
   end
 end

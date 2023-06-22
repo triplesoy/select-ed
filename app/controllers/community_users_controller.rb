@@ -9,6 +9,7 @@ class CommunityUsersController < ApplicationController
 
     if @community_user.save
       redirect_to @community, notice: 'User successfully added to the community.'
+      CommunityJoinRequest.find_by(user: @community_user.user, community: @community).destroy
     else
       redirect_to @community, alert: 'Failed to add user to the community.'
     end
@@ -56,9 +57,9 @@ def remove_moderator
   end
 end
 
+
   def update
     authorize @community_user
-
     if @community_user.update(community_user_params)
       redirect_to @community, notice: 'Community user successfully updated.'
     else
@@ -68,12 +69,10 @@ end
 
   def destroy
     authorize @community_user
-
     if @community_user.role == 'admin'
       redirect_to dashboard_path(@community), alert: 'Admin user cannot be removed.'
     else
       @community_user.destroy
-      CommunityJoinRequest.find_by(user: @community_user.user, community: @community).destroy
       redirect_to dashboard_path(@community), notice: 'Community user successfully removed.'
     end
   end

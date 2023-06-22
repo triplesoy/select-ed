@@ -1,0 +1,57 @@
+<h1> <%= @event.title %> event dashboard</h1>
+<hr>
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+  <div class="card">
+    <div class="card-header" id="communityMembersHeading">
+      <h3 class="mb-0">Event statistics</h3>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead class="table-success">
+          <tr>
+            <th scope="col">Tickets for sale</th>
+            <th scope="col">Tickets sold</th>
+            <th scope="col">Remaining tickets</th>
+            <th scope="col">Tickets rejected</th>
+            <th scope="col">Ticket scanned</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @event.tickets.each do |ticket| %>
+            <tr>
+              <td><%= ticket.quantity %></td>
+              <td><%= ticket.quantity %></td>
+              <td><%= ticket.quantity %></td>
+            <% end %>
+            <td><%= @rejected %></td>
+            <td><%= @accepted %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+  <div class="card">
+    <div class="card-header" id="communityMembersHeading">
+      <h3 class="mb-0">Event participants</h3>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead class="table-success">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">User ID</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Age</th>
+            <th scope="col">Nationality</th>
+            <th scope="col">Occupation</th>
+            <th scope="col">Role</th>
+            <th scope="col">Instagram Handle</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <%= link_to "Go back", community_event_path(@event) %>

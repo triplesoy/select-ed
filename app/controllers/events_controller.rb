@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:edit, :update, :show, :destroy]
+  before_action :set_event, only: [:edit, :update, :show, :destroy, :event_dashboard]
   before_action :set_community, only: [:index, :show, :destroy, :edit, :update]
 
   def index
@@ -27,6 +27,10 @@ class EventsController < ApplicationController
       # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
 
     end
+
+    #@ticket = @event.ticket
+    #@user_ticket = @event.ticket.user_ticket
+
   end
 
 
@@ -62,14 +66,37 @@ class EventsController < ApplicationController
   end
 
   def my_events
-    @my_events = current_user.events
-    authorize @my_events
+    @my_events = current_user.events_going_to
+    @my_events.each { |event| authorize event}
   end
 
   def events_owned
     @events_owned = current_user.events
     authorize @events_owned
   end
+
+  def event_dashboard
+    authorize @event
+    @event = Event.find(params[:id])
+    @tickets = @event.tickets
+    @accepted = counter[0]
+    @rejected = counter[1]
+  end
+
+ def counter
+      acc_counter = 0
+      rej_counter = 0
+      @event.tickets do |ticket|
+      if ticket.user_ticket.scanned == 'rejected'
+        rej_counter += 1
+      elsif ticket.user_ticket.scanned == 'accepted'
+        acc_counter += 1
+      end
+      [acc_counter, rej_counter]
+  end
+end
+
+
 
   private
 
@@ -84,4 +111,5 @@ class EventsController < ApplicationController
   def set_event
     @event = Event.find(params[:id])
   end
+
 end
