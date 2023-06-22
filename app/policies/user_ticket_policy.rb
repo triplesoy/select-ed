@@ -36,7 +36,7 @@ class UserTicketPolicy < ApplicationPolicy
   def validation?
 
     record.ticket.event.community.user == user || record.ticket.event.community.community_users.where(user: user, role: "moderator").exists? || user.admin
- 
+
 
 
   end

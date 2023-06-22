@@ -31,10 +31,11 @@
                       <h5 class="card-text"><%= @event.description %></h5>
                       <p class="card-text"><%= @event.start_time %></p>
                       <p class="card-text"><%= @event.end_time %></p>
-
-                      <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        Get Ticket
-                      </button>
+                      <% unless current_user.has_ticket_with_event?(@event) %>
+                        <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                          Get Ticket
+                        </button>
+                      <%end %>
                     </div>
                   </div>
                 </div>

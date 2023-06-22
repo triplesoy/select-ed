@@ -22,7 +22,7 @@ class User < ApplicationRecord
   # validates :occupation, presence: true
 
   def has_ticket_with_event?(event)
-    self.user_tickets.any? { |ticket| ticket.event == event }
+    self.user_tickets.any? { |user_ticket| user_ticket.ticket.event == event }
   end
 
   def full_name
