@@ -14,17 +14,19 @@
             <th scope="col">Remaining tickets</th>
             <th scope="col">Tickets rejected</th>
             <th scope="col">Ticket scanned</th>
+            <th scope="col">Manage</th>
           </tr>
         </thead>
         <tbody>
           <% @event.tickets.each do |ticket| %>
             <tr>
-              <td><%= ticket.quantity %></td>
-              <td><%= ticket.quantity %></td>
-              <td><%= ticket.quantity %></td>
-            <% end %>
+              <td><%= ticket.model %>:<%= ticket.quantity %></td>
+              <td><%= ticket.model %>:<%= ticket.quantity %></td>
+              <td><%= ticket.model %>:<%= ticket.quantity %></td>
             <td><%= @rejected %></td>
             <td><%= @accepted %></td>
+            <td><%= link_to "Edit ticket", edit_ticket_path(ticket), method: :get%></td>
+            <% end %>
           </tr>
         </tbody>
       </table>

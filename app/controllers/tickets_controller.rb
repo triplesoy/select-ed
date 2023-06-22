@@ -1,6 +1,6 @@
 class TicketsController < ApplicationController
-  before_action :set_event, only: [:edit, :update, :show, :destroy]
-  before_action :set_ticket, only: [:edit, :update, :show, :destroy]
+  before_action :set_event, only: [:show, :destroy]
+  before_action :set_ticket, only: [:show, :destroy]
 
   def index
   end
@@ -40,22 +40,17 @@ class TicketsController < ApplicationController
   end
 
   def edit
-    @community = @event.community
-    # authorize @ticket
-    @ticket.each { |ticket| authorize ticket }
+    @ticket = Ticket.find(params[:id])
+    authorize @ticket
+   # @ticket.each { |ticket| authorize ticket }
   end
 
   def update
-    @free_ticket  = @event.tickets.find_by(model: 'free')
-    @free_ticket.update(quantity: params["ticket_details"]["free"]["quantity"].to_i)
-    @vip_ticket     = @event.tickets.find_by(model: 'vip')
-    @vip_ticket.update(quantity: params["ticket_details"]["vip"]["quantity"].to_i)
-    @regular_ticket = @event.tickets.find_by(model: 'regular')
-    @regular_ticket.update(quantity: params["ticket_details"]["regular"]["quantity"].to_i)
-    authorize @free_ticket
-    authorize @regular_ticket
-    authorize @vip_ticket
-    redirect_to community_event_path(@event.community, @event), notice: "You have successfully updated the tickets!"
+    @ticket = Ticket.find(params[:id])
+    @event = @ticket.event
+    @ticket.update(ticket_params)
+    authorize @ticket
+    redirect_to event_dashboard_path(@event.community, @event), notice: "You have successfully updated the tickets!"
   end
 
   def destroy
@@ -85,7 +80,7 @@ class TicketsController < ApplicationController
   private
 
   def ticket_params
-    params.require(:event).permit(:user_id, :event_id, :status, :price, :quantity)
+    params.require(:ticket).permit(:quantity, :r_code, :price)
   end
 
   def set_event
