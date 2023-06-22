@@ -1,5 +1,5 @@
 <h1> <%= @event.title %> event dashboard</h1>
-<%= link_to "Go back to community ", community_path(@event.community) %>
+<%= link_to "Go back to the event ", community_event_path(@event) %>
 <hr>
 <% vip_ticket = @event.tickets.find_by(model: "vip") %>
 <% if vip_ticket && vip_ticket.r_code.present? %>
@@ -28,6 +28,40 @@
             <td><%= @event.total_tickets%></td>
             <td><%=@event.total_tickets_accepted  %></td>
             <td><%= @event.total_tickets_rejected %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<hr>
+
+<div class="card">
+    <div class="card-header" id="communityMembersHeading">
+      <h3 class="mb-0">Tickets breakdown statistics</h3>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead class="table-success">
+          <tr>
+            <th scope="col">Tickets for sale</th>
+            <th scope="col">Tickets sold</th>
+            <th scope="col">Remaining tickets</th>
+            <th scope="col">Tickets rejected</th>
+            <th scope="col">Ticket scanned</th>
+            <th scope="col">Manage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @event.tickets.each do |ticket| %>
+            <tr>
+              <td><%= ticket.model %>:<%= ticket.quantity %></td>
+              <td><%= ticket.model %>:<%= ticket.quantity  %></td>
+              <td><%= ticket.model %>:<%= ticket.quantity   %></td>
+            <td><%= @rejected %></td>
+            <td><%= @accepted %></td>
+            <td><%= link_to "Edit ticket", edit_ticket_path(ticket), method: :get%></td>
+            <% end %>
           </tr>
         </tbody>
       </table>
