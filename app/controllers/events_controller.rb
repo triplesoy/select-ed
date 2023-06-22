@@ -79,22 +79,10 @@ class EventsController < ApplicationController
     authorize @event
     @event = Event.find(params[:id])
     @tickets = @event.tickets
-    @accepted = counter[0]
-    @rejected = counter[1]
   end
 
- def counter
-      acc_counter = 0
-      rej_counter = 0
-      @event.tickets do |ticket|
-      if ticket.user_ticket.scanned == 'rejected'
-        rej_counter += 1
-      elsif ticket.user_ticket.scanned == 'accepted'
-        acc_counter += 1
-      end
-      [acc_counter, rej_counter]
-  end
-end
+
+
 
 
 

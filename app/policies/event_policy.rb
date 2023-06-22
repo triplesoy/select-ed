@@ -42,7 +42,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def event_dashboard?
-    record.community.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.community.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
 end
