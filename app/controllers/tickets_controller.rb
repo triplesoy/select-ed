@@ -65,7 +65,22 @@ class TicketsController < ApplicationController
   end
 
 
+  # def counter
+  # @acc_counter = 0
+  # @rej_counter = 0
+  # @event.ticekts do |ticket|
+  # if ticket.user_ticket.scanned == 'rejected'
+  #   @rej_counter += 1
+  #   elsif == 'pending'
 
+  #   elsif == accepted
+  #     @acc_counter += 1
+  # end
+  # [ac_counter, rej_counter]
+
+  # @accepted = counter[0]
+  # @rejected = counter[1]
+  # end
 
   private
 
