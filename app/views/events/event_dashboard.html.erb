@@ -96,7 +96,14 @@
         </thead>
         <tbody>
           <% @event.participants.each_with_index do |c, index| %>
-            <tr>
+         <% if c.scanned == "accepted"  %>
+         <tr class="table-success">
+         <% elsif c.scanned == "rejected" %>
+         <tr class="table-danger">
+          <% else %>
+          <tr>
+         <% end %>
+
               <td><%= index + 1 %></td>
               <td><%= c.user_id %></td>
               <td><%= c.user.first_name %></td>
@@ -114,7 +121,7 @@
                   <div class="dropdown-menu" aria-labelledby="#dropdown">
                     <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
                     <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
-                    <a class="dropdown-item" href="#">View history</a>
+                        <%= link_to "View history", user_history_path(@event.community, c), class: "dropdown-item" %>
                   </div>
                 </div>
               </td>

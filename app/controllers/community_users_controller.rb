@@ -1,6 +1,6 @@
 class CommunityUsersController < ApplicationController
-  before_action :set_community_user, only: [:update, :destroy]
-  before_action :set_community, only: [:create, :update, :destroy]
+  before_action :set_community_user, only: [:update, :destroy, :user_history]
+  before_action :set_community, only: [:create, :update, :destroy, :user_history]
 
   def create
     @community_user = CommunityUser.new(community_user_params)
@@ -76,6 +76,14 @@ end
       redirect_to dashboard_path(@community), notice: 'Community user successfully removed.'
     end
   end
+
+
+  def user_history
+    authorize @community_user
+    @events = @community_user.events_attended(@community)
+    @community_user = CommunityUser.find(params[:id])
+  end
+
 
   private
 

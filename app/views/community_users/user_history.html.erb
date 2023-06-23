@@ -1,0 +1,54 @@
+<h3>User history</h3>
+
+
+
+
+
+Member since:<br>
+<%= @community_user.created_at.strftime("%B %dst, %Y").sub("st,", ",") %><br>
+
+
+
+
+Events he attended:<br>
+<%= @community.user_tickets.where(user: @community_user.user).count %><br>
+
+
+<hr>
+
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+    <div class="card">
+      <div class="card-header" id="membersRequestsHeading">
+        <h3 class="mb-0">Member events history</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead class="table table-striped table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Date</th>
+              <th scope="col">Event</th>
+              <th scope="col">Attendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @events.each_with_index do |e, index| %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= e.created_at.strftime("%d/%m/%Y") %></td>
+                         <td><%= link_to e.title, community_event_path(@community, e) %> </td>
+
+                <td><%= e.user_tickets.where(scanned: "accepted").exists? ? 'Yes' : 'No' %></td>
+
+
+
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
