@@ -1,5 +1,5 @@
 class TicketsController < ApplicationController
-  before_action :set_event, only: [:show, :destroy]
+  before_action :set_event, only: [:new, :create, :show, :destroy]
   before_action :set_ticket, only: [:show, :destroy]
 
   def index
@@ -9,20 +9,20 @@ class TicketsController < ApplicationController
   end
 
   def new
-    @event = Event.find(params[:event_id])
+
     @ticket = Ticket.new(event: @event)
     authorize @ticket
   end
 
   def create
-    @community = Community.find(params[:community_id])
+    @community = Community.find_by(slug: params[:community_id])
     @free_quantity = params["ticket_details"]["free"]["quantity"]
     @regular_quantity = params["ticket_details"]["regular"]["quantity"]
     @regular_price = params["ticket_details"]["regular"]["price"]
     @vip_quantity = params["ticket_details"]["vip"]["quantity"]
     @vip_r_code = params["ticket_details"]["vip"]["r_code"]
 
-    @event = Event.find(params[:event_id])
+
 
     @free_ticket = Ticket.new(event: @event, model: "free", quantity: @free_quantity, price: 0)
     @regular_ticket = Ticket.new(event: @event, model: "regular", quantity: @regular_quantity, price: @regular_price)
@@ -60,23 +60,6 @@ class TicketsController < ApplicationController
   end
 
 
-  # def counter
-  # @acc_counter = 0
-  # @rej_counter = 0
-  # @event.ticekts do |ticket|
-  # if ticket.user_ticket.scanned == 'rejected'
-  #   @rej_counter += 1
-  #   elsif == 'pending'
-
-  #   elsif == accepted
-  #     @acc_counter += 1
-  # end
-  # [ac_counter, rej_counter]
-
-  # @accepted = counter[0]
-  # @rejected = counter[1]
-  # end
-
   private
 
   def ticket_params
@@ -84,7 +67,8 @@ class TicketsController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.friendly.find(params[:event_id])
+
   end
 
   def set_ticket

@@ -1,4 +1,7 @@
 class Event < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   belongs_to :community
   belongs_to :user
   has_many :tickets

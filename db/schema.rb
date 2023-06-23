@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_23_201005) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "category"
+    t.string "slug"
+    t.index ["slug"], name: "index_communities_on_slug", unique: true
     t.index ["user_id"], name: "index_communities_on_user_id"
   end
 
@@ -91,7 +93,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_224341) do
     t.datetime "updated_at", null: false
     t.float "latitude"
     t.float "longitude"
+    t.string "slug"
     t.index ["community_id"], name: "index_events_on_community_id"
+    t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 

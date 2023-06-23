@@ -35,7 +35,7 @@ class CommunityJoinRequestsController < ApplicationController
   end
 
   def destroy
-    @join_request = CommunityJoinRequest.find(params[:id])
+    @join_request = CommunityJoinRequest.friendly.find(params[:id])
     authorize @join_request
     @join_request.destroy
     redirect_to dashboard_path(@community), notice: 'Member request has been rejected.'
@@ -45,7 +45,7 @@ class CommunityJoinRequestsController < ApplicationController
   private
 
   def set_community
-    @community = Community.find(params[:community_id])
+    @community = Community.friendly.find(params[:community_id])
   end
 
   def community_user
