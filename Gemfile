@@ -14,7 +14,7 @@ gem 'simple-form-datepicker'
 gem "split_datetime"
 
 gem "rails_admin", "3.0"
-
+gem 'flatpickr', '~> 2.3', '>= 2.3.5.0'
 
 gem 'htmlbeautifier'
 

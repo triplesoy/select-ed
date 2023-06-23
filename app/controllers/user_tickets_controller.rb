@@ -47,7 +47,7 @@ class UserTicketsController < ApplicationController
           module_px_size: 6,
           resize_exactly_to: false,
           resize_gte_to: false,
-          size: 480
+          size: 600
         )
         ##Using MiniMagick to resize the QR code and place it on the venue image
 
@@ -56,13 +56,13 @@ class UserTicketsController < ApplicationController
 
       # Resize the background image to a specific size
       bg_width = 1200
-      bg_height = 1200
+      bg_height = 1800
       background.resize "#{bg_width}x#{bg_height}^"
       background.gravity "center"
       background.extent "#{bg_width}x#{bg_height}"
 
       # Resize the QR code to a specific size
-      qr_code_size = 480
+      qr_code_size = 600
       qr_image.resize "#{qr_code_size}x#{qr_code_size}"
 
       # Calculate the position where the QR code should be placed to be centered
@@ -79,8 +79,16 @@ class UserTicketsController < ApplicationController
         c.gravity 'North'
         c.pointsize '80'
         c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
-        c.draw "text 1,80 '#{@community.title}'"
-        c.fill 'white'
+        c.fill 'black'                                 # Set the shadow color to black
+        c.draw "text 2,82 '#{@community.title}'"       # Draw the shadow text with an offset
+      end
+
+      result.combine_options do |c|
+        c.gravity 'North'
+        c.pointsize '80'
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
+        c.fill 'white'                                 # Set the text color to white
+        c.draw "text 1,80 '#{@community.title}'"       # Draw the main text
       end
 
 
@@ -95,10 +103,22 @@ class UserTicketsController < ApplicationController
       # Draw dates at the bottom
       result.combine_options do |c|
         c.gravity 'South'
-        c.pointsize '70'
+        c.pointsize '50'
         c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
         c.draw "text 1,90 '#{current_user.full_name}'"
         c.fill 'white'
+      end
+
+      if @user_ticket.ticket.model == "free"
+        valid_until = @user_ticket.ticket.expire_time.to_datetime.in_time_zone("America/Mexico_City").strftime("%H:%M on %d/%m/%Y")
+
+        result.combine_options do |c|
+          c.gravity 'South'
+          c.pointsize '40'
+          c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
+          c.draw "text 1,20 'VALID UNTIL: #{valid_until}'"
+          c.fill 'white'
+        end
       end
 
       result.write("composite_image.png")
@@ -156,6 +176,10 @@ class UserTicketsController < ApplicationController
 
   def validation
     @user_ticket_name = @user_ticket.user.full_name
+    unless @user_ticket.ticket.expire_time.nil?
+      @user_ticket.update(scanned: "rejected") if @user_ticket.has_expired?
+    end
+
     authorize @user_ticket
   end
 

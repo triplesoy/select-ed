@@ -16,28 +16,31 @@ class TicketsController < ApplicationController
 
   def create
     @community = Community.find(params[:community_id])
-    @free_quantity = params["ticket_details"]["free"]["quantity"]
-    @regular_quantity = params["ticket_details"]["regular"]["quantity"]
-    @regular_price = params["ticket_details"]["regular"]["price"]
-    @vip_quantity = params["ticket_details"]["vip"]["quantity"]
-    @vip_r_code = params["ticket_details"]["vip"]["r_code"]
-
     @event = Event.find(params[:event_id])
 
-    @free_ticket = Ticket.new(event: @event, model: "free", quantity: @free_quantity, price: 0)
-    @regular_ticket = Ticket.new(event: @event, model: "regular", quantity: @regular_quantity, price: @regular_price)
-    @vip_ticket = Ticket.new(event: @event, model: "vip", quantity: @vip_quantity, price: 0, r_code: @vip_r_code)
+    @free_ticket = Ticket.new(event: @event, model: "free", price: 0)
+    @regular_ticket = Ticket.new(event: @event, model: "regular")
+    @vip_ticket = Ticket.new(event: @event, model: "vip", price: 0)
 
-    if @free_ticket.save && @regular_ticket.save && @vip_ticket.save
-      redirect_to community_path(@community), alert: "You have successfully created the event!"
-    else
-      render :new, status: :unprocessable_entity, alert: "Failed to create the tickets."
-    end
+    @free_ticket.quantity = params["ticket_details"]["free"]["quantity"]
+    @free_ticket.expire_time = params["ticket_details"]["free"]["expire_time"]
+    @regular_ticket.quantity = params["ticket_details"]["regular"]["quantity"]
+    @regular_ticket.price = params["ticket_details"]["regular"]["price"]
+    @vip_ticket.quantity = params["ticket_details"]["vip"]["quantity"]
+    @vip_ticket.r_code = params["ticket_details"]["vip"]["r_code"]
 
     authorize @free_ticket
     authorize @regular_ticket
     authorize @vip_ticket
+
+    if @free_ticket.save && @regular_ticket.save && @vip_ticket.save
+      @free_ticket.expire_time = @free_ticket.expire_time.to_datetime.in_time_zone("America/Mexico_City")
+      redirect_to community_path(@community), alert: "You have successfully created the event!"
+    else
+      render :new, status: :unprocessable_entity, alert: "Failed to create the event."
+    end
   end
+
 
   def edit
     @ticket = Ticket.find(params[:id])
@@ -57,6 +60,20 @@ class TicketsController < ApplicationController
     @ticket.destroy
     redirect_to community_path(@community), status: :see_other
     authorize @ticket
+  end
+
+  def redeem
+    @ticket = Ticket.find(params[:id])
+    authorize @ticket
+    if params[:code] == @ticket.r_code
+      respond_to do |format|
+        format.json { render json: { code: @ticket.r_code } }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { error: "wrong code" } }
+      end
+    end
   end
 
 
@@ -80,7 +97,7 @@ class TicketsController < ApplicationController
   private
 
   def ticket_params
-    params.require(:ticket).permit(:quantity, :r_code, :price)
+    params.require(:ticket).permit(:quantity, :r_code, :price, :expire_time)
   end
 
   def set_event

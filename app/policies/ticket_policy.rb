@@ -25,4 +25,8 @@ class TicketPolicy < ApplicationPolicy
     true
   end
 
+  def redeem?
+    true
+  end
+
 end

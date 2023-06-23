@@ -45,7 +45,11 @@ class EventsController < ApplicationController
     @event.community = Community.find(params[:community_id])
     @community = Community.find(params[:community_id])
     @event.user = current_user
-    redirect_to new_community_event_ticket_path(@community, @event) if @event.save!
+    if @event.save!
+      @event.update(start_time: @event.start_time.to_datetime.in_time_zone("America/Mexico_City"))
+      @event.update(end_time: @event.end_time.to_datetime.in_time_zone("America/Mexico_City"))
+      redirect_to new_community_event_ticket_path(@community, @event)
+    end
     authorize @event
   end
 
