@@ -7,6 +7,7 @@
               <div class="mb-3">
                 <%= form.label :name, "Free tickets" %>
                 <%= ticket_fields.text_field :quantity, name: 'ticket_details[free][quantity]', placeholder: 'Quantity', class: "form-control m-2" %>
+                <%= ticket_fields.datetime_field :expire_time, name: "'ticket_details[free][expire_time]'", class: "form-control m-2", required: true %>
               </div>
               <div class="mb-3">
                 <%= form.label :quantity, "Regular Admission tickets" %>
