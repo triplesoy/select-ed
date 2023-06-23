@@ -11,10 +11,10 @@
       </div>
     </div>
     <div class="col-lg-6 col-md-6 my-4">
-      <div class="card h-100 border border-2 border-gray shadow">
+      <div class="card h-200 border border-2 border-gray shadow">
         <div class="card-body">
           <% if @user_ticket.qrcode.attached? %>
-            <%= cl_image_tag(@user_ticket.qrcode.key, width: 600, height: 600, alt: "QR code for user_ticket") %>
+            <%= link_to cl_image_tag(@user_ticket.qrcode.key, width: 600, height: 900, alt: "QR code for user_ticket"), cl_image_path(@user_ticket.qrcode.key), target: "_blank" %>
           <% end %>
         </div>
       </div>

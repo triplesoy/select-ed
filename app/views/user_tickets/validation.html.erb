@@ -13,7 +13,11 @@
         <%= link_to "Reject", ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger ml-2" %>
       </div>
     <% elsif @user_ticket.scanned == "accepted" || @user_ticket.scanned == "rejected" %>
-      <h5 class="card-title font-weight-bold text-danger mb-3"><b>WARNING:</b> <br> This ticket was already scanned and <%= @user_ticket.scanned %></h5>
+      <% if @user_ticket.has_expired? %>
+        <h5 class="card-title font-weight-bold text-danger mb-3"><b>WARNING:</b> <br> This ticket has expired!</h5>
+      <% else %>
+        <h5 class="card-title font-weight-bold text-danger mb-3"><b>WARNING:</b> <br> This ticket was already scanned and <%= @user_ticket.scanned %></h5>
+      <% end %>
       <h6 class="card-subtitle mb-2 text-body-secondary"><i><%= "#{time_ago_in_words(@user_ticket.updated_at)} ago" %></i></h6>
       <p class="card-text">
         <hr>
