@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+
+  require 'uri'
+
+
   has_many :user_tickets
   has_many :tickets, through: :user_tickets
   has_many :my_events, through: :tickets, source: :event
@@ -12,13 +16,18 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_one_attached :avatar
 
-  # validates :first_name, presence: true
-  # validates :last_name, presence: true
-  # validates :birthdate, presence: true
+   validates :first_name, presence: true
+   validates :last_name, presence: true
+  validates :birthdate, presence: true
   # validates :address, presence: true
-  # validates :country, presence: true
-  # validates :instagram_handle, presence: true
-  # validates :occupation, presence: true
+   validates :country, presence: true
+   validates :instagram_handle, presence: true
+   validates :occupation, presence: true
+
+  before_validation :sanitize_instagram_handle
+
+  validates :instagram_handle, format: { with: /\A[a-z0-9_.]{1,30}\Z/i, message: "is not a valid Instagram handle" }
+
 
   def has_ticket_with_event?(event)
     self.user_tickets.any? { |user_ticket| user_ticket.ticket.event == event }
@@ -48,4 +57,11 @@ class User < ApplicationRecord
   def events_going_to
     user_tickets.map(&:ticket).map(&:event)
   end
+
+  def sanitize_instagram_handle
+    uri = URI.parse(instagram_handle)
+    self.instagram_handle = uri.path.gsub('/', '') if uri.host&.include?('instagram.com')
+  rescue URI::InvalidURIError
+  end
+
 end

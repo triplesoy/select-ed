@@ -1,6 +1,7 @@
 .navbar-lewagon {
   justify-content: space-between;
-  background: white;
+  background: black;
+  color: white !important;
   z-index: 6000;
 }
 
@@ -10,4 +11,19 @@
 
 .navbar-lewagon .navbar-brand img {
   width: 40px;
+}
+
+.logo {
+  width: 175px !important;
+  height: auto;
+}
+
+.logo-align {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.nav-text {
+  color: #E3CCAE !important;;
 }
