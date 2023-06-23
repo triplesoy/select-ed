@@ -13,37 +13,29 @@ class EventsController < ApplicationController
   end
 
   def show
-    @events = Event.where(id: params[:id])
-    @ticket = Ticket.where(id: params[:id])
-    #@tickets = @events.tickets
-    @markers = @events.geocoded.map do |event|
-      {
-        lat: event.latitude,
-        lng: event.longitude
-      }
-    end
+    @ticket = Ticket.find_by(id: params[:id])
+    @markers = [{
+      lat: @event.latitude,
+      lng: @event.longitude
+    }]
     authorize @event
+
     unless @event.user == current_user
-      # redirect_to communities_path, status: :see_other, alert: "You are not authorized to see this booking"
-
+      # Redirect or handle unauthorized access here
     end
-
-    #@ticket = @event.ticket
-    #@user_ticket = @event.ticket.user_ticket
-
   end
 
 
   def new
-    @community = Community.find(params[:community_id])
+    @community = Community.friendly.find(params[:community_id])
     @event = Event.new(community: @community)
     authorize @event
   end
 
   def create
     @event = Event.new(event_params)
-    @event.community = Community.find(params[:community_id])
-    @community = Community.find(params[:community_id])
+    @event.community = Community.friendly.find(params[:community_id])
+    @community = Community.friendly.find(params[:community_id])
     @event.user = current_user
     if @event.save!
       @event.update(start_time: @event.start_time.to_datetime.in_time_zone("America/Mexico_City"))
@@ -81,7 +73,7 @@ class EventsController < ApplicationController
 
   def event_dashboard
     authorize @event
-    @event = Event.find(params[:id])
+    @event = Event.friendly.find(params[:id])
     @tickets = @event.tickets
   end
 
@@ -101,7 +93,7 @@ class EventsController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.friendly.find(params[:id])
   end
 
 end

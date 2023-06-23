@@ -54,7 +54,7 @@
           <div class="card-body">
             <h5 class="card-title">Community stats</h5>
             <p class="card-text">
-              Members in community : <%= @community.users.count %><br>
+Members in community: <%= @community.members.count %><br>
               Since this week: <%= @community.community_users.where("created_at > ?", Date.current.beginning_of_week).count %> <br>
               Events created: <%= @community.events.count %>
             </p>

@@ -129,6 +129,8 @@ GEM
     flatpickr (2.3.5.0)
     font-awesome-sass (6.4.0)
       sassc (~> 2.0)
+    friendly_id (5.4.2)
+      activerecord (>= 4.0.0)
     geocoder (1.8.1)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -335,6 +337,7 @@ DEPENDENCIES
   dotenv-rails
   flatpickr (~> 2.3, >= 2.3.5.0)
   font-awesome-sass (~> 6.1)
+  friendly_id (~> 5.4.0)
   geocoder
   htmlbeautifier
   jbuilder

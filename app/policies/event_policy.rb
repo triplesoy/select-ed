@@ -22,7 +22,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def edit?
-    record.community.user == user
+    record.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def update?
@@ -30,15 +30,16 @@ class EventPolicy < ApplicationPolicy
   end
 
   def destroy?
-    record.community.user == user
+    edit?
   end
 
   def my_events?
-    true
+    record.users.include?(user)
   end
 
+
   def events_owned?
-    true
+    record.user == user
   end
 
   def event_dashboard?
