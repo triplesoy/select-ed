@@ -1,6 +1,8 @@
 class Community < ApplicationRecord
   belongs_to :user
   has_many :events
+  has_many :tickets, through: :events
+  has_many :user_tickets, through: :tickets
   has_many :community_users
   has_many :users, through: :community_users
   has_many :community_join_requests
