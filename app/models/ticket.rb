@@ -4,7 +4,7 @@ class Ticket < ApplicationRecord
   belongs_to :event
   has_many :user_tickets
   has_many :users, through: :user_tickets
-
+  validates :quantity, presence: true
   # def ticket_counter(event)
   #   vip_ticket = se
   # end

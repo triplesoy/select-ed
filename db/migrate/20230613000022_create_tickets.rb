@@ -3,7 +3,7 @@ class CreateTickets < ActiveRecord::Migration[7.0]
     create_table :tickets do |t|
       t.string :model
       t.integer :price
-      t.integer :quantity
+      t.integer :quantity, default: 0
       t.string :r_code
       t.references :event, null: false, foreign_key: true
 

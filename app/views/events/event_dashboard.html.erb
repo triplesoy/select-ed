@@ -61,7 +61,7 @@
           <tbody>
             <% @event.tickets.each do |ticket| %>
               <tr>
-                <td><%= ticket.model.capitalize %>:</td>
+                <td><%= ticket.model.capitalize %></td>
                 <td><%= ticket.quantity + ticket.sold_tickets(ticket.event)%></td>
                 <td><%= ticket.sold_tickets(ticket.event)  %></td>
                 <td><%= ticket.quantity  %></td>
