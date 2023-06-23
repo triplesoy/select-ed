@@ -7,11 +7,8 @@ class UserTicket < ApplicationRecord
   has_one_attached :photo
   has_one_attached :qrcode
 
-  def scan_color
-    case scanned
-    when "accepted" then "green"
-    when "rejected" then "red"
-    else "yellow"
-    end
-  end
+
+  def has_expired?
+    expiration_time = self.ticket.expire_time + 10.minutes
+    expiration_time < DateTime.now  end
 end

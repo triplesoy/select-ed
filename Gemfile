@@ -15,7 +15,9 @@ gem "split_datetime"
 
 gem "rails_admin", "3.0"
 
+
 gem 'friendly_id', '~> 5.4.0'
+
 
 
 gem 'htmlbeautifier'
