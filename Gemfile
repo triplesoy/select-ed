@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-gem "geocoder"
+
 ruby "3.1.2"
 gem "pundit"
 gem "rqrcode"
@@ -16,7 +16,6 @@ gem "split_datetime"
 gem "rails_admin", "3.0"
 
 gem 'friendly_id', '~> 5.4.0'
-
 
 gem 'htmlbeautifier'
 
