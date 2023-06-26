@@ -121,9 +121,9 @@ Members in community: <%= @community.members.count %><br>
   <% if @community.events.present? %>
     <div class="btn-group">
       <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Event dashboad quick access
+        Event dashboard quick access
       </button>
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu custom-dropdown-menu">
         <% @community.events.last(5).each do |event| %>
           <li> <%= link_to event.title, event_dashboard_path(@community, event), class: "dropdown-item" %> </li>
         <% end %>
@@ -131,6 +131,7 @@ Members in community: <%= @community.members.count %><br>
     </div>
   <% end %>
 <% end %>
+
 
 <% unless @community.public? %>
   <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
