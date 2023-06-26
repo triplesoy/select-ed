@@ -9,8 +9,9 @@ class Community < ApplicationRecord
   has_many :user_tickets, through: :tickets
   has_many :community_users
   has_many :members, through: :community_users, source: :user
-  has_many :community_join_requests
+  has_many :community_join_requests, dependent: :destroy
   has_many :join_request_users, through: :community_join_requests, source: :user
+
 
 
 
@@ -19,7 +20,7 @@ class Community < ApplicationRecord
   validates :category, presence: true, on: :create
   validates :country, presence: true, on: :create
   validates :city, presence: true, on: :create
-  validates :title, uniqueness: true, on: :create
+  validates :title, uniqueness: { case_sensitive: false }, on: :create
   # validates :photos, presence: true, on: :create
   validates :is_visible, presence: true, on: :create
 
@@ -28,7 +29,7 @@ class Community < ApplicationRecord
 
 
   def pending_community_join_requests
-    CommunityJoinRequest.where(community: self, status: "pending")
+    community_join_requests.where(status: "pending")
   end
 
   def moderator
