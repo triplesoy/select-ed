@@ -87,22 +87,22 @@
                   <td><%= c.role %></td>
                   <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
                   <td>
-                    <div class="btn-group dropdown">
+                    <div class="btn-group">
                       <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
                         Select
                       </button>
-                      <div class="dropdown-menu" aria-labelledby="#dropdown-<%= c.id %>">
-                        <%= link_to "View history", user_history_path(@community, c), class: "dropdown-item" %>
+                      <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="#dropdown-<%= c.id %>">
+                        <%= link_to "View history", user_history_path(@community, c), class: "dropdown-item " %>
                         <% if c.role != "admin" && !c.user.admin  %>
                           <% if c.role != "moderator"%>
-                            <%= link_to "Set as moderator", make_moderator_path(id: c.id), data: {turbo_method: :patch}, class: "dropdown-item"%>
+                            <%= link_to "Set as moderator", make_moderator_path(id: c.id), data: {turbo_method: :patch}, class: "dropdown-item "%>
                           <% else %>
-                            <%= link_to "Revoke moderator", remove_moderator_path(id: c.id), data: {turbo_method: :patch}, class: "dropdown-item"%>
+                            <%= link_to "Revoke moderator", remove_moderator_path(id: c.id), data: {turbo_method: :patch}, class: "dropdown-item "%>
                           <% end %>
                         <% end %>
                         <% unless c.role == "moderator" %>
                           <div class="dropdown-divider"></div>
-                          <%= link_to "Delete user", community_community_user_path(@community, c), data: {turbo_method: :delete, turbo_confirm: "Are you sure you want to remove the user from the community?"}, class: "dropdown-item", method: :delete %>
+                          <%= link_to "Delete user", community_community_user_path(@community, c), data: {turbo_method: :delete, turbo_confirm: "Are you sure you want to remove the user from the community?"}, class: "dropdown-item ", method: :delete %>
                         <% end %>
                       </div>
                     </div>
