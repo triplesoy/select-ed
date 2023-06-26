@@ -10,6 +10,11 @@ gem "geocoder"
 gem "mapbox-sdk"
 gem "cloudinary"
 
+gem 'countries'
+
+
+
+
 gem 'simple-form-datepicker'
 gem "split_datetime"
 
@@ -95,4 +100,3 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
-gem "sassc-rails"

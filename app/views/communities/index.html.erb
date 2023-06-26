@@ -1,16 +1,20 @@
 <div class="container">
   <p>Existing communities:</p>
-  <div class="row">
-    <% @communities.each do |community| %>
-      <div class="col-md-4">
-        <div class="card mb-3 border-0" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); border-radius: 10px; object-fit: cover;">
-          <% if community.photos.attached? %>
-            <img src="<%= cl_image_path community.photos.first.key %>" alt="" class="card-img-top" style="border-radius: 10px 10px 0px 0px;">
-          <% end %>
-          <%# <img src="https://images.unsplash.com/photo-1477862096227-3a1bb3b08330?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60" alt="" class="card-img-top" style="border-radius: 10px 10px 0px 0px;"> %>
-          <div class="card-body">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item d-flex justify-content-center mb-2"><%= link_to community.title, community_path(community) %></li>
+  <div class="row justify-content-center">
+    <% sorted_communities = @communities.sort_by(&:created_at) %>
+    <% sorted_communities.each do |community| %>
+      <% if community.is_visible? %>
+        <div class="col-md-6">
+          <div class="card mb-3 border-0" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px; object-fit: cover;">
+            <% if community.photos.attached? %>
+              <div class="image-container" style="width: 100%; height: 250px; background-image: url('<%= cl_image_path community.photos.first.key %>'); background-size: cover; background-position: top;"></div>
+            <% end %>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <div class="snippet" style="margin-right: 10px; text-align: left;">
+                  <%= link_to community.title, community_path(community), style: "text-decoration: none; color: inherit; font-weight: bold; font-size: 26px;" %>
+                </li>
+              </li>
               Community type:
               <% if community.public? %>
                 Public<span class="btn btn-outline-dark"><b>Join now!</b></span>
@@ -19,11 +23,31 @@
               <% end %>
             </ul>
           </div>
+          <div class="card-footer text-white bg-black">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex align-items-center">
+                <span>
+                  <%= community.city %>, <%= community.country %>
+                </span>
+                <% country = ISO3166::Country[community.country] %>
+                <% if country %>
+                  <% country_code = country.alpha2.upcase %>
+                  <img src="https://flagsapi.com/<%= country_code %>/flat/24.png" alt="<%= country.translated_names.first %> Flag" class="img-fluid" style="margin-left: 5px;">
+                <% end %>
+              </div>
+              <div class="d-flex align-items-center">
+             <svg style= "margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+  <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+</svg>   <%= community.members.count %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     <% end %>
-  </div>
-  <hr>
-  <%= link_to "Create a community", new_community_path %>
+  <% end %>
+</div>
+<hr>
+<%= link_to "Create a community", new_community_path %>
 </div>
 <hr>

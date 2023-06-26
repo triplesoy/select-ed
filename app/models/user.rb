@@ -1,6 +1,7 @@
 class User < ApplicationRecord
 
   require 'uri'
+  has_many :events
 
 
   has_many :user_tickets

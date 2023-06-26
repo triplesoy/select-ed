@@ -1,9 +1,12 @@
 class CommunitiesController < ApplicationController
+  require 'countries'
+
   skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :set_community, only: [:show, :edit, :update, :destroy, :dashboard]
 
   def index
     @communities = policy_scope(Community)
+    @communities = Community.all
   end
 
   def show
@@ -11,6 +14,7 @@ class CommunitiesController < ApplicationController
     @events = @community.events
     @join_request = CommunityJoinRequest.new
     @community_user = CommunityUser.new
+
   end
 
   def new
@@ -67,7 +71,7 @@ class CommunitiesController < ApplicationController
   private
 
   def community_params
-    params.require(:community).permit(:title, :description, :category, :country, :city, :public, :is_visible, :video, photos: [])
+    params.require(:community).permit(:title, :description, :category, :country, :city, :public, :is_visible, :video, photos: [], photos_delete: [])
   end
 
   def set_community
