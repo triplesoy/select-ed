@@ -1,7 +1,7 @@
 .navbar-lewagon {
   justify-content: space-between;
   background: black;
-  color: white !important;
+  color: #1B262C !important;
   z-index: 6000;
 }
 
@@ -25,5 +25,15 @@
 
 
 .nav-text {
-  color: #E3CCAE !important;;
+  color: #ffffff !important;;
+}
+
+
+.dropdown-menu {
+  background-color: black;
+}
+
+.dropdown-item:hover {
+  color: #0F4C75 !important;
+  background-color: white !important;
 }

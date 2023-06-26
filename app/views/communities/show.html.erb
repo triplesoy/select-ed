@@ -65,6 +65,17 @@ Members in community: <%= @community.members.count %><br>
   </div>
 <% end %>
 <hr>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 mt-12">
+        <div class="card mb-12">
+          <div class="card-body">
+            <h5 class="card-title">Community dashboard</h5>
+            <p class="card-text">
+
+
 <h1><%= @community.title %></h1>
 <p>
   <%= @community.public? ? 'This community is public' : 'This community is private' %><br>
@@ -77,10 +88,8 @@ Members in community: <%= @community.members.count %><br>
     <% else %>
       <i><%= status %></i>
     <% end %>
-  </b>
-</span>
-</p>
-<hr>
+
+
 <ul>
   <li><%= @community.description %></li>
   <% if @community.photos.attached? %>
@@ -94,6 +103,18 @@ Members in community: <%= @community.members.count %><br>
   <li>Is public? <%= @community.public %></li>
   <li>Is visible? <%= @community.is_visible %></li>
 </ul>
+
+  </b>
+</span>
+</p>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
 <hr>
 <h2>Events:</h2>
 <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
@@ -120,6 +141,9 @@ Members in community: <%= @community.members.count %><br>
             <div class="card" style="width: 18rem; height: 22rem;">
               <div class="card-body position-relative">
                 <h5 class="card-title"><%= event.title %></h5>
+                                        <% if event.photos.attached? %>
+                          <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
+                        <% end %>
                 <h6 class="card-subtitle mb-2 text-muted"></h6>
                 <p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= event.description %></p>
                 <div class="d-flex justify-content-center" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
