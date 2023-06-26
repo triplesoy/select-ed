@@ -1,33 +1,26 @@
 <div class="position-relative m-3">
-
   <div class="col-12 col-md-6 offset-lg-3">
     <div class="bg-white rounded p-3 shadow">
       <%= "Create a community" %>
-        <%= simple_form_for @community do |f| %>
-          <%= f.input :title, required: true, label: "Title" %>
-          <%= f.input :description, required: true, label: "Description" %>
-          <%= f.input :category, required: true, label: "Category" %>
-
-          <%= f.input :photos, required: true, as: :file, input_html: { multiple: true } %>
-
-
-          <%= f.input :country, required: true, label: "Country" %>
-          <%= f.input :city, required: true, label: "City" %>
-
-          <%= "Community Settings" %>
-          <hr>
-          <div>
-            <%# <%= f.input :public, label: "Public?", as: :boolean %>
-            <%# <%= f.input :is_visible, label: "Visible?", as: :boolean %>
-            <%= f.input :public, label: "Publicity", as: :radio_buttons, collection: [['Public(Everyone can join)', true], ['Private(Request required)', false]] %>
-            <%= f.input :is_visible, label: "Visibility", as: :radio_buttons, collection: [['Visible(Everyone can see)', true], ['Hidden(Only members can see)', false]] %>
-          </div>
-            <%= f.submit "Create Community", class: "btn btn-outline-dark" %>
+      <%= simple_form_for @community do |f| %>
+        <%= f.input :title, required: true, label: "Title" %>
+        <%= f.input :short_description, required: true, label: "Short description (on the index page)" %>
+        <%= f.input :description, required: true, label: "Description (on the community page)", input_html: { rows : 5 } %>
+        <%= f.input :category, required: true, label: "Category" %>
+        <%= f.input :photos, required: true, as: :file, input_html: { multiple: true } %>
+        <%= f.input :country, required: true, label: "Country" %>
+        <%= f.input :city, required: true, label: "City" %>
+        <%= "Community Settings" %>
+        <hr>
+        <div>
+          <%# <%= f.input :public, label: "Public?", as: :boolean %>
+          <%# <%= f.input :is_visible, label: "Visible?", as: :boolean %>™
+          <%= f.input :public, label: "Publicity", as: :radio_buttons, collection: [['Public(Everyone can join)', true], ['Private(Request required)', false]] %>
+          <%= f.input :is_visible, label: "Visibility", as: :radio_buttons, collection: [['Visible(Everyone can see)', true], ['Hidden(Only members can see)', false]] %>
+        </div>
+        <%= f.submit "Create Community", class: "btn btn-outline-dark" %>
       <% end %>
     </div>
   </div>
 </div>
-
-
-
 <%= link_to "Back",  communities_path %>

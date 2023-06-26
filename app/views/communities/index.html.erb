@@ -16,23 +16,27 @@
             <% end %>
             <div class="membership-icon position-absolute top-0 end-0 p-2 bg-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; transform: translate(20%, -30%);">
               <% if !community.public? && (community.user == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
-                <i class="fa-solid fa-user-check" style="color: #3e9d0b;"></i>
-              <% elsif community.public? %>
-                <i class="fa-solid fa-lock-open" style="color: #005eff;"></i>
+                <i class="fa-solid fa-user-check" ></i>
+              <% elsif community.public? && community.user == current_user %>
+                <i class="fa-solid fa-user-check" ></i>
+              <% elsif community.public? &&  %>
+                <i class="fa-solid fa-lock-open"></i>
               <% else %>
-                <i class="fas fa-lock text-danger"></i>
+                <i class="fas fa-lock"></i>
               <% end %>
             </div>
             <div class="card-body">
               <ul class="list-group list-group-flush">
                 <div class="snippet" style="margin-right: 10px; text-align: left;">
-                  <%= link_to community.title, community_path(community), style: "text-decoration: none; color: inherit; font-weight: bold; font-size: 26px;" %>
+                  <%= link_to community.title, community_path(community), style: "text-decoration: none; color: #0F4C75; font-weight: bold; font-size: 26px;" %>
                   <br>
-                  <%= community.description %>
+                  <%= community.short_description %><br>
                   <br>
                   <% upcoming_events = community.events.where('start_time > ?', Time.now).order(:start_time) %>
                   <% if upcoming_events.exists? %>
-                    Next Event: <%= upcoming_events.first.start_time.strftime('%A, %B %-d') + ordinal_suffix(upcoming_events.first.start_time.day) %>
+<i class="fa-solid fa-calendar-days" style="color: #0f4c75;"></i>
+<span style="text-decoration: none; color: #0F4C75">Next Event:</span>
+                    <%= content_tag(:span, upcoming_events.first.start_time.strftime('%A, %B %-d') + ordinal_suffix(upcoming_events.first.start_time.day), style: "text-decoration: none; color: #0F4C75; font-weight: bold;") %>
                   <% else %>
                   <% end %>
                   <br>
@@ -40,11 +44,13 @@
               </li>
               <%#WRITE THE CODE SO WE DISPLAY DIFFERENT JOINNING OPTIONS BASED ON THE STATUS OF THE USER: ie. PRIVATE COMMUNITY - NEED TO SEND REQUEST TO JOIN / PUBLIC COMMUNITY - JOIN / YOU ARE A MEMBER OF THIS COMMUNITY%>
               <% if !community.public? && (community.user == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
-                OK i can see as a member <br>
-              <% elsif community.public? %>
-it's public i can juust click to join<br>
+                I'm a member of this community <br>
+              <% elsif community.public? && (community.user == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
+                I have joined this public community <br>
+              <% elsif community.public?  %>
+                This is a public community and i haven't joined yet <br>
               <% else %>
-I need to request to join<br>
+                I need to request to join this private community <br>
               <% end %>
               <% if community.public? %>
                 Public<span class="btn btn-outline-dark"><b>Join now!</b></span>
