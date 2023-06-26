@@ -71,7 +71,7 @@ class CommunitiesController < ApplicationController
   private
 
   def community_params
-    params.require(:community).permit(:title, :description, :category, :country, :city, :public, :is_visible, :video, photos: [], photos_delete: [])
+    params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video, photos: [], photos_delete: [])
   end
 
   def set_community
