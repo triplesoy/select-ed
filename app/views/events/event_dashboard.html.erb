@@ -118,11 +118,11 @@
               <td><%= c.user.occupation %></td>
               <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
               <td>
-                <div class="btn-group dropdown">
+                <div class="btn-group">
                   <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
                     Select
                   </button>
-                  <div class="dropdown-menu" aria-labelledby="#dropdown">
+                  <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="#dropdown">
                     <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
                     <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
                         <%= link_to "View history", user_history_path(@event.community, c), class: "dropdown-item" %>

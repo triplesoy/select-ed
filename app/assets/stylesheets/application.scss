@@ -11,5 +11,11 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
-/* @import "footer";
-@import "navbar"; */
+@import "components/footer";
+// @import "navbar";
+
+
+.custom-dropdown-menu {
+  color: #0F4C75 !important;
+  background-color: white;
+}
