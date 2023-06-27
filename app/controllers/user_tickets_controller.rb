@@ -103,9 +103,9 @@ class UserTicketsController < ApplicationController
       # Draw dates at the bottom
       result.combine_options do |c|
         c.gravity 'South'
-        c.pointsize '50'
+        c.pointsize '80'
         c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
-        c.draw "text 1,90 '#{current_user.full_name}'"
+        c.draw "text 2,82 '#{current_user.full_name}'"
         c.fill 'white'
       end
 
@@ -119,6 +119,19 @@ class UserTicketsController < ApplicationController
           c.draw "text 1,20 'VALID UNTIL: #{valid_until}'"
           c.fill 'white'
         end
+
+      end
+
+      if @user_ticket.ticket.model == "vip"
+
+        result.combine_options do |c|
+          c.gravity 'South'
+          c.pointsize '70'
+          c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
+          c.draw "text 2,0 'VIP TICKET'"
+          c.fill 'white'
+        end
+
       end
 
       result.write("composite_image.png")
