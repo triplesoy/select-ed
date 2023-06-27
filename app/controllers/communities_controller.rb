@@ -40,11 +40,22 @@ class CommunitiesController < ApplicationController
   end
 
   def update
-    @community.update!(community_params)
-    redirect_to community_path(@community)
+    @community = Community.find_by(slug: params[:id])
+
+    community_params = params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video)
+
+    if params[:community][:photos].present?
+      @community.photos.attach(params[:community][:photos])
+    end
+
+    if @community.update(community_params)
+      redirect_to community_path(@community), notice: "community was successfully updated."
+    else
+      render :edit
+    end
+
     authorize @community
   end
-
   def destroy
     @community.destroy!
     redirect_to communities_path, status: :see_other
