@@ -34,7 +34,7 @@ class UserTicketsController < ApplicationController
       @ticket.update(quantity: @ticket.quantity - 1)
     ##QR CODEexit
 
-        link = validation_page_url(ticket_id: @ticket.id, id: @user_ticket.user.id)
+    link = validation_page_url(ticket_id: @ticket.id, id: @user_ticket.id)
 
         qrcode = RQRCode::QRCode.new(link)
         png = qrcode.as_png(
