@@ -1,28 +1,30 @@
 <div class="container mx-auto mt-4">
-  <h1>My communities</h1>
   <div class="container mx-auto mt-4">
     <div class="row">
       <% if @my_communities.empty? %>
         <div class="col-12 col-md-6 offset-lg-3">
           <div class="bg-white rounded p-3 shadow">
-            <h3>You haven't listed any community yet.<br>Do it by clicking on this link: <br>
-              <%= link_to "List my community", new_community_path %>
+            <h3>You haven't joined any community yet.<br>
+              Do it by clicking on this link: <br>
+              <%= link_to "COMMUNITIES", root_path %>
             </h3>
           </div>
         </div>
       <% else %>
         <% @my_communities.each do |v| %>
           <div class="col-lg-3 my-3">
-            <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 22rem;">
-              <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+            <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 32rem;">
+              <div class="image-wrapper" style="height: 500px; overflow: hidden;">
                 <% if v.photos.attached? %>
                   <img src="<%= cl_image_path v.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
                 <% end %>
               </div>
               <div class="card-body position-relative">
-                <div><h5 class="card-title position-absolute bottom-0 start-1 mb-3 me-3"><%= v.title %></h5></div>
+                <div>
+                  <h5 class="card-title position-absolute"><%= v.title %></h5>
+                </div>
                 <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <%= link_to "Details", community_path(v), class: "btn btn-outline-primary position-absolute bottom-0 end-0 m-2" %>
+                <%= link_to "Details", community_path(v), class: "btn btn-dark position-absolute bottom-0 start-0 end-0" %>
               </div>
             </div>
           </div>
