@@ -13,43 +13,23 @@
 <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container">
     <div class="row">
-      <div class="col-sm-4 mt-4">
+      <div class="col-sm-6 mt-4">
         <div class="card mb-4">
           <div class="card-body">
-            <h5 class="card-title">Community dashboard</h5>
+            <h5 class="card-title">Community dashboard & settings</h5>
             <p class="card-text">
-              <li> Manage join membership requests<br>
-                <li> View users history<br>
-                  <li> Set moderator permissions<br>
-                    <%= link_to "Go to the community dashboard", dashboard_path(@community), class: "btn btn-outline-dark" %>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <% if current_user.admin || @community.user == current_user  %>
-              <div class="col-sm-4 mt-4">
-                <div class="card mb-4">
-                  <div class="card-body">
-                    <h5 class="card-title">Community settings</h5>
-                    <p class="card-text text-center">
-                      <% if policy(@community).new? %>
-                        <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary my-2" %></li>
-                      <br>
-                    <% end %>
-                    <% if policy(@community).edit? %>
-                      <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning my-2" %></li>
-                    <br>
-                  <% end %>
-                  <% if policy(@community).destroy? %>
-                    <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-outline-danger my-2" %></li>
-                  <br>
-                <% end %>
-              </p>
-            </div>
+              <%= link_to "Community dashboard", dashboard_path(@community), class: "btn btn-outline-dark" %>
+              <% if policy(@community).new? %>
+                <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary my-2" %>
+              <% end %>
+              <% if policy(@community).edit? %>
+                <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning my-2" %>
+              <% end %>
+            </p>
           </div>
-        <% end %>
+        </div>
       </div>
-      <div class="col-sm-4 mt-4">
+      <div class="col-sm-6 mt-4">
         <div class="card mb-4">
           <div class="card-body">
             <h5 class="card-title">Community stats</h5>
@@ -64,15 +44,15 @@
     </div>
   </div>
 <% end %>
+<%# start of display for regular users%>
 <hr>
 <div class="container">
   <div class="row">
     <div class="col-sm-12 mt-12">
       <div class="card mb-12">
         <div class="card-body">
-          <h5 class="card-title">Community dashboard</h5>
+          <h1 class="card-title"> <%= @community.title %></h1>
           <p class="card-text">
-            <h1><%= @community.title %></h1>
             <p>
               <%= @community.public? ? 'This community is public' : 'This community is private' %><br>
               <span class="">
