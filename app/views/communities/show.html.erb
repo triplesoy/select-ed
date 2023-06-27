@@ -1,22 +1,104 @@
-<center>
-  <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
-    Hi <%= current_user.first_name %>, you are viewing this module since you are
-    <% if current_user.admin  %>
-      an admin of the platform.
-    <% elsif @community.user == current_user %>
-      the owner of this community (<%= @community.title %>).
-    <% elsif current_user.is_moderator_of?(@community) %>
-      a moderator  of this community (<%= @community.title %>).
-    <% end %>
-  <% end %>
-</center>
+<style>
+  .black-banner {
+    background-color: black;
+    color: white;
+    padding: 5px 0px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .black-banner h5 {
+    margin: 0;
+  }
+
+  .black-banner-main {
+    background-color: black;
+    color: white;
+    padding: 5px 0px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .black-banner-main h5 {
+    margin: 0;
+  }
+
+  .youtube-video-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 30%; /* Adjust the aspect ratio as needed */
+    max-height: 50px; /* Adjust this value as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .youtube-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  transform: scale(1.9); /* Adjust the zoom level as needed */
+  }
+
+  .banner-under-video {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  }
+
+  .banner-under-video > div {
+  flex: 1;   /* makes each div take up equal space */
+  display: flex;   /* allows centering of content within the divs */
+  justify-content: center;   /* centers the content horizontally */
+  align-items: center;   /* centers the content vertically */
+  font-size: clamp(6px, 2vw, 12px);
+  }
+  .instagram-button {
+            display: inline-block;
+            background-color: #405DE6;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 12px;
+            transition: background-color 1s ease;
+        }
+
+        .instagram-button:hover {
+            background-color: #FF69B4;
+        }
+</style>
+<%#
+          <center>
+            <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+<%# Hi <%= current_user.first_name, you are viewing this module since you are %>
+<%# <% if current_user.admin  %>
+<%# an admin of the platform. %>
+<%# <% elsif @community.user == current_user %>
+<%# the owner of this community (<%= @community.title %>
+<%# <% elsif current_user.is_moderator_of?(@community) %>
+<%# a moderator  of this community (<%= @community.title %>
+<%# <% end %>
+<%# <% end %>
+<%# </center> %>
 <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container">
-    <div class="row">
-      <div class="col-sm-6 mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-4 mt-3 mt-sm-3 mt-md-3">
         <div class="card mb-4">
-          <div class="card-body">
+          <div class="black-banner">
             <h5 class="card-title">Community dashboard & settings</h5>
+          </div>
+          <div class="card-body text-center">
             <p class="card-text">
               <%= link_to "Community dashboard", dashboard_path(@community), class: "btn btn-outline-dark" %>
               <% if policy(@community).new? %>
@@ -29,12 +111,14 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 mt-4">
+      <div class="col-md-4 mt-0 mt-sm-0 mt-md-3">
         <div class="card mb-4">
-          <div class="card-body">
+          <div class="black-banner">
             <h5 class="card-title">Community stats</h5>
+          </div>
+          <div class="card-body">
             <p class="card-text">
-              Members in community: <%= @community.members.count %><br>
+              Members: <%= @community.members.count %><br>
               Since this week: <%= @community.community_users.where("created_at > ?", Date.current.beginning_of_week).count %> <br>
               Events created: <%= @community.events.count %>
             </p>
@@ -43,9 +127,76 @@
       </div>
     </div>
   </div>
+  <hr>
 <% end %>
 <%# start of display for regular users%>
-<hr>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card mb-4">
+        <div class="black-banner-main">
+          <h5 class="card-title"><%= @community.title %></h5>
+        </div>
+        <div class="youtube-video-wrapper">
+          <iframe src="https://www.youtube.com/embed/K9cT_jgU2y0?autoplay=1&controls=0&mute=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="black-banner-main ">
+          <div class="banner-under-video ">
+            <div class="location">
+              <span>
+                <%= @community.city %>, <%= @community.country %>
+              </span>
+              <% country = ISO3166::Country[@community.country] %>
+              <% if country %>
+                <% country_code = country.alpha2.upcase %>
+                <img src="https://flagsapi.com/<%= country_code %>/flat/24.png" alt="<%= country.translated_names.first %> Flag" class="img-fluid" style="margin-left: 5px;">
+              <% end %>
+            </div>
+            <div class ="community-type" >
+              <% if !@community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
+                <i class="fa-solid fa-lock-open"></i> &nbsp;you're a member
+              <% elsif !@community.public? %>
+                <i class="fas fa-lock"></i>&nbsp;Private community
+              <% elsif @community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
+                <i class="fa-solid fa-lock-open"></i> &nbsp;you're a member of this community
+              <% elsif @community.public? %>
+                <i class="fa-solid fa-lock-open"></i>&nbsp;Public community
+              <% end %>
+            </div>
+            <div class="member-count">
+              <svg style= "margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+              </svg>   <%= @community.members.count %>
+            </div>
+          </div>
+        </div>
+        <%# Begining of the text for the community %>
+        <div class="card-body">
+          <p class="card-text">
+            <% unless (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
+              For safety and accountability reasons, the owner of this community requires an Instagram check.<br>
+              If your account is private, please extend a follow request to the organizer, then request to join this community.<br>
+                          <center><body>
+                <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
+                  Add Cultura Subterranea on Instagram
+                </a>
+              </body>
+              </center>
+              This allows to foster a secure, positive environment for all, in form of a safe space.<br>
+
+              <hr>
+            <% end %>
+            Message for everyone:
+            description
+            the instagram
+            whatsapp group
+          </div>
+        </div>
+      </p>
+    </div>
+  </div>
+</div>
+<%# end of display community card%>
 <div class="container">
   <div class="row">
     <div class="col-sm-12 mt-12">
