@@ -1,10 +1,8 @@
-body {
+.footer {
   display: flex;
   flex-direction: column;
+  font-size: small;
   min-height: 100vh;
-}
-
-.footer {
   color: white !important;
   background-color: black;
 }
