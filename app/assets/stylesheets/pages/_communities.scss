@@ -1,0 +1,77 @@
+.black-banner {
+  background-color: black;
+  color: white;
+  padding: 5px 0px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.black-banner h5 {
+  margin: 0;
+}
+
+.black-banner-main {
+  background-color: black;
+  color: white;
+  padding: 5px 0px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.black-banner-main h5 {
+  margin: 0;
+}
+
+.youtube-video-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 30%; /* Adjust the aspect ratio as needed */
+  max-height: 50px; /* Adjust this value as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.youtube-video-wrapper iframe {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+border: 0;
+transform: scale(1.9); /* Adjust the zoom level as needed */
+}
+
+.banner-under-video {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding-left: 10px;
+padding-right: 10px;
+}
+
+.banner-under-video > div {
+flex: 1;   /* makes each div take up equal space */
+display: flex;   /* allows centering of content within the divs */
+justify-content: center;   /* centers the content horizontally */
+align-items: center;   /* centers the content vertically */
+font-size: clamp(6px, 2vw, 12px);
+}
+.instagram-button {
+          display: inline-block;
+          background-color: #405DE6;
+          color: white;
+          padding: 8px 16px;
+          border-radius: 5px;
+          text-decoration: none;
+          font-weight: bold;
+          font-size: 12px;
+          transition: background-color 1s ease;
+      }
+
+      .instagram-button:hover {
+          background-color: #FF69B4;
+      }
