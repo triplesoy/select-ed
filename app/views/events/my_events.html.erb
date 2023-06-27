@@ -1,49 +1,56 @@
 <div class="container-fluid">
-  <h1>My events</h1>
+  <div class="row">
+    <div class="col-12 mt-4">
+      <h2>Upcoming Events</h2>
+      <div class="row">
+        <% @my_events.each do |event| %>
+          <% if event.end_time >= Date.today %>
+            <div class="col-lg-3 my-3">
+              <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 27rem;">
+                <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                  <% if event.photos.attached? %>
+                    <a href="<%= community_event_path(event.community, event) %>">
+                      <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
+                    </a>
+                  <% end %>
+                </div>
+                <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
+                  <div class="card-title">
+                    <a href="<%= community_event_path(event.community, event) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+                  </div>
+                  <br>
+                  <br>
+                  <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
+                  <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
+                  <div class="card-title" style="color: gray;"><%= event.address %></div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
   <div class="row">
     <div class="container mx-auto mt-4">
       <div class="row">
-        <div class="col-12">
-          <h2>Upcoming Events</h2>
-          <div class="row">
-            <% @my_events.each do |event| %>
-              <% if event.end_time >= Date.today %>
-                <div class="col-lg-3 my-3">
-                  <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 22rem;">
-                    <div class="card-body position-relative">
-                      <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                        <% if event.photos.attached? %>
-                          <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                        <% end %>
-                      </div>
-                      <div>
-                        <h5 class="card-title position-absolute bottom-0 start-1 mb-3 me-"><%= event.title %></h5>
-                      </div>
-                      <h6 class="card-subtitle mb-2 text-muted"></h6>
-                      <a href="<%= community_event_path(event.community, event) %>" class="btn btn-outline-primary position-absolute bottom-0 end-0 mb-3 me-3 rounded-pill">Details</a>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
         <div class="col-12">
           <h2>Past Events</h2>
           <div class="row">
             <% @my_events.each do |event| %>
               <% if event.end_time < Date.today %>
                 <div class="col-lg-3 my-3">
-                  <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 22rem;">
-                    <div class="card-body position-relative">
-                      <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                        <% if event.photos.attached? %>
-                          <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                        <% end %>
+                  <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 28rem;">
+                    <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                      <% if event.photos.attached? %>
+                        <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
+                      <% end %>
+                      <div class="card-body position-relative">
                       </div>
-                      <h5 class="card-title position-absolute bottom-0 start-1 mb-3 me-"><%= event.title %></h5>
-                      <h6 class="card-subtitle mb-2 text-muted"></h6>
-                      <a href="#" class="btn btn-warning position-absolute bottom-0 end-0 mb-3 me-3 rounded-pill">PAST EVENT</a>
+                      <h5 class="card-title position-absolute"><%= event.title %></h5>
+                      <a href="#" class="btn btn-warning position-absolute bottom-0 start-0 end-0">PAST EVENT</a>
                     </div>
                   </div>
                 </div>
@@ -54,4 +61,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>
