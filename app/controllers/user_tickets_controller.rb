@@ -199,6 +199,13 @@ class UserTicketsController < ApplicationController
   def my_user_tickets
     @user = current_user
     @my_user_tickets = @user.user_tickets
+
+    if @my_user_tickets.empty?
+      flash[:notice] = "You haven't purchased any tickets yet!"
+      redirect_to root_path
+    else
+      @my_user_tickets.each { |user_ticket| authorize user_ticket }
+    end
     authorize @my_user_tickets
   end
 
