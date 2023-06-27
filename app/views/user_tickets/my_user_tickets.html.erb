@@ -1,23 +1,25 @@
 <div class="container mx-auto mt-4">
   <h1><%= current_user.full_name %> tickets</h1>
-  <div class="container mx-auto mt-4">
+  <div class="container mx-auto">
     <div class="row">
       <% @my_user_tickets.each do |user_ticket| %>
-        <div class="col-lg-3 my-3">
+        <div class="col-lg-3 col-md-6 col-sm-6 my-3">
           <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 29rem;">
-            <div class="card-body position-relative">
+            <div class="image-wrapper" style="height: 600px; overflow: hidden;">
               <div class="qr-code">
                 <% if user_ticket.qrcode.attached? %>
-                  <%= link_to(cl_image_tag(user_ticket.qrcode.key, width: 250, height: 375, alt: "QR code for ticket"), cl_image_path(user_ticket.qrcode.key), target: "_blank") %>
+                  <div class="qr-image">
+                    <%= link_to(cl_image_tag(user_ticket.qrcode.key, width: 300, height: 450, alt: "QR code for ticket", class: "img-fluid"), cl_image_path(user_ticket.qrcode.key), target: "_blank") %>
+                  </div>
                 <% end %>
                 <div class="details-button">
-                  <%= link_to "Details", ticket_user_ticket_path(ticket_id: user_ticket.ticket_id, id: user_ticket.id), class: "btn btn-outline-primary position-absolute bottom-0 start-0 end-0 mb-3 me-3" %>
+                  <%= link_to "Details", ticket_user_ticket_path(ticket_id: user_ticket.ticket_id, id: user_ticket.id), class: "btn btn-dark position-absolute bottom-0 start-0 end-0" %>
                 </div>
               </div>
             </div>
-          </div>
+          <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>
