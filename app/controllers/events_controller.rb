@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:edit, :update, :show, :destroy, :event_dashboard]
   before_action :set_community, only: [:index, :show, :destroy, :edit, :update]
+  skip_after_action :verify_authorized, only: :my_events
 
   def index
     @events = policy_scope(Event)
@@ -75,7 +76,13 @@ class EventsController < ApplicationController
 
   def my_events
     @my_events = current_user.events_going_to
-    @my_events.each { |event| authorize event}
+
+    if @my_events.empty?
+      flash[:notice] = "You have no upcoming events."
+      redirect_to root_path
+    else
+      @my_events.each { |event| authorize event }
+    end
   end
 
   def events_owned
