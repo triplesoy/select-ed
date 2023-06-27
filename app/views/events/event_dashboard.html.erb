@@ -1,6 +1,8 @@
 <h1> <%= @event.title %>  - DASHBOARD</h1>
 <%= link_to "EDIT EVENT", edit_community_event_path( @event), class: "btn btn-warning btn-sm" %>
 <%= link_to "Go back to the event ", community_event_path(@event), class: "btn btn-primary btn-sm" %>
+<%= link_to "Delete",community_event_path(@event.community, @event), class: "btn btn-danger btn-sm",
+  data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
 <hr>
 <% vip_ticket = @event.tickets.find_by(model: "vip") %>
 <% if vip_ticket && vip_ticket.r_code.present? %>
@@ -97,68 +99,66 @@
         </thead>
         <tbody>
           <% @event.participants.each_with_index do |c, index| %>
-<<<<<<< HEAD
+            <<<<<<< HEAD
             <% if c.scanned == "accepted"  %>
               <tr class="table-success">
-              <% elsif c.scanned == "rejected" %>
-                <tr class="table-danger">
-                <% else %>
-                  <tr>
-                  <% end %>
-                  <td><%= index + 1 %></td>
-                  <td><%= c.user_id %></td>
-                  <td><%= c.user.first_name %></td>
-                  <td><%= c.user.last_name %></td>
-                  <td><%= c.user.email %></td>
-                  <td><%= Time.now.year - c.user.birthdate.year %></td>
-                  <td><%= c.user.nationality %></td>
-                  <td><%= c.user.occupation %></td>
-                  <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
-                  <td>
-                    <div class="btn-group dropdown">
-                      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
-                        Select
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="#dropdown">
-                        <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
-                        <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
-=======
-
-         <% if c.scanned == "accepted"  %>
-         <tr class="table-success">
-         <% elsif c.scanned == "rejected" %>
-         <tr class="table-danger">
-          <% else %>
-          <tr>
-         <% end %>
-
-              <td><%= index + 1 %></td>
-              <td><%= c.user_id %></td>
-              <td><%= c.user.first_name %></td>
-              <td><%= c.user.last_name %></td>
-              <td><%= c.user.email %></td>
-              <td><%= Time.now.year - c.user.birthdate.year %></td>
-              <td><%= c.user.nationality %></td>
-              <td><%= c.user.occupation %></td>
-              <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
-              <td>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
-                    Select
-                  </button>
-                  <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="#dropdown">
-                    <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
-                    <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
->>>>>>> b1b4657ff8dc72aabf63416685112a2ad4ba7000
-                        <%= link_to "View history", user_history_path(@event.community, c), class: "dropdown-item" %>
-                      </div>
-                    </div>
-                  </td>
+            <% elsif c.scanned == "rejected" %>
+              <tr class="table-danger">
+              <% else %>
+                <tr>
                 <% end %>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <%= link_to "Go back", community_path(@event.community) %>
+                <td><%= index + 1 %></td>
+                <td><%= c.user_id %></td>
+                <td><%= c.user.first_name %></td>
+                <td><%= c.user.last_name %></td>
+                <td><%= c.user.email %></td>
+                <td><%= Time.now.year - c.user.birthdate.year %></td>
+                <td><%= c.user.nationality %></td>
+                <td><%= c.user.occupation %></td>
+                <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
+                <td>
+                  <div class="btn-group dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
+                      Select
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="#dropdown">
+                      <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
+                      <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
+                      =======
+                      <% if c.scanned == "accepted"  %>
+                        <tr class="table-success">
+                        <% elsif c.scanned == "rejected" %>
+                          <tr class="table-danger">
+                          <% else %>
+                            <tr>
+                            <% end %>
+                            <td><%= index + 1 %></td>
+                            <td><%= c.user_id %></td>
+                            <td><%= c.user.first_name %></td>
+                            <td><%= c.user.last_name %></td>
+                            <td><%= c.user.email %></td>
+                            <td><%= Time.now.year - c.user.birthdate.year %></td>
+                            <td><%= c.user.nationality %></td>
+                            <td><%= c.user.occupation %></td>
+                            <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
+                            <td>
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
+                                  Select
+                                </button>
+                                <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="#dropdown">
+                                  <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
+                                  <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
+                                  >>>>>>> b1b4657ff8dc72aabf63416685112a2ad4ba7000
+                                  <%= link_to "View history", user_history_path(@event.community, c), class: "dropdown-item" %>
+                                </div>
+                              </div>
+                            </td>
+                          <% end %>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <%= link_to "Go back", community_path(@event.community) %>
