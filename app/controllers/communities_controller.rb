@@ -71,6 +71,14 @@ class CommunitiesController < ApplicationController
 
   def my_communities
     @my_communities = current_user.communities
+
+    if @my_communities.empty?
+      flash[:notice] = "You haven't joined any communities yet!"
+      redirect_to root_path
+    else
+      @my_communities.each { |community| authorize community }
+    end
+
     authorize @my_communities
   end
 
