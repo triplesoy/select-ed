@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_26_221209) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_27_003611) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -153,11 +153,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_221209) do
   add_foreign_key "communities", "users"
   add_foreign_key "community_join_requests", "communities"
   add_foreign_key "community_join_requests", "users"
-  add_foreign_key "community_users", "communities"
+  add_foreign_key "community_users", "communities", on_delete: :cascade
   add_foreign_key "community_users", "users"
   add_foreign_key "events", "communities"
   add_foreign_key "events", "users"
-  add_foreign_key "tickets", "events"
-  add_foreign_key "user_tickets", "tickets"
+  add_foreign_key "tickets", "events", on_delete: :cascade
+  add_foreign_key "user_tickets", "tickets", on_delete: :cascade
   add_foreign_key "user_tickets", "users"
 end

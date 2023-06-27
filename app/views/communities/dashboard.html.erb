@@ -112,5 +112,18 @@
             </table>
           </div>
         </div>
-      </div>
-      <%= link_to "Go back", community_path(@community) %>
+        <br>
+        <% if @community.user == current_user || (current_user && current_user.admin) %>
+    <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete()" %>
+      <% end %>
+    </div>
+    <%= link_to "Go back", community_path(@community) %>
+    <script>
+      function confirmDelete() {
+        var userInput = prompt("Type 'delete' to confirm deletion:");
+        if (userInput !== "delete") {
+          event.preventDefault(); // Prevent the default deletion action
+          alert("Confirmation failed. Deletion canceled.");
+        }
+      }
+    </script>
