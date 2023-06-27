@@ -5,7 +5,7 @@
       <%= simple_form_for @community do |f| %>
         <%= f.input :title, required: true, label: "Title" %>
         <%= f.input :short_description, required: true, label: "Short description (on the index page)" %>
-        <%= f.input :description, required: true, label: "Description (on the community page)", input_html: { rows : 5 } %>
+        <%= f.input :description, required: true, label: "Description (on the community page)", input_html: { rows: 5 } %>
         <%= f.input :category, required: true, label: "Category" %>
         <%= f.input :photos, required: true, as: :file, input_html: { multiple: true } %>
         <%= f.input :country, required: true, label: "Country" %>
@@ -23,4 +23,4 @@
     </div>
   </div>
 </div>
-<%= link_to "Back",  communities_path %>
+<%= link_to "Back", communities_path %>
