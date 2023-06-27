@@ -8,6 +8,15 @@
           <%= f.input :title, label: "Title" %>
           <%= f.input :description, label: "Description" %>
           <%= f.input :photos, as: :file, input_html: { multiple: true } %>
+          <% if @event.photos.attached? %>
+            <div class="row">
+              <% @event.photos.each do |photo| %>
+                <div class="col-md-3">
+                  <%= image_tag photo, class: "img-thumbnail" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
           <%= f.input :address, input_html: { data: { address_autocomplete_target: "address" }, class: "d-none" },
                             wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } } %>
           <%= f.input :start_time, html5: true, input_html: { min: Date.current.to_s, id: 'start-date' } %>
@@ -16,11 +25,9 @@
         <% end %>
       </div>
     </div>
-
-      <%= link_to "Go back", community_event_path(@community, @event), class: "btn btn-outline-dark" %>
-
-<h3>footnote</h3>
-
+    <%= link_to "Go back", community_event_path(@community, @event), class: "btn btn-outline-dark" %>
+  </div>
+</div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     var startDateInput = document.getElementById('start-date');

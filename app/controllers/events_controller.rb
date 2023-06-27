@@ -50,8 +50,20 @@ class EventsController < ApplicationController
   end
 
   def update
-    @event.update!(event_params)
-    redirect_to community_event_path(@community, @event)
+    @event = Event.find_by(slug: params[:id])
+
+    event_params = params.require(:event).permit(:title, :description, :address, :start_time, :end_time)
+
+    if params[:event][:photos].present?
+      @event.photos.attach(params[:event][:photos])
+    end
+
+    if @event.update(event_params)
+      redirect_to community_event_path(@event.community, @event), notice: "Event was successfully updated."
+    else
+      render :edit
+    end
+
     authorize @event
   end
 
@@ -76,10 +88,6 @@ class EventsController < ApplicationController
     @event = Event.friendly.find(params[:id])
     @tickets = @event.tickets
   end
-
-
-
-
 
 
   private
