@@ -11,24 +11,26 @@
           </div>
         </div>
       <% else %>
-        <% @my_communities.each do |v| %>
-          <div class="col-lg-3 my-3">
-            <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 32rem;">
-              <div class="image-wrapper" style="height: 500px; overflow: hidden;">
-                <% if v.photos.attached? %>
-                  <img src="<%= cl_image_path v.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                <% end %>
-              </div>
-              <div class="card-body position-relative">
-                <div>
-                  <h5 class="card-title position-absolute"><%= v.title %></h5>
+        <div class="row">
+          <% @my_communities.each do |v| %>
+            <div class="col-lg-4 my-3">
+              <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 32rem;">
+                <div class="image-wrapper" style="height: 500px; overflow: hidden;">
+                  <% if v.photos.attached? %>
+                    <img src="<%= cl_image_path v.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
+                  <% end %>
                 </div>
-                <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <%= link_to "Details", community_path(v), class: "btn btn-dark position-absolute bottom-0 start-0 end-0" %>
+                <div class="card-body position-relative">
+                  <div>
+                    <h5 class="card-title position-absolute"><%= v.title %></h5>
+                  </div>
+                  <h6 class="card-subtitle mb-2 text-muted"></h6>
+                  <%= link_to "Details", community_path(v), class: "btn btn-dark position-absolute bottom-0 start-0 end-0" %>
+                </div>
               </div>
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
