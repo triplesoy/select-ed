@@ -34,7 +34,9 @@
           <%= f.button :submit, "Update community", class: "btn btn-outline-dark" %>
         </div>
       <% end %>
-      <%= link_to "Back",  community_path(@community) %>
     </div>
   </div>
+</div>
+<div class="text-center">
+  <%= link_to "Back to community", community_path(@community), class: "btn btn-dark" %>
 </div>
