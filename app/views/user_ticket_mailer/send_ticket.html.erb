@@ -5,11 +5,17 @@
   </head>
   <body>
     <h1>Here's your ticket, <%= @user.full_name %></h1>
-        <div class="card-body">
+    <div class="card border border-2 border-gray shadow">
+      <div class="image-wrapper" style="height: 500px; overflow: hidden;">
+        <div class="qr-code">
           <% if @user_ticket.qrcode.attached? %>
-            <%= cl_image_tag(@user_ticket.qrcode.key, width: 600, height: 600, alt: "QR code for user_ticket") %>
+            <div class="qr-image">
+              <%= link_to(cl_image_tag(@user_ticket.qrcode.key, width: "25%", height: '25%', alt: "QR code for ticket", class: "img-fluid"), cl_image_path(@user_ticket.qrcode.key), target: "_blank") %>
+            </div>
           <% end %>
         </div>
+      </div>
+    </div>
     <p>Thanks for joining and have a great day!</p>
   </body>
 </html>

@@ -46,4 +46,8 @@ class EventPolicy < ApplicationPolicy
     record.community.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
+  def destroy_photo?
+    record.community.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
+  end
+
 end

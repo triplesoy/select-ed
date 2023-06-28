@@ -84,6 +84,14 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def destroy_photo
+    @event = Event.find(params[:event_id])
+    authorize @event
+    @attachment = ActiveStorage::Attachment.find(params[:photo_id])
+    @attachment.purge
+    redirect_to edit_community_event_path(@event.community, @event)
+  end
+
   def my_events
     @my_events = current_user.events_going_to
 
