@@ -44,3 +44,10 @@
 # Ignore .env file containing credentials.
 .env*
 composite_image.png
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
