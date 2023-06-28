@@ -14,17 +14,17 @@
 <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-4 mt-3 mt-sm-3 mt-md-3">
-        <div class="card mb-4">
+      <div class="col-lg-11 col-md-12 col-sm-12 mt-3">
+        <div class="card mb-2">
           <div class="black-banner">
             <h5 class="card-title">Dashboards & settings</h5>
           </div>
           <div class="card-body text-center">
-            <p class="card-text">
-              <%= link_to "Community dashboard", dashboard_path(@community), class: "btn btn-outline-dark" %><br>
-              <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
-                <% if @community.events.present? %>
-                  <div class="btn-group">
+            <p class="card-text d-flex justify-content-around ">
+              <div class="btn-group">
+                <%= link_to "Community dashboard", dashboard_path(@community), class: "btn btn-outline-dark me-2" %>
+                <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+                  <% if @community.events.present? %>
                     <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Events dashboard
                     </button>
@@ -35,26 +35,26 @@
                     </ul>
                   </div>
                 <% end %>
-              <% end %><br>
+              <% end %>
               <% if policy(@community).new? %>
-                <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary my-2" %><br>
+                <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary ms-2" %>
               <% end %>
               <% if policy(@community).edit? %>
-                <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning my-2" %>
+                <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning ms-2" %>
               <% end %>
             </p>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mt-3 mt-sm-3 mt-md-3">
-        <div class="card mb-4">
+      <div class="col-lg-11 col-md-12 col-sm-12">
+        <div class="card mb-2">
           <div class="black-banner">
             <h5 class="card-title">Community stats</h5>
           </div>
           <div class="card-body">
-            <p class="card-text">
-              Members: <%= @community.members.count %><br>
-              Since this week: <%= @community.community_users.where("created_at > ?", Date.current.beginning_of_week).count %> <br>
+            <p class="card-text d-flex justify-content-around">
+              Members: <%= @community.members.count %> |
+              Since this week: <%= @community.community_users.where("created_at > ?", Date.current.beginning_of_week).count %> |
               Events created: <%= @community.events.count %>
             </p>
           </div>
@@ -62,7 +62,8 @@
       </div>
     </div>
   </div>
-  <hr>
+</div>
+<hr>
 <% end %>
 <%# start of display for every user%>
 <div class="container mt-4">
@@ -177,7 +178,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                             <br>
                             <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
                             <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
-                            <div class="card-title" style="color: gray;"><%= event.address %></div>
+                            <div class="card-title" style="color: gray; font-size: 12px;"><%= event.address %></div>
                           </div>
                         </div>
                       </div>
@@ -209,9 +210,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                         <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
                           <div class="image-wrapper" style="height: 250px; overflow: hidden;">
                             <% if event.photos.attached? %>
-
-                                <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
-
+                              <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
                             <% end %>
                           </div>
                           <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
