@@ -1,163 +1,149 @@
 <h1> <%= @event.title %>  - DASHBOARD</h1>
-<%= link_to "EDIT EVENT", edit_community_event_path( @event), class: "btn btn-warning btn-sm" %>
-<%= link_to "Go back to the event ", community_event_path(@event), class: "btn btn-primary btn-sm" %>
-<%= link_to "Delete",community_event_path(@event.community, @event), class: "btn btn-danger btn-sm",
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <div class="card mb-2">
+        <div class="black-banner">
+          <h5 class="card-title">Events settings</h5>
+        </div>
+        <div class="card-body text-center">
+          <%= link_to "Edit event", edit_community_event_path( @event), class: "btn btn-warning btn-sm" %>
+          <%= link_to "Delete",community_event_path(@event.community, @event), class: "btn btn-danger btn-sm",
   data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
-<hr>
-<% vip_ticket = @event.tickets.find_by(model: "vip") %>
-<% if vip_ticket && vip_ticket.r_code.present? %>
-  <h5>REDEEM CODE: <%= vip_ticket.r_code %></h5>
-<% end %>
-<br>
-<div class="shadow-lg p-3 mb-5 bg-white rounded">
-  <div class="card">
-    <div class="card-header" id="communityMembersHeading">
-      <h3 class="mb-0">Global tickets statistics</h3>
-    </div>
-    <div class="card-body">
-      <table class="table">
-        <thead class="table-success">
-          <tr>
-            <th scope="col">Ticket released</th>
-            <th scope="col">Tickets sold</th>
-            <th scope="col">Remaining tickets</th>
-            <th scope="col">Ticket scanned</th>
-            <th scope="col">Tickets rejected</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><%= @event.tickets_released %></td>
-            <td><%= @event.total_tickets_sold %></td>
-            <td><%= @event.total_tickets%></td>
-            <td><%= @event.total_tickets_accepted  %></td>
-            <td><%= @event.total_tickets_rejected %></td>
-          </tr>
-        </tbody>
-      </table>
+          <%= link_to "Go back to the event ", community_event_path(@event), class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<hr>
-<div class="shadow-lg p-3 mb-5 bg-white rounded">
-  <div class="card">
-    <div class="card-header" id="communityMembersHeading">
-      <h3 class="mb-0">Tickets breakdown statistics</h3>
-    </div>
-    <div class="card-body">
-      <table class="table">
-        <thead class="table-success">
-          <tr>
-            <th scope="col">Type </th>
-            <th scope="col">Released Tickets </th>
-            <th scope="col">Tickets sold</th>
-            <th scope="col">Remaining tickets</th>
-            <th scope="col">Tickets rejected</th>
-            <th scope="col">Ticket scanned</th>
-            <th scope="col">Manage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @event.tickets.each do |ticket| %>
+  <div class=" p-3 mb-2 bg-white rounded">
+    <div class="card">
+      <div class="card-header" id="communityMembersHeading">
+        <h3 class="mb-0">Global tickets statistics</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead class="table-dark">
             <tr>
-              <td><%= ticket.model.capitalize %></td>
-              <td><%= ticket.quantity + ticket.sold_tickets(ticket.event)%></td>
-              <td><%= ticket.sold_tickets(ticket.event)  %></td>
-              <td><%= ticket.quantity  %></td>
-              <td><%= ticket.user_tickets.where(scanned: "rejected").count %></td>
-              <td><%= ticket.user_tickets.where(scanned: "accepted").count %></td>
-              <td><%= link_to "Edit ticket", edit_ticket_path(ticket), method: :get%></td>
-            <% end %>
-          </tr>
-        </tbody>
-      </table>
+              <th scope="col">Ticket released</th>
+              <th scope="col">Tickets sold</th>
+              <th scope="col">Remaining tickets</th>
+              <th scope="col">Ticket scanned</th>
+              <th scope="col">Tickets rejected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><%= @event.tickets_released %></td>
+              <td><%= @event.total_tickets_sold %></td>
+              <td><%= @event.total_tickets%></td>
+              <td><%= @event.total_tickets_accepted  %></td>
+              <td><%= @event.total_tickets_rejected %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
-</div>
-<hr>
-<div class="shadow-lg p-3 mb-5 bg-white rounded">
-  <div class="card">
-    <div class="card-header" id="communityMembersHeading">
-      <h3 class="mb-0">Event participants</h3>
+  <div class="p-3 mb-2 bg-white rounded">
+    <div class="card">
+      <div class="card-header" id="communityMembersHeading">
+        <h3 class="mb-0">Tickets breakdown statistics</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Type </th>
+              <th scope="col">Released Tickets </th>
+              <th scope="col">Tickets sold</th>
+              <th scope="col">Remaining tickets</th>
+              <th scope="col">Tickets rejected</th>
+              <th scope="col">Ticket scanned</th>
+              <th scope="col">Manage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @event.tickets.each do |ticket| %>
+              <tr>
+                <td><%= ticket.model.capitalize %></td>
+                <td><%= ticket.quantity + ticket.sold_tickets(ticket.event)%></td>
+                <td><%= ticket.sold_tickets(ticket.event)  %></td>
+                <td><%= ticket.quantity  %></td>
+                <td><%= ticket.user_tickets.where(scanned: "rejected").count %></td>
+                <td><%= ticket.user_tickets.where(scanned: "accepted").count %></td>
+                <td><%= link_to "Edit ticket", edit_ticket_path(ticket), method: :get%></td>
+              <% end %>
+            </tr>
+          </tbody>
+        </table>
+        <% vip_ticket = @event.tickets.find_by(model: "vip") %>
+        <% if vip_ticket && vip_ticket.r_code.present? %>
+          <h5>Redeem code VIP ticket: <span style="color: blue; font-weight: bold;"><%= vip_ticket.r_code %></span></h5>
+        <% end %>
+      </div>
     </div>
-    <div class="card-body">
-      <table class="table">
-        <thead class="table-success">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">User ID</th>
-            <th scope="col">First name</th>
-            <th scope="col">Last name</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Age</th>
-            <th scope="col">Nationality</th>
-            <th scope="col">Occupation</th>
-            <th scope="col">Instagram Handle</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @event.participants.each_with_index do |c, index| %>
-            <% if c.scanned == "accepted"  %>
-              <tr class="table-success">
-            <% elsif c.scanned == "rejected" %>
-              <tr class="table-danger">
-              <% else %>
-                <tr>
-                <% end %>
-                <td><%= index + 1 %></td>
-                <td><%= c.user_id %></td>
-                <td><%= c.user.first_name %></td>
-                <td><%= c.user.last_name %></td>
-                <td><%= c.user.email %></td>
-                <td><%= Time.now.year - c.user.birthdate.year %></td>
-                <td><%= c.user.nationality %></td>
-                <td><%= c.user.occupation %></td>
-                <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
-                <td>
-                  <div class="btn-group dropdown">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
-                      Select
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="#dropdown">
-                      <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
-                      <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
-                      =======
-                      <% if c.scanned == "accepted"  %>
-                        <tr class="table-success">
-                        <% elsif c.scanned == "rejected" %>
-                          <tr class="table-danger">
-                          <% else %>
-                            <tr>
-                            <% end %>
-                            <td><%= index + 1 %></td>
-                            <td><%= c.user_id %></td>
-                            <td><%= c.user.first_name %></td>
-                            <td><%= c.user.last_name %></td>
-                            <td><%= c.user.email %></td>
-                            <td><%= Time.now.year - c.user.birthdate.year %></td>
-                            <td><%= c.user.nationality %></td>
-                            <td><%= c.user.occupation %></td>
-                            <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
-                            <td>
-                              <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
-                                  Select
-                                </button>
-                                <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="#dropdown">
-                                  <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
-                                  <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
-                                  >>>>>>> b1b4657ff8dc72aabf63416685112a2ad4ba7000
-                                  <%= link_to "View history", user_history_path(@event.community, c), class: "dropdown-item" %>
-                                </div>
-                              </div>
-                            </td>
-                          <% end %>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <%= link_to "Go back", community_path(@event.community) %>
+  </div>
+  <div class=" p-3 mb-3 bg-white rounded">
+    <div class="card">
+      <div class="card-header" id="communityMembersHeading">
+        <h3 class="mb-0">Event participants</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">User ID</th>
+              <th scope="col">First name</th>
+              <th scope="col">Last name</th>
+              <th scope="col">E-mail</th>
+              <th scope="col">Age</th>
+              <th scope="col">Nationality</th>
+              <th scope="col">Occupation</th>
+              <th scope="col">Instagram Handle</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @event.participants.each_with_index do |c, index| %>
+              <% if c.scanned == "accepted"  %>
+                <tr class="table-success">
+                <% elsif c.scanned == "rejected" %>
+                  <tr class="table-danger">
+                  <% else %>
+                    <tr>
+                    <% end %>
+                    <td><%= index + 1 %></td>
+                    <td><%= c.user_id %></td>
+                    <td><%= c.user.first_name %></td>
+                    <td><%= c.user.last_name %></td>
+                    <td><%= c.user.email %></td>
+                    <td><%= Time.now.year - c.user.birthdate.year %></td>
+                    <td><%= c.user.nationality %></td>
+                    <td><%= c.user.occupation %></td>
+                    <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
+                          Select
+                        </button>
+                        <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="#dropdown-<%= c.id %>">
+                          <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
+                          <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
+<% community_user = c.user.community_users.find_by(community: @event.community) %>
+<% if community_user.present? %>
+  <%= link_to "View history", user_history_path(@event.community, community_user), class: "dropdown-item" %>
+<% end %>
+                        </div>
+                      </div>
+                    </td>
+                  <% end %>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= link_to "Go back", community_path(@event.community) %>

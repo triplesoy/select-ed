@@ -2,7 +2,8 @@
 
 
 
-
+User name: <%=  @community_user.user.first_name %>
+<br>
 
 Member since:<br>
 <%= @community_user.created_at.strftime("%B %dst, %Y").sub("st,", ",") %><br>
@@ -50,5 +51,3 @@ Events he attended:<br>
         </div>
       </div>
     </div>
-
-
