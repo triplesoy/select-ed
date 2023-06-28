@@ -160,4 +160,6 @@
                   </div>
                 </div>
               </div>
-              <%= link_to "Go back", community_path(@event.community) %>
+              <div class="text-center">
+                <%= link_to "Back to communities", community_path(@event.community), class: "btn btn-dark" %>
+              </div>
