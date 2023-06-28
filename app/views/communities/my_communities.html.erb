@@ -1,4 +1,4 @@
-<div class="container mx-auto mt-4">
+<div class="container mx-auto m-4">
   <div class="container mx-auto mt-4">
     <div class="row">
       <% if @my_communities.empty? %>
@@ -11,27 +11,47 @@
           </div>
         </div>
       <% else %>
-        <div class="row">
-          <% @my_communities.each do |v| %>
-            <div class="col-lg-4 my-3">
-              <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 32rem;">
-                <div class="image-wrapper" style="height: 500px; overflow: hidden;">
-                  <% if v.photos.attached? %>
-                    <img src="<%= cl_image_path v.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                  <% end %>
-                </div>
-                <div class="card-body position-relative">
-                  <div>
-                    <h5 class="card-title position-absolute"><%= v.title %></h5>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12 mt-4 ms-4">
+              <h2>My Communities</h2>
+              <div class="row">
+                <% @my_communities.each do |community| %>
+                  <div class="col-lg-3 col-md-6 col-sm-12 my-3 ">
+                    <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
+                      <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                        <% if community.photos.attached? %>
+                          <a href="<%= community_path(community) %>">
+                            <img src="<%= cl_image_path community.photos.first.key %>" class="card-img-top" alt="Listing Image">
+                          </a>
+                        <% end %>
+                      </div>
+                      <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
+                        <div class="card-title">
+                          <a href="<%= community_path(community) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg" style="font-size: 15px;"><%= community.title %></a>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="card-title" style="color: #B9624F; font-size: 12px;"><%= community.short_description %></div>
+                        <div>
+                          <span class="position-absolute bottom-0 end-0 " style="margin: 5px;">
+                            <%= community.city %>, <%= community.country %>
+                          </span>
+                          <% country = ISO3166::Country[community.country] %>
+                          <% if country %>
+                            <% country_code = country.alpha2.upcase %>
+                            <img src="https://flagsapi.com/<%= country_code %>/flat/24.png" alt="<%= country.translated_names.first %> Flag" class="img-fluid position-absolute bottom-0 end-0 mx-7" style="margin: 5px;">
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <h6 class="card-subtitle mb-2 text-muted"></h6>
-                  <%= link_to "Details", community_path(v), class: "btn btn-dark position-absolute bottom-0 start-0 end-0" %>
-                </div>
-              </div>
+                <% end %>
+              <% end %>
             </div>
-          <% end %>
+          </div>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>

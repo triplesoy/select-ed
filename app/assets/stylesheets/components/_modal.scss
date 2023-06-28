@@ -1,0 +1,17 @@
+.modal-body {
+  border-radius: 7px;
+  overflow: hidden;
+  background-color: rgb(0, 0, 0);
+  padding-left: 0px;
+  padding-right: 0px;
+  box-shadow: 0 10px 50px -10px rgba($black, .9);
+  color: antiquewhite;
+
+  h2 {
+    font-size: 18px;
+  }
+  p {
+    color: #777;
+    font-size: 14px;
+  }
+}

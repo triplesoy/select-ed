@@ -61,39 +61,40 @@
             </div>
           <% end %>
           <!-- Modal -->
-          <div class="modal fade my-4" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal fade my-4" style="height: 700px" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header text-center align-items-center">
                   <h1 class="modal-title fs-5" id="staticBackdropLabel">Tickets</h1>
                 </div>
-                <div class="modal-body">
-                  <div class="col-lg-12 col-md-6 my-3">
-                    <div class="banner">
-                      <div class="card my-3">
-                        <% @event.tickets.each do |t| %>
-                          <% if t.model == "vip" %>
-                            <div data-controller="redeem">
-                              <h2><%= t.model %></h2>
-                              <%= form_with url: :redeem_ticket, data: { action: "submit->redeem#redeemCode", id: t.id } do |f| %>
-                                <%= f.text_field :code, placeholder: "Enter code", class: "form-control code" %>
-                                <%= f.submit "Redeem", class: "btn btn-primary mt-2" %>
-                              <% end %>
-                              <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-primary d-none buy #{"disabled btn-warning" if t.quantity == 0}" do %>
-                                <%= t.quantity > 0 ? "Buy" : "Sold out" %>
-                              <% end %>
-                            </div>
-                          <% else %>
-                            <div>
-                              <h2><%= t.model %></h2>
-                              <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-primary #{"disabled btn-warning" if t.quantity == 0}" do %>
-                                <%= t.quantity > 0 ? "Buy" : "Sold out" %>
-                              <% end %>
-                            </div>
-                          <% end %>
-                          <p>Tickets available: <%= t.quantity %></p>
+                <div class="modal-body" style="width: 500px">
+                  <div class="row">
+                    <div class="col-lg-6 my-5" >
+                      <img src="<%= cl_image_path @event.photos.first.key %>" class="card-img-top" alt="Listing Image">
+                    </div>
+                    <div class="col-lg-6 my-5" >
+                      <% @event.tickets.each do |t| %>
+                        <% if t.model == "vip" %>
+                          <div data-controller="redeem">
+                            <h2><%= t.model %></h2>
+                            <%= form_with url: :redeem_ticket, data: { action: "submit->redeem#redeemCode", id: t.id } do |f| %>
+                              <%= f.text_field :code, placeholder: "Enter code", class: "form-control code" %>
+                              <%= f.submit "Redeem", class: "btn btn-primary mt-2" %>
+                            <% end %>
+                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-primary d-none buy #{"disabled btn-warning" if t.quantity == 0}" do %>
+                              <%= t.quantity > 0 ? "Buy" : "Sold out" %>
+                            <% end %>
+                          </div>
+                        <% else %>
+                          <div>
+                            <h2><%= t.model %></h2>
+                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-primary #{"disabled btn-warning" if t.quantity == 0}" do %>
+                              <%= t.quantity > 0 ? "Buy" : "Sold out" %>
+                            <% end %>
+                          </div>
                         <% end %>
-                      </div>
+                        <p>Tickets available: <%= t.quantity %></p>
+                      <% end %>
                     </div>
                   </div>
                 </div>
@@ -103,4 +104,9 @@
               </div>
             </div>
           </div>
-          <div><%= link_to "Go back", community_path(@community), class: "btn btn-secondary m-4" %></div>
+          <div><%= link_to "Go back", community_path(@community), class: "col-lg-12 btn btn-secondary" %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
