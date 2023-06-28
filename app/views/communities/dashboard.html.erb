@@ -117,7 +117,9 @@
     <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete()" %>
       <% end %>
     </div>
-    <%= link_to "Go back", community_path(@community) %>
+    <div class="text-center">
+      <%= link_to "Back to my community page", community_path(@community), class: "btn btn-dark" %>
+    </div>
     <script>
       function confirmDelete() {
         var userInput = prompt("Type 'delete' to confirm deletion:");
