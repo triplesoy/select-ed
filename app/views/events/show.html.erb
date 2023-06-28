@@ -1,7 +1,7 @@
 `<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container">
     <div class="row">
-      <div class="col-sm-4 mt-4">
+      <div class="col-lg-12 col-sm-4 mt-4">
         <div class="card mb-4">
           <div class="card-body">
             <h5 class="card-title">Event dashboard</h5>
@@ -20,23 +20,24 @@
               <div class="col-lg-6 col-md-6 my-3">
                 <div class="card border shadow" style="height: 500px;">
                   <div class="banner">
-                    <div class="card-body">
-                      <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                        <% if @event.photos.attached? %>
-                          <img src="<%= cl_image_path @event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                        <% end %>
-                      </div>
-                      <h2 class="card-title" style="margin-top: 20px;"><%= @event.title %></h2>
-                      <h5 class="card-text"><%= @event.description %></h5>
-                      <h5 class="card-text"><%= @event.address %></h5>
-                      <p class="card-text"><%= @event.start_time %></p>
-                      <p class="card-text"><%= @event.end_time %></p>
-                      <% unless current_user.has_ticket_with_event?(@event) %>
-                        <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                          Get Ticket
-                        </button>
-                      <%end %>
+                    <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                      <% if @event.photos.attached? %>
+                        <img src="<%= cl_image_path @event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
+                      <% end %>
                     </div>
+                    <h2 class="card-title mx-4" style="margin-top: 20px;"><%= @event.title %></h2>
+                    <h5 class="card-text mx-4"><%= @event.address %></h5>
+                    <p class="card-text mx-4"><%= @event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></p>
+                    <p class="card-text mx-4"><%= @event.end_time.strftime('%a,  %d/%m/%y, %H:%M') %></p>
+                    <% unless current_user.has_ticket_with_event?(@event) %>
+                      <button type="button" class="btn btn-success position-absolute bottom-0 start-0 end-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        GET TICKET
+                      </button>
+                    <%else %>
+                      <button href="#" type="button" class="btn btn-dark position-absolute bottom-0 start-0 end-0">
+                        TICKET ALREADY PURCHASED
+                      </button>
+                    <%end %>
                   </div>
                 </div>
               </div>
@@ -60,15 +61,14 @@
             </div>
           <% end %>
           <!-- Modal -->
-          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal fade my-4" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
                   <h1 class="modal-title fs-5" id="staticBackdropLabel">Tickets</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <div class="col-12 col-lg-6 my-3">
+                  <div class="col-lg-12 col-md-6 my-3">
                     <div class="banner">
                       <div class="card my-3">
                         <% @event.tickets.each do |t| %>
@@ -98,9 +98,9 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
                 </div>
               </div>
             </div>
           </div>
-          <div><%= link_to "Go back", community_path(@community), class: "btn btn-secondary mt-4" %></div>
+          <div><%= link_to "Go back", community_path(@community), class: "btn btn-secondary m-4" %></div>

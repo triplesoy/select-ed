@@ -14,7 +14,9 @@ class EventsController < ApplicationController
   end
 
   def show
+    @user = current_user
     @ticket = Ticket.find_by(id: params[:id])
+
     @markers = [{
       lat: @event.latitude,
       lng: @event.longitude
