@@ -13,6 +13,9 @@
               <% @event.photos.each do |photo| %>
                 <div class="col-md-3">
                   <%= image_tag photo, class: "img-thumbnail" %>
+                  <%= link_to destroy_photo_path(event_id: @event.id, photo_id: photo.id), data: { confirm: "Are you sure?", turbo_method: :delete } do %>
+                    <i class="fas fa-trash-alt"></i>
+                  <% end %>
                 </div>
               <% end %>
             </div>
@@ -29,7 +32,6 @@
               <%= f.input :end_time, html5: true, input_html: { id: 'end-date', class: 'form-control' } %>
             </div>
           </div>
-
           <%= f.submit "Update Event", class: "btn btn-outline-dark mt-3" %>
         <% end %>
       </div>
@@ -39,8 +41,6 @@
 <div class="text-center">
   <%= link_to "Back to dashboard", community_event_path(@community, @event), class: "btn btn-dark" %>
 </div>
-
-
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     var startDateInput = document.getElementById('start-date');

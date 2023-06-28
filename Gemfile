@@ -103,5 +103,6 @@ end
 
 
 group :development, :test do
+gem 'letter_opener'
   gem 'faker'
 end

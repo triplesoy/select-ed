@@ -36,4 +36,6 @@ end
   get "communities/:community_id/user_history/:id", to: "community_users#user_history", as: :user_history
 
   get "tickets/:id/redeem", to: "tickets#redeem", as: :redeem_ticket
+
+  delete "events/photos/:id", to: "events#destroy_photo", as: :destroy_photo
 end
