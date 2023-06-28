@@ -10,7 +10,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    record.community.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin || record.community.community_users.where(user: user, role: "member").exists?
   end
 
   def new?

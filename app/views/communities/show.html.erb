@@ -17,13 +17,27 @@
       <div class="col-md-4 mt-3 mt-sm-3 mt-md-3">
         <div class="card mb-4">
           <div class="black-banner">
-            <h5 class="card-title">Community dashboard & settings</h5>
+            <h5 class="card-title">Dashboards & settings</h5>
           </div>
           <div class="card-body text-center">
             <p class="card-text">
-              <%= link_to "Community dashboard", dashboard_path(@community), class: "btn btn-outline-dark" %>
+              <%= link_to "Community dashboard", dashboard_path(@community), class: "btn btn-outline-dark" %><br>
+              <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+                <% if @community.events.present? %>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      Events dashboard
+                    </button>
+                    <ul class="dropdown-menu custom-dropdown-menu">
+                      <% @community.events.last(5).each do |event| %>
+                        <li> <%= link_to event.title, event_dashboard_path(@community, event), class: "dropdown-item" %> </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+              <% end %><br>
               <% if policy(@community).new? %>
-                <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary my-2" %>
+                <%= link_to "Create Event", new_community_event_path(@community), class: "btn btn-outline-primary my-2" %><br>
               <% end %>
               <% if policy(@community).edit? %>
                 <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning my-2" %>
@@ -32,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 mt-0 mt-sm-0 mt-md-3">
+      <div class="col-md-4 mt-3 mt-sm-3 mt-md-3">
         <div class="card mb-4">
           <div class="black-banner">
             <h5 class="card-title">Community stats</h5>
@@ -101,7 +115,7 @@
                 If your account is private, please extend a follow request to the organizer, then request to join this community.<br>
                 <center><body><br>
                     <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
-                        Add Cultura Subterranea on Instagram
+                        Add on Instagram
                       </a></body> </center><br>
                   This allows us to foster a secure, positive environment for all, in form of a safe space.<br>
                   <br>
@@ -129,6 +143,8 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
       </div>
     </div>
   </div>
+  <%# Show quick dashboard access%>
+  <%# Show quick dashboard access END%>
   <%# end of display community card%>
   <%# start of display of community events%>
   <div class="container col-12mt-4">
@@ -141,7 +157,6 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
           <div class="card-body bg-white justify-content-center">
             <% if @community.events.present? %>
               <div class="container-fluid ">
-
                 <div class="row col-12 justify-content-start">
                   <% @community.events.sort_by(&:start_time).each do |event| %>
                     <% if event.start_time >= Date.today %>
@@ -172,123 +187,59 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
               </div>
             </div>
           </div>
-          <%# PAST EVENT %>
-          <div class="container-fluid">
-            <div class="row">
-              <div class="container mx-auto ms-4">
-                <div class="col-12">
-                  <h2>Past Events</h2>
-                  <div class="row col-12 justify-content-start">
-                    <% @community.events.sort_by(&:start_time).each do |event| %>
-                      <% if event.start_time < Date.today %>
-                        <div class="col-lg-4 col-md-6 col-sm-12 my-3">
-                          <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 28rem;">
-                            <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                              <% if event.photos.attached? %>
-                                <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                              <% end %>
-                              <div class="card-body position-relative">
-                              </div>
-                              <h5 class="card-title position-absolute"><%= event.title %></h5>
-                              <a href="#" class="btn btn-warning position-absolute bottom-0 start-0 end-0">PAST EVENT</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%# PAST EVENT %>
+  <div class="container col-12mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-11" >
+        <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px">
+          <div class="black-banner">
+            <h5 class="card-title">Past events</h5>
+          </div>
+          <div class="card-body bg-white justify-content-center">
+            <% if @community.events.present? %>
+              <div class="container-fluid ">
+                <div class="row col-12 justify-content-start">
+                  <% @community.events.sort_by(&:start_time).each do |event| %>
+                    <% if event.start_time < Date.today %>
+                      <div class="col-lg-4 col-md-6 col-sm-12 my-3 d-flex align-items-center justify-content-center">
+                        <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
+                          <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                            <% if event.photos.attached? %>
+                              <a href="<%= community_event_path(event.community, event) %>">
+                                <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
+                              </a>
+                            <% end %>
+                          </div>
+                          <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
+                            <div class="card-title">
+                              <a href="<%= community_event_path(event.community, event) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
                             </div>
+                            <br>
+                            <br>
+                            <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
+                            <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
+                            <div class="card-title" style="color: gray;"><%= event.address %></div>
                           </div>
                         </div>
-                      <% end %>
+                      </div>
                     <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% else %>
-      No event to display
-    <% end %>
-    <%# END OF THE UPDATED EVENT CARD%>
-  </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<%# PAST CODE s%>
-<h2>Events:</h2>
-<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
-  <% if @community.events.present? %>
-    <div class="btn-group">
-      <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Event dashboard quick access
-      </button>
-      <ul class="dropdown-menu custom-dropdown-menu">
-        <% @community.events.last(5).each do |event| %>
-          <li> <%= link_to event.title, event_dashboard_path(@community, event), class: "dropdown-item" %> </li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-<% end %>
-<% unless @community.public? %>
-  <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
-    <% if @community.events.present? %>
-      <div class="row">
-        <% @community.events.each do |event| %>
-          <div class="col-lg-3 my-3">
-            <div class="card" style="width: 18rem; height: 22rem;">
-              <div class="card-body position-relative">
-                <h5 class="card-title"><%= event.title %></h5>
-                <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                  <% if event.photos.attached? %>
-                    <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
                   <% end %>
                 </div>
-                <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= event.description %></p>
-                <div class="d-flex justify-content-center" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
-                  <%= event.capacity %>
-                </div>
-                <%= link_to "Details", community_event_path(@community, event), class: "btn btn-outline-dark position-absolute bottom-0 end-0 m-2" %>
               </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      There are no events in this community yet.
-    <% end %>
-  <% else %>
-    You must request to join and be accepted in the <%= @community.title %> community to see the events.
-  <% end %>
-<% else %>
-  <% if @community.events.present? %>
-    <div class="row">
-      <% @community.events.each do |event| %>
-        <div class="col-lg-3 my-3">
-          <div class="card" style="width: 18rem; height: 22rem;">
-            <div class="card-body position-relative">
-              <h5 class="card-title"><%= event.title %></h5>
-              <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                <% if event.photos.attached? %>
-                  <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                <% end %>
-              </div>
-              <p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= event.description %></p>
-              <div class="d-flex justify-content-center" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
-                <%= event.capacity %>
-              </div>
-              <%= link_to "Details", community_event_path(@community, event), class: "btn btn-outline-dark position-absolute bottom-0 end-0 m-2" %>
             </div>
           </div>
         </div>
-      <% end %>
+      </div>
     </div>
-  <% else %>
-    There are no events in this community yet.
-  <% end %>
+  </div>
+</div>
 <% end %>
-</ul>
-<hr>
+<% end %>
+<%# PAST EVENT END %>
 <div class="text-center">
   <%= link_to "Back to the community page", communities_path, class: "btn btn-dark" %>
 </div>
