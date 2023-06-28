@@ -14,6 +14,8 @@ class CommunitiesController < ApplicationController
     @events = @community.events
     @join_request = CommunityJoinRequest.new
     @community_user = CommunityUser.new
+    @my_events = current_user.events_going_to
+
 
   end
 
