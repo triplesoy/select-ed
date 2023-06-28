@@ -12,8 +12,13 @@
   background-color: black;
   color: white; /* This is to ensure the text color remains white even on hover */
   }
+
+    .container-index {
+    padding-top: 50px; /* Increase this value to add more space on top */
+    padding-bottom: 65px; /* Increase this value to add more space on bottom */
+  }
 </style>
-<div class="container">
+<div class="container-index">
   <p></p>
   <div class="row justify-content-center">
     <% sorted_communities = @communities.sort_by(&:created_at) %>
@@ -104,7 +109,4 @@
     <% end %>
   <% end %>
 </div>
-<hr>
-<%= link_to "Create a community", new_community_path %>
 </div>
-<hr>

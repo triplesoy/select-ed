@@ -50,16 +50,16 @@
   </div>
   <hr>
 <% end %>
-<%# start of display for regular users%>
+<%# start of display for every user%>
 <div class="container mt-4">
   <div class="row justify-content-center">
-    <div class="col-md-12">
-      <div class="card mb-4">
+    <div class="col-md-11" >
+      <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px" >
         <div class="black-banner-main">
           <h5 class="card-title"><%= @community.title %></h5>
         </div>
         <div class="youtube-video-wrapper">
-          <iframe src="https://www.youtube.com/embed/K9cT_jgU2y0?autoplay=1&controls=0&mute=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/K9cT_jgU2y0?autoplay=1&controls=0&mute=1&showinfo=0&loop=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <div class="black-banner-main ">
           <div class="banner-under-video ">
@@ -75,11 +75,11 @@
             </div>
             <div class ="community-type" >
               <% if !@community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
-                <i class="fa-solid fa-lock-open"></i> &nbsp;you're a member
+                <i class="fa-solid fa-lock-open" style="color: green; font-weight: bold;"></i> &nbsp;<span style="color: green; font-weight: bold;">you're a member</span>
               <% elsif !@community.public? %>
                 <i class="fas fa-lock"></i>&nbsp;Private community
               <% elsif @community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
-                <i class="fa-solid fa-lock-open"></i> &nbsp;you're a member of this community
+                <i class="fa-solid fa-lock-open" style="color: green; font-weight: bold;"></i> &nbsp;<span style="color: green; font-weight: bold;">you're a member</span>
               <% elsif @community.public? %>
                 <i class="fa-solid fa-lock-open"></i>&nbsp;Public community
               <% end %>
@@ -92,24 +92,37 @@
           </div>
         </div>
         <%# Begining of the text for the community %>
-        <div class="card-body">
+        <div class="card-body bg-white">
           <p class="card-text">
+            <%= @community.description %>
             <% unless (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
-              For safety and accountability reasons, the owner of this community requires an Instagram check.<br>
-              If your account is private, please extend a follow request to the organizer, then request to join this community.<br>
-              <center><body>
-                  <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
-                      Add Cultura Subterranea on Instagram
-                    </a>
-                  </body>
-                </center>
-                This allows to foster a secure, positive environment for all, in form of a safe space.<br>
-                <hr>
+              <div class="black-banner">
+                For safety and accountability reasons, the owner of this community requires an Instagram check.<br>
+                If your account is private, please extend a follow request to the organizer, then request to join this community.<br>
+                <center><body><br>
+                    <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
+                        Add Cultura Subterranea on Instagram
+                      </a></body> </center><br>
+                  This allows us to foster a secure, positive environment for all, in form of a safe space.<br>
+                  <br>
+                  <%
+community_user = CommunityUser.find_by(user: current_user, community: @community)
+join_request = CommunityJoinRequest.find_by(user: current_user, community: @community)
+%>
+                  <% if community_user.present? %>
+                    <i>You are a member of this community (since <%= time_ago_in_words(community_user.created_at) %>).</i>
+                  <% elsif join_request.present? %>
+                    <button class="btn btn-outline-success" disabled>
+                      <i><%= @community.public? ? 'Joined' : "Membership request sent #{time_ago_in_words(join_request.created_at)} ago" %></i>
+                    </button><br>
+                  <% else %>
+                    <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+                      <%= f.submit 'Request to join this community', class: "btn btn-success" %><br>
+                    <% end %>
+                  <% end %>
+                  <br>
+                </div>
               <% end %>
-              Message for everyone:
-              description
-              the instagram
-              whatsapp group
             </div>
           </div>
         </p>
@@ -117,93 +130,119 @@
     </div>
   </div>
   <%# end of display community card%>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 mt-12">
-        <div class="card mb-12">
-          <div class="card-body">
-            <h1 class="card-title"> <%= @community.title %></h1>
-            <p class="card-text">
-              <p>
-                <%= @community.public? ? 'This community is public' : 'This community is private' %><br>
-                <span class="">
-                  <% status = user_community_status(@community, current_user) %>
-                  <% if status == 'Join' %>
-                    <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
-                      <%= f.submit status, class: "btn btn-outline-dark" %>
-                    <% end %>
-                  <% else %>
-                    <i><%= status %></i>
+  <%# start of display of community events%>
+
+
+
+ <div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-11" >
+      <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px">
+        <div class="black-banner">
+          <h5 class="card-title">Events</h5>
+        </div>
+        <div class="card-body bg-white">
+          <p class="card-text">
+
+
+            <% if @community.events.present? %>
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-8 mt-4 ms-4">
+                    <h2>Upcoming Events</h2>
+                    <div class="row col-12">
+
+
+                      <% @community.events.sort_by(&:start_time).each do |event| %>
+                        <% if event.start_time >= Date.today %>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 my-3 ">
+              <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
+                <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                  <% if event.photos.attached? %>
+                    <a href="<%= community_event_path(event.community, event) %>">
+                      <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
+                    </a>
                   <% end %>
-                  <ul>
-                    <li><%= @community.description %></li>
-                    <% if @community.photos.attached? %>
-                      <% @community.photos.each do |photo| %>
-                        <%= cl_image_tag photo.key, class: "img-thumbnail", width: 200, crop: :thumb %>
+                </div>
+                <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
+                  <div class="card-title">
+                    <a href="<%= community_event_path(event.community, event) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+                  </div>
+                  <br>
+                  <br>
+                  <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
+                  <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
+                  <div class="card-title" style="color: gray;"><%= event.address %></div>
+                </div>
+              </div>
+            </div>
+                        <% end %>
                       <% end %>
-                    <% end %>
-                    <li><%= @community.category %></li>
-                    <li><%= @community.country %></li>
-                    <li><%= @community.city %></li>
-                    <li>Is public? <%= @community.public %></li>
-                    <li>Is visible? <%= @community.is_visible %></li>
-                  </ul>
-                </b>
-              </span>
-            </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                <%# PAST EVENT %>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="container mx-auto ms-4">
+                        <div class="col-12">
+                          <h2>Past Events</h2>
+                            <% @community.events.each do |event| %>
+                              <% if event.end_time < Date.today %>
+                                <div class="col-lg-3 my-3">
+                                  <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 28rem;">
+                                    <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                                      <% if event.photos.attached? %>
+                                        <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
+                                      <% end %>
+                                      <div class="card-body position-relative">
+                                      </div>
+                                      <h5 class="card-title position-absolute"><%= event.title %></h5>
+                                      <a href="#" class="btn btn-warning position-absolute bottom-0 start-0 end-0">PAST EVENT</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              <% end %>
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              No event to display
+            <% end %>
+            <%# END OF THE UPDATED EVENT CARD%>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <hr>
-  <h2>Events:</h2>
-  <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
-    <% if @community.events.present? %>
-      <div class="btn-group">
-        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Event dashboard quick access
-        </button>
-        <ul class="dropdown-menu custom-dropdown-menu">
-          <% @community.events.last(5).each do |event| %>
-            <li> <%= link_to event.title, event_dashboard_path(@community, event), class: "dropdown-item" %> </li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+</div>
+<%# PAST CODE s%>
+<h2>Events:</h2>
+<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+  <% if @community.events.present? %>
+    <div class="btn-group">
+      <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Event dashboard quick access
+      </button>
+      <ul class="dropdown-menu custom-dropdown-menu">
+        <% @community.events.last(5).each do |event| %>
+          <li> <%= link_to event.title, event_dashboard_path(@community, event), class: "dropdown-item" %> </li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
-  <% unless @community.public? %>
-    <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
-      <% if @community.events.present? %>
-        <div class="row">
-          <% @community.events.each do |event| %>
-            <div class="col-lg-3 my-3">
-              <div class="card" style="width: 18rem; height: 22rem;">
-                <div class="card-body position-relative">
-                  <h5 class="card-title"><%= event.title %></h5>
-                  <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                    <% if event.photos.attached? %>
-                      <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                    <% end %>
-                  </div>
-                  <h6 class="card-subtitle mb-2 text-muted"></h6>
-                  <p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= event.description %></p>
-                  <div class="d-flex justify-content-center" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
-                    <%= event.capacity %>
-                  </div>
-                  <%= link_to "Details", community_event_path(@community, event), class: "btn btn-outline-dark position-absolute bottom-0 end-0 m-2" %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      <% else %>
-        There are no events in this community yet.
-      <% end %>
-    <% else %>
-      You must request to join and be accepted in the <%= @community.title %> community to see the events.
-    <% end %>
-  <% else %>
+<% end %>
+<% unless @community.public? %>
+  <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
     <% if @community.events.present? %>
       <div class="row">
         <% @community.events.each do |event| %>
@@ -216,6 +255,7 @@
                     <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
                   <% end %>
                 </div>
+                <h6 class="card-subtitle mb-2 text-muted"></h6>
                 <p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= event.description %></p>
                 <div class="d-flex justify-content-center" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
                   <%= event.capacity %>
@@ -229,7 +269,38 @@
     <% else %>
       There are no events in this community yet.
     <% end %>
+  <% else %>
+    You must request to join and be accepted in the <%= @community.title %> community to see the events.
   <% end %>
+<% else %>
+  <% if @community.events.present? %>
+    <div class="row">
+      <% @community.events.each do |event| %>
+        <div class="col-lg-3 my-3">
+          <div class="card" style="width: 18rem; height: 22rem;">
+            <div class="card-body position-relative">
+              <h5 class="card-title"><%= event.title %></h5>
+              <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                <% if event.photos.attached? %>
+                  <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
+                <% end %>
+              </div>
+              <p class="card-text" style="position: absolute; bottom: 0; left: 0; margin: 8px;"><%= event.description %></p>
+              <div class="d-flex justify-content-center" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
+                <%= event.capacity %>
+              </div>
+              <%= link_to "Details", community_event_path(@community, event), class: "btn btn-outline-dark position-absolute bottom-0 end-0 m-2" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    There are no events in this community yet.
+  <% end %>
+<% end %>
 </ul>
 <hr>
-<%= link_to "Back", communities_path %>
+<div class="text-center">
+  <%= link_to "Back to the community page", communities_path, class: "btn btn-dark" %>
+</div>

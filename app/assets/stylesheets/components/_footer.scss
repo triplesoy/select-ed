@@ -1,23 +1,16 @@
-.footer {
-  display: flex;
-  flex-direction: column;
-  font-size: small;
-
-  // padding-top: 20px;
-  // padding-bottom: 20px;
-
-  color: white !important;
-  background-color: black;
-  height: 100px;
-}
-
-
 .footer2 {
+  font-size: small;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0px 50px;
+  margin-top: 10px; /* adjust as needed */
+  margin-bottom: 10px; /* adjust as needed */
   color: white !important;
   background-color: black;
-  margin-top: 10px;
+}
+
+.footer2 .container {
+  padding-top: 10px; /* adjust as needed */
+  padding-bottom: 10px; /* adjust as needed */
 }
