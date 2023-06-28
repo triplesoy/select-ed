@@ -25,6 +25,8 @@ class Community < ApplicationRecord
   validates :title, uniqueness: { case_sensitive: false }, on: :create
   # validates :photos, presence: true, on: :create
   validates :is_visible, presence: true, on: :create
+  validate :photos_presence
+
 
   has_many_attached :photos
   has_one_attached :video
@@ -37,4 +39,10 @@ class Community < ApplicationRecord
   def moderator
     self.community_users.where(role: "moderator")
   end
+end
+
+private
+
+def photos_presence
+  errors.add(:photos, "can't be blank") unless photos.attached?
 end

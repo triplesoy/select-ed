@@ -1,6 +1,8 @@
 <style>
   .card {
     margin-top: 20px; /* Adjust this value as needed */
+    margin-bottom: 20px; /* Adjust this value as needed */
+
   }
 
   .btn-custom-join {
@@ -16,12 +18,14 @@
     .container-index {
     padding-top: 50px; /* Increase this value to add more space on top */
     padding-bottom: 65px; /* Increase this value to add more space on bottom */
+     margin-left: 40px; /* Adjust this value as needed */
+    margin-right: 40px; /* Adjust this value as needed */
   }
 </style>
 <div class="container-index">
   <p></p>
   <div class="row justify-content-center">
-    <% sorted_communities = @communities.sort_by(&:created_at) %>
+<% sorted_communities = @communities.sort_by(&:created_at).reverse %>
     <% sorted_communities.each do |community| %>
       <% if community.is_visible? %>
         <div class="col-md-6">

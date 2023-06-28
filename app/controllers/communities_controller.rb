@@ -14,7 +14,7 @@ class CommunitiesController < ApplicationController
     @events = @community.events
     @join_request = CommunityJoinRequest.new
     @community_user = CommunityUser.new
-    @my_events = current_user.events_going_to
+    @my_events = current_user&.events_going_to
 
 
   end
@@ -29,13 +29,20 @@ class CommunitiesController < ApplicationController
     @community.user = current_user
     authorize @community
 
-    if @community.save!
-      @community.community_users.create!(user: current_user, role: "admin", community: @community)
+    if @community.save
+      @community.community_users.create(user: current_user, role: "admin")
       redirect_to community_path(@community), notice: 'Community was successfully created.'
     else
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+      format.html { render :new }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(@community, partial: 'communities/form', locals: { community: @community })
+      end
     end
   end
+end
+
+
 
   def edit
     authorize @community

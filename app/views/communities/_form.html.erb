@@ -1,0 +1,26 @@
+<%= simple_form_for @community do |f| %>
+ <% if @community.errors.any? %>
+    <div id="error_explanation">
+      <h4><%= pluralize(@community.errors.count, "error") %> prohibited this event from being saved:</h4>
+      <ul>
+        <% @community.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.input :title, required: true, label: "Title" %>
+  <%= f.input :short_description, required: true, label: "Short description (on the index page)" %>
+  <%= f.input :description, required: true, label: "Description (on the community page)", input_html: { rows: 5 } %>
+  <%= f.input :category, required: true, label: "Category" %>
+  <%= f.input :photos, required: true, as: :file, input_html: { multiple: true } %>
+  <%= f.input :country, required: true, label: "Country" %>
+  <%= f.input :city, required: true, label: "City" %>
+  <%= "Community Settings" %>
+  <hr>
+  <div>
+    <%= f.input :public, label: "Publicity", as: :radio_buttons, collection: [['Public (Everyone can join)', true], ['Private (Request required)', false]], checked: false %>
+    <%= f.input :is_visible, label: "Visibility", as: :radio_buttons, collection: [['Visible (Visible on the index page)', true], ['Hidden', false]], checked: true %>
+  </div>
+  <%= f.submit "Create Community", class: "btn btn-outline-dark" %>
+<% end %>

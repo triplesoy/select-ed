@@ -9,6 +9,7 @@ class UserTicket < ApplicationRecord
 
 
   def has_expired?
-    expiration_time = self.ticket.expire_time + 10.minutes
-    expiration_time < DateTime.now  end
+    expiration_time = ticket.expire_time
+    expiration_time.present? && expiration_time < DateTime.now
+  end
 end
