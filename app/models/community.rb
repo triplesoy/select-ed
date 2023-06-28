@@ -17,7 +17,7 @@ class Community < ApplicationRecord
 
   validates :title, presence: true, on: :create
   validates :description, presence: true, on: :create, length: { minimum: 20 }
-  validates :short_description, presence: true, on: :create, length: { minimum: 10 }
+  validates :short_description, presence: true, on: :create, length: { minimum: 8, maximum: 100 }
 
   validates :category, presence: true, on: :create
   validates :country, presence: true, on: :create

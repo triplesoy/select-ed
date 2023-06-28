@@ -25,13 +25,15 @@
 <div class="container-index">
   <p></p>
   <div class="row justify-content-center">
-<% sorted_communities = @communities.sort_by(&:created_at).reverse %>
+    <% sorted_communities = @communities.sort_by(&:created_at).reverse %>
     <% sorted_communities.each do |community| %>
       <% if community.is_visible? %>
         <div class="col-md-6">
           <div class="card mb-3 border-0" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px; object-fit: cover;">
             <% if community.photos.attached? %>
-              <div class="image-container " style="width: 100%;  height: 250px; background-image: url('<%= cl_image_path community.photos.first.key %>'); background-size: cover; background-position: top;"></div>
+              <a href="<%= community_path(community) %>">
+                <div class="image-container" style="width: 100%; height: 250px; background-image: url('<%= cl_image_path community.photos.first.key %>'); background-size: cover; background-position: top;"></div>
+              </a>
             <% end %>
             <div class="membership-icon position-absolute top-0 end-0 p-2 bg-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; transform: translate(20%, -30%);">
               <% if !community.public? && (community.user == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
