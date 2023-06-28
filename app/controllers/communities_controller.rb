@@ -1,7 +1,7 @@
 class CommunitiesController < ApplicationController
   require 'countries'
 
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: [:index]
   before_action :set_community, only: [:show, :edit, :update, :destroy, :dashboard]
 
   def index
@@ -16,8 +16,14 @@ class CommunitiesController < ApplicationController
     @community_user = CommunityUser.new
     @my_events = current_user&.events_going_to
 
-
+    if current_user.nil?
+      redirect_to new_user_session_path
+    else
+      render :show
+    end
   end
+
+
 
   def new
     @community = Community.new

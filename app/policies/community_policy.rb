@@ -11,8 +11,9 @@ class CommunityPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    user.present?
   end
+
 
   def new?
     true
