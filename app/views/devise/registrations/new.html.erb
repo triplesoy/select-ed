@@ -31,9 +31,12 @@
           <%= f.button :submit, "Sign up", class: "btn btn-outline-dark" %>
         </div>
       <% end %>
-      <%= render "devise/shared/links" %>
+      <%# <%= render "devise/shared/links" %>  
     </div>
   </div>
+</div>
+<div class="text-center">
+  <%= link_to "Back to community", communities_path(@community), class: "btn btn-dark" %>
 </div>
 <script>
   var tagify = new Tagify(document.querySelector('input[name=tags3-1]'), {
