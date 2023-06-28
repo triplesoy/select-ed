@@ -13,6 +13,11 @@ class Event < ApplicationRecord
   geocoded_by :address
   after_validation :geocode, if: :will_save_change_to_address?
   validates :start_time, :end_time, presence: true
+  validate :photos_presence
+  validates :title, presence: true, length: { minimum: 5, maximum: 30 }
+  validates :description, presence: true, length: { minimum: 5, maximum: 300 }
+  validates :address, presence: true
+
 
   def participants
     user_tickets
@@ -36,5 +41,11 @@ class Event < ApplicationRecord
 
   def total_tickets_rejected
     user_tickets.where(scanned: "rejected").count
+  end
+
+  private
+
+  def photos_presence
+    errors.add(:photos, "can't be blank") unless photos.attached?
   end
 end

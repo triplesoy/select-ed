@@ -40,11 +40,19 @@ class EventsController < ApplicationController
     @event.community = Community.friendly.find(params[:community_id])
     @community = Community.friendly.find(params[:community_id])
     @event.user = current_user
-    if @event.save!
+    if @event.save
       @event.update(start_time: @event.start_time.to_datetime.in_time_zone("America/Mexico_City"))
       @event.update(end_time: @event.end_time.to_datetime.in_time_zone("America/Mexico_City"))
       redirect_to new_community_event_ticket_path(@community, @event)
+    else
+      respond_to do |format|
+        format.html { render :new }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(@event, partial: 'events/form', locals: { event: @event })
+        end
+      end
     end
+
     authorize @event
   end
 
