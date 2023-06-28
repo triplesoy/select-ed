@@ -19,8 +19,17 @@
           <% end %>
           <%= f.input :address, input_html: { data: { address_autocomplete_target: "address" }, class: "d-none" },
                             wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } } %>
-          <%= f.input :start_time, html5: true, input_html: { min: Date.current.to_s, id: 'start-date' } %>
-          <%= f.input :end_time, html5: true, input_html: { id: 'end-date' } %>
+          <%# <%= f.input :start_time, html5: true, input_html: { min: Date.current.to_s, id: 'start-date' } %>
+          <%# <%= f.input :end_time, html5: true, input_html: { id: 'end-date' } %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.input :start_time, html5: true, input_html: { min: Date.current.to_s, id: 'start-date', class: 'form-control' } %>
+            </div>
+            <div class="col-md-6">
+              <%= f.input :end_time, html5: true, input_html: { id: 'end-date', class: 'form-control' } %>
+            </div>
+          </div>
+
           <%= f.submit "Update Event", class: "btn btn-outline-dark mt-3" %>
         <% end %>
       </div>
