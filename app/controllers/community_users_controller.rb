@@ -1,6 +1,6 @@
 class CommunityUsersController < ApplicationController
   before_action :set_community_user, only: [:update, :destroy, :user_history]
-  before_action :set_community, only: [:create, :update, :destroy, :user_history]
+  before_action :set_community, only: [:create, :update, :destroy, :user_history, :user_history]
 
   def create
     @community_user = CommunityUser.new(community_user_params)
