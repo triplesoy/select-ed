@@ -105,7 +105,7 @@ class UserTicketsController < ApplicationController
       end
 
       if @user_ticket.ticket.model == "free" && @user_ticket.ticket.expire_time.present?
-        valid_until = @user_ticket.ticket.expire_time.to_datetime.in_time_zone("America/Mexico_City").strftime("%H:%M on %d/%m/%Y")
+        valid_until = @user_ticket.ticket.expire_time.to_datetime.strftime("%H:%M on %d/%m/%Y")
 
         result.combine_options do |c|
           c.gravity 'South'

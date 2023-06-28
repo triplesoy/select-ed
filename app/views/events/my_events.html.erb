@@ -16,13 +16,13 @@
                 </div>
                 <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
                   <div class="card-title">
-                    <a href="<%= community_event_path(event.community, event) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+                    <a href="<%= community_event_path(event.community, event) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg" style="font-size: 15px;"><%= event.title %></a>
                   </div>
                   <br>
                   <br>
                   <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
                   <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
-                  <div class="card-title" style="color: gray;"><%= event.address %></div>
+                  <div class="card-title" style="color: gray; font-size: 12px;"><%= event.address %></div>
                 </div>
               </div>
             </div>
