@@ -7,7 +7,10 @@
         <%= render 'form', event: @event %>
       </div>
     </div>
-    <%= link_to "Back", community_path(@community), class: "btn btn-secondary mt-3" %>
+    <%# <%= link_to "Back", community_path(@community), class: "btn btn-secondary mt-3" %>
+  </div>
+  <div class="text-center">
+    <%= link_to "Back to community", community_path(@community), class: "btn btn-dark" %>
   </div>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
