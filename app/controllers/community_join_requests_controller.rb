@@ -26,7 +26,9 @@ class CommunityJoinRequestsController < ApplicationController
     if params[:status] == "accepted"
       @join_request.update(status: "accepted")
       @community_user = CommunityUser.create!(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member", status: "accepted" )
-      # CommunityUserMailer.with(community_user: @community_user, user: @community_user.user, community: @community).accepted_community.deliver_now
+
+      CommunityUserMailer.with(community_user: @community_user, user: @community_user.user, community: @community).accepted_community.deliver_now
+
       redirect_to dashboard_path(@community), notice:'Member added to community.'
     else
       @join_request.destroy
