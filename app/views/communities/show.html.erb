@@ -11,6 +11,10 @@
 <%# <% end %>
 <%# <% end %>
 <%# </center> %>
+<%
+community_user = CommunityUser.find_by(user: current_user, community: @community)
+join_request = CommunityJoinRequest.find_by(user: current_user, community: @community)
+%>
 <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container">
     <div class="row justify-content-center">
@@ -109,136 +113,164 @@
         <%# Begining of the text for the community %>
         <div class="card-body bg-white">
           <p class="card-text">
-            <%= @community.description %>
-            <% unless (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
-              <div class="black-banner">
-                For safety and accountability reasons, the owner of this community requires an Instagram check.<br>
-                If your account is private, please extend a follow request to the organizer, then request to join this community.<br>
-                <center><body><br>
-                    <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
-                        Add on Instagram
-                      </a></body> </center><br>
-                  This allows us to foster a secure, positive environment for all, in form of a safe space.<br>
-                  <br>
-                  <%
-community_user = CommunityUser.find_by(user: current_user, community: @community)
-join_request = CommunityJoinRequest.find_by(user: current_user, community: @community)
-%>
-                  <% if community_user.present? %>
-                    <i>You are a member of this community (since <%= time_ago_in_words(community_user.created_at) %>).</i>
-                  <% elsif join_request.present? %>
-                    <button class="btn btn-outline-success" disabled>
-                      <i><%= @community.public? ? 'Joined' : "Membership request sent #{time_ago_in_words(join_request.created_at)} ago" %></i>
-                    </button><br>
-                  <% else %>
-                    <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
-                      <%= f.submit 'Request to join this community', class: "btn btn-success" %><br>
-                    <% end %>
-                  <% end %>
-                  <br>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </p>
-      </div>
-    </div>
-  </div>
-  <%# end of display community card%>
-  <%# start of display of upcomming community events%>
-  <div class="container col-12mt-4">
-    <div class="row justify-content-center">
-      <div class="col-md-11" >
-        <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px">
-          <div class="black-banner">
-            <h5 class="card-title">Upcoming events</h5>
-          </div>
-          <div class="card-body bg-white justify-content-center">
-            <% if @community.events.present? && @community.events.any? { |event| event.start_time >= Date.today } %>
-              <div class="container-fluid ">
-                <div class="row col-12 justify-content-start">
-                  <% @community.events.sort_by(&:start_time).each do |event| %>
-                    <% if event.start_time >= Date.today %>
-                      <div class="col-lg-4 col-md-6 col-sm-12 my-3 d-flex align-items-center justify-content-center">
-                        <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
-                          <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                            <% if event.photos.attached? %>
-                              <a href="<%= community_event_path(event.community, event) %>">
-                                <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
-                              </a>
-                            <% end %>
-                          </div>
-                          <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
-                            <div class="card-title">
-                              <a href="<%= community_event_path(event.community, event) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
-                            <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
-                            <div class="card-title" style="color: gray; font-size: 12px;"><%= event.address %></div>
-                          </div>
-                        </div>
-                      </div>
-                    <% end %>
-                  <% end %>
-                </div>
+            <% if join_request.present? && join_request.status == "pending"%>
+              <div class="col-8 request-sent" style="margin: 0 auto; text-align: center;">
+                Membership request sent <%= time_ago_in_words(join_request.created_at) %> ago. <br>
+                Please wait for the community owner to approve your request. <br>
+                <b>If your account is private, make sure you added @cultura_subterranea_members_/</b>
               </div>
-            </div>
-          <% else %>
-            This community doesn't have upcoming events
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<%# PAST EVENT %>
-<% past_events = @community.events.select { |event| event.start_time < Date.today } %>
-<% if past_events.any? %>
-  <div class="container col-12mt-4">
-    <div class="row justify-content-center">
-      <div class="col-md-11" >
-        <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px">
-          <div class="black-banner">
-            <h5 class="card-title">Past events</h5>
-          </div>
-          <div class="card-body bg-white justify-content-center">
-            <% if @community.events.present? %>
-              <div class="container-fluid ">
-                <div class="row col-12 justify-content-start">
-                  <% @community.events.sort_by(&:start_time).each do |event| %>
-                    <% if event.start_time < Date.today %>
-                      <div class="col-lg-4 col-md-6 col-sm-12 my-3 d-flex align-items-center justify-content-center">
-                        <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
-                          <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                            <% if event.photos.attached? %>
-                              <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
-                            <% end %>
-                          </div>
-                          <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
-                            <div class="card-title">
-                              <a href="#" class="btn btn-warning position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+              <br>
+            <% end %>
+            <%= @community.description %>
+            <!-- Button trigger modal -->
+            <% unless (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
+              <br>
+              <% unless join_request.present? && join_request.status == "pending"%>
+                <center>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Request to join <%= @community.title %>
+                  </button>
+                </center>
+                <% end %>
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Join the <%= @community.title %> community!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        This community requires a quick Instagram verification. <b>If your account is private, please send an invite request to their Instagram</b><br>
+                        <center><body><br>
+                            <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
+                                Add on Instagram
+                              </a></body> </center><br>
+                          Then join this community.<br>
+                          <br>
+                          <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+                            <center> <%= f.submit 'Request to join this community', class: "btn btn-success" %><br>
+                              <center>
+                              <% end %>
+                              <br>
                             </div>
-                            <br>
-                            <br>
-                            <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
-                            <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
-                            <div class="card-title" style="color: gray;"><%= event.address %></div>
                           </div>
                         </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Understood</button>
+                        </div>
                       </div>
-                    <% end %>
-                  <% end %>
+                    </div>
+                  </div>
+                  <%# END MDOAL  %>
                 <% end %>
               </div>
             </div>
+          </p>
+        </div>
+      </div>
+    </div>
+    <%# end of display community card%>
+    <%# start of display of upcomming community events%>
+    <div class="container col-12mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-11" >
+          <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px">
+            <div class="black-banner">
+              <h5 class="card-title">Upcoming events</h5>
+            </div>
+            <div class="card-body bg-white justify-content-center">
+              <% if @community.events.present? && @community.events.any? { |event| event.start_time >= Date.today } %>
+                <div class="container-fluid ">
+                  <% unless @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
+                    <div class="non-member-text">
+                      These events are only accessible to the members of this community. <br>
+                    </div>
+                  <% end %>
+                  <div class="row col-12 justify-content-start">
+                    <% @community.events.sort_by(&:start_time).each do |event| %>
+                      <% if event.start_time >= Date.today %>
+                        <div class="col-lg-4 col-md-6 col-sm-12 my-3 d-flex align-items-center justify-content-center">
+                          <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
+                            <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                              <% if event.photos.attached? %>
+                                <a href="<%= community_event_path(event.community, event) %>">
+                                  <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
+                                </a>
+                              <% end %>
+                            </div>
+                            <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
+                              <div class="card-title">
+                                <a href="<%= community_event_path(event.community, event) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+                              </div>
+                              <br>
+                              <br>
+                              <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
+                              <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
+                              <div class="card-title" style="color: gray; font-size: 12px;"><%= event.address %></div>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              This community doesn't have upcoming events
+            <% end %>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+  <%# PAST EVENT %>
+  <% past_events = @community.events.select { |event| event.start_time < Date.today } %>
+  <% if past_events.any? %>
+    <div class="container col-12mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-11" >
+          <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px">
+            <div class="black-banner">
+              <h5 class="card-title">Past events</h5>
+            </div>
+            <div class="card-body bg-white justify-content-center">
+              <% if @community.events.present? %>
+                <div class="container-fluid ">
+                  <div class="row col-12 justify-content-start">
+                    <% @community.events.sort_by(&:start_time).each do |event| %>
+                      <% if event.start_time < Date.today %>
+                        <div class="col-lg-4 col-md-6 col-sm-12 my-3 d-flex align-items-center justify-content-center">
+                          <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
+                            <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                              <% if event.photos.attached? %>
+                                <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Listing Image">
+                              <% end %>
+                            </div>
+                            <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
+                              <div class="card-title">
+                                <a href="#" class="btn btn-warning position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+                              </div>
+                              <br>
+                              <br>
+                              <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
+                              <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
+                              <div class="card-title" style="color: gray;"><%= event.address %></div>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 <%# PAST EVENT END %>
 <div class="text-center">
