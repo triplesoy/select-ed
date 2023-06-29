@@ -74,3 +74,22 @@ font-size: clamp(6px, 2vw, 12px);
       .instagram-button:hover {
           background-color: #FF69B4;
       }
+
+
+    .request-sent {
+      color: #B9624F;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      text-align: center;
+
+        }
+
+
+        .non-member-text
+        {
+          color: #B9624F;
+
+        }
