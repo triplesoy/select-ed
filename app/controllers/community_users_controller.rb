@@ -7,6 +7,9 @@ class CommunityUsersController < ApplicationController
     @community_user.community = @community
     authorize @community_user
 
+    @community = Community.find(params[:community_id])
+
+
     if @community_user.save
       redirect_to @community, notice: 'User successfully added to the community.'
       CommunityJoinRequest.find_by(user: @community_user.user, community: @community).destroy
