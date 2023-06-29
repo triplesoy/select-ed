@@ -82,20 +82,20 @@
                               <% end %>
                               <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark d-none buy col-12 #{"disabled btn-warning" if t.quantity == 0}" do %>
                                 <%= t.quantity > 0 ? "Buy" : "Sold out" %>
-                                <p>Tickets available: <%= t.quantity %></p>
+                                <!--p>Tickets available: <%#= t.quantity %></p-->
                               <% end %>
                             </div>
                           <% elsif t.model == "free" %>
                             <h2 class="my-2"><%= "MEMBER" %></h2>
                             <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark col-12 #{"disabled btn-warning" if t.quantity == 0}" do %>
                               <%= t.quantity > 0 ? "Buy" : "Sold out" %>
-                              <p>Tickets available: <%= t.quantity %></p>
+                              <!--p>Tickets available: <%#= t.quantity %></p-->
                             <% end %>
                           <% else %>
                             <h2 class="my-2"><%= t.model.upcase %></h2>
                             <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark col-12 #{"disabled btn-warning" if t.quantity == 0}" do %>
                               <%= t.quantity > 0 ? "Buy" : "Sold out" %>
-                              <p>Tickets available: <%= t.quantity %></p>
+                              <!--p>Tickets available: <%#= t.quantity %></p-->
                             <% end %>
                           <% end %>
                         <% end %>
@@ -113,14 +113,13 @@
                 </div>
               </div>
             </div>
-              <div class="text-center">
-                <%= link_to "Back to community", communities_path(@community), class: "btn btn-dark" %>
-              </div>
+            <div class="text-center">
+              <%= link_to "Back to community", communities_path(@community), class: "btn btn-dark" %>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-            <%# <div><%= link_to "Go back", community_path(@community), class: "col-lg-12 btn btn-secondary" %></div>
+<%# <div><%= link_to "Go back", community_path(@community), class: "col-lg-12 btn btn-secondary" %></div>

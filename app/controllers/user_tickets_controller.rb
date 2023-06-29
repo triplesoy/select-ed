@@ -74,33 +74,41 @@ class UserTicketsController < ApplicationController
 
       result.combine_options do |c|
         c.gravity 'North'
-        c.pointsize '80'
+        c.pointsize '90'
         c.font Rails.root.join('app', 'assets', 'fonts', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
         c.fill 'black'
-        c.draw "text 2,82 '#{@community.title}'"
+        c.draw "text 2,82 '#{@community.title.upcase}'"
       end
 
       result.combine_options do |c|
         c.gravity 'North'
-        c.pointsize '80'
+        c.pointsize '90'
         c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
         c.fill 'white'
-        c.draw "text 1,80 '#{@community.title}'"
+        c.draw "text 1,80 '#{@community.title.upcase}'"
       end
 
       result.combine_options do |c|
         c.gravity 'North'
-        c.pointsize '60'
+        c.pointsize '90'
         c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
-        c.draw "text 1,160 '#{@event.title}'"
+        c.draw "text 1,220 '#{@event.title.upcase}'"
+        c.fill 'white'
+      end
+
+      result.combine_options do |c|
+        c.gravity 'North'
+        c.pointsize '70'
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
+        c.draw "text 1,420 '#{@event.start_time.strftime('%a,  %d/%m/%y, %H:%M')}'"
         c.fill 'white'
       end
 
       result.combine_options do |c|
         c.gravity 'South'
-        c.pointsize '80'
+        c.pointsize '100'
         c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
-        c.draw "text 2,82 '#{current_user.full_name}'"
+        c.draw "text 1,220 '#{current_user.full_name.upcase}'"
         c.fill 'white'
       end
 
@@ -109,9 +117,9 @@ class UserTicketsController < ApplicationController
 
         result.combine_options do |c|
           c.gravity 'South'
-          c.pointsize '40'
+          c.pointsize '50'
           c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
-          c.draw "text 1,20 'VALID UNTIL: #{valid_until}'"
+          c.draw "text 2,82 'VALID UNTIL: #{valid_until}'"
           c.fill 'white'
         end
       end
@@ -120,8 +128,8 @@ class UserTicketsController < ApplicationController
         result.combine_options do |c|
           c.gravity 'South'
           c.pointsize '70'
-          c.font Rails.root.join('app', 'assets', 'fonts', 'GasoekOne-Regular.ttf').to_s
-          c.draw "text 2,0 'VIP TICKET'"
+          c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
+          c.draw "text 2,82 'VIP TICKET'"
           c.fill 'white'
         end
       end
