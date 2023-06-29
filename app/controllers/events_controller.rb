@@ -84,7 +84,7 @@ class EventsController < ApplicationController
     authorize @event
   end
 
-  def destroy_photo
+  def destroy_event_photo
     @event = Event.find(params[:event_id])
     authorize @event
     @attachment = ActiveStorage::Attachment.find(params[:photo_id])

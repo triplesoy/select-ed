@@ -15,6 +15,9 @@
               <% @community.photos.each do |photo| %>
                 <div class="col-md-3">
                   <%= image_tag photo, class: "img-thumbnail" %>
+                  <%= link_to destroy_community_photo_path(community_id: @community.id, photo_id: photo.id), data: { confirm: "Are you sure?", turbo_method: :delete } do %>
+                    <i class="fas fa-trash-alt"></i>
+                  <% end %>
                 </div>
               <% end %>
             </div>

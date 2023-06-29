@@ -37,5 +37,7 @@ end
 
   get "tickets/:id/redeem", to: "tickets#redeem", as: :redeem_ticket
 
-  delete "events/photos/:id", to: "events#destroy_photo", as: :destroy_photo
+  delete "events/photos/:id", to: "events#destroy_event_photo", as: :destroy_event_photo
+  delete "communities/photos/:id", to: "communities#destroy_community_photo", as: :destroy_community_photo
+
 end

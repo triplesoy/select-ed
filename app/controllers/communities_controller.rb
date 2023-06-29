@@ -77,6 +77,14 @@ end
     authorize @community
   end
 
+  def destroy_community_photo
+    @community = Community.find(params[:community_id])
+    authorize @community
+    @attachment = ActiveStorage::Attachment.find(params[:photo_id])
+    @attachment.purge
+    redirect_to edit_community_path(@community)
+  end
+
   def dashboard
     authorize @community
     @events = @community.events

@@ -13,7 +13,7 @@
               <% @event.photos.each do |photo| %>
                 <div class="col-md-3">
                   <%= image_tag photo, class: "img-thumbnail" %>
-                  <%= link_to destroy_photo_path(event_id: @event.id, photo_id: photo.id), data: { confirm: "Are you sure?", turbo_method: :delete } do %>
+                  <%= link_to destroy_event_photo_path(event_id: @event.id, photo_id: photo.id), data: { confirm: "Are you sure?", turbo_method: :delete } do %>
                     <i class="fas fa-trash-alt"></i>
                   <% end %>
                 </div>

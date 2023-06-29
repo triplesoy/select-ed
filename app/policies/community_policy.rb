@@ -46,4 +46,8 @@ class CommunityPolicy < ApplicationPolicy
   def communities_owned
     true
   end
+
+  def destroy_community_photo?
+    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
+  end
 end
