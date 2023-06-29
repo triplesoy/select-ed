@@ -6,7 +6,7 @@ class UserTicketPolicy < ApplicationPolicy
   end
 
   def show?
-    record.user == user || record.ticket.event.community.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.user == user || record.ticket.event.community.community_users.where(user: user, role: ["moderator", "admin"]).exists? || user.admin
   end
 
   def new?

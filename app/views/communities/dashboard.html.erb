@@ -31,7 +31,7 @@
                 <td><%= jr.user.last_name %></td>
                 <td><%= jr.user.email %></td>
                 <td><%= Time.now.year - jr.user.birthdate.year %></td>
-                <td><%= jr.user.nationality %></td>
+                <td><%= jr.user.country %></td>
                 <td><%= jr.user.occupation %></td>
                 <td><%= link_to jr.user.instagram_handle, "http://instagram.com/#{jr.user.instagram_handle}/",  target: "_blank"  %>
                   <td><%= "Pending since #{time_ago_in_words(jr.created_at)} ago" %></td>
