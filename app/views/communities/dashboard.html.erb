@@ -82,7 +82,7 @@
                   <td><%= c.user.last_name %></td>
                   <td><%= c.user.email %></td>
                   <td><%= Time.now.year - c.user.birthdate.year %></td>
-                  <td><%= c.user.nationality %></td>
+                  <td><%= c.user.country %></td>
                   <td><%= c.user.occupation %></td>
                   <td><%= c.role %></td>
                   <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
@@ -114,18 +114,18 @@
         </div>
         <br>
         <% if @community.user == current_user || (current_user && current_user.admin) %>
-    <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete()" %>
-      <% end %>
-    </div>
-    <div class="text-center">
-      <%= link_to "Back to community", community_path(@community), class: "btn btn-dark" %>
-    </div>
-    <script>
-      function confirmDelete() {
-        var userInput = prompt("Type 'delete' to confirm deletion:");
-        if (userInput !== "delete") {
-          event.preventDefault(); // Prevent the default deletion action
-          alert("Confirmation failed. Deletion canceled.");
+          <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete()" %>
+        <% end %>
+      </div>
+      <div class="text-center">
+        <%= link_to "Back to community", community_path(@community), class: "btn btn-dark" %>
+      </div>
+      <script>
+        function confirmDelete() {
+          var userInput = prompt("Type 'delete' to confirm deletion:");
+          if (userInput !== "delete") {
+            event.preventDefault(); // Prevent the default deletion action
+            alert("Confirmation failed. Deletion canceled.");
+          }
         }
-      }
-    </script>
+      </script>
