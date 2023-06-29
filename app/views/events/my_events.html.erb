@@ -32,15 +32,15 @@
     </div>
   </div>
 </div>
-<div class="container-fluid">
-  <div class="row">
-    <div class="container mx-auto ms-4">
+<% @my_events.each do |event| %>
+  <% if event.end_time < Date.today %>
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-12">
-          <h2>Past Events</h2>
+        <div class="container mx-auto ms-4">
           <div class="row">
-            <% @my_events.each do |event| %>
-              <% if event.end_time < Date.today %>
+            <div class="col-12">
+              <h2>Past Events</h2>
+              <div class="row">
                 <div class="col-lg-3 my-3">
                   <div class="card border border-2 border-gray shadow" style="width: 18rem; height: 28rem;">
                     <div class="image-wrapper" style="height: 250px; overflow: hidden;">

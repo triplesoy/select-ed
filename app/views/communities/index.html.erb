@@ -6,8 +6,8 @@
   }
 
   .btn-custom-join {
-  background-color: #0F4C75;
-  border-color: #0F4C75;
+  background-color: #B9624F;
+  border-color: #B9624F;
   }
 
   .btn-custom-join:hover {
@@ -67,14 +67,14 @@
                     Your join request was sent
                     <%# to update%> <% elsif community.public?  %>
                     <div class="text-center">
-                      <button type="button" class="btn btn-custom-join">
+                      <button type="button" class="btn btn-custom-join" style="#B9624F">
                         <%= link_to "Join this public community", community_path(community), style: "text-decoration: none; color: white;" %>
                       </button><br>
                     </div>
                     <br>
                   <% else %>
                     <div class="text-center">
-                      <button type="button" class="btn btn-custom-join">
+                      <button type="button" class="btn btn-custom-join" style="#B9624F">
                         <%= link_to "Request to join this private community", community_path(community), style: "text-decoration: none; color: white;" %>
                       </button><br>
                     </div>
