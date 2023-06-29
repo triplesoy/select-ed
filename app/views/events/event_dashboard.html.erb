@@ -130,10 +130,10 @@
                         <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="#dropdown-<%= c.id %>">
                           <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
                           <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
-<% community_user = c.user.community_users.find_by(community: @event.community) %>
-<% if community_user.present? %>
-  <%= link_to "View history", user_history_path(@event.community, community_user), class: "dropdown-item" %>
-<% end %>
+                          <% community_user = c.user.community_users.find_by(community: @event.community) %>
+                          <% if community_user.present? %>
+                            <%= link_to "View history", user_history_path(@event.community, community_user), class: "dropdown-item" %>
+                          <% end %>
                         </div>
                       </div>
                     </td>
@@ -147,5 +147,5 @@
     </div>
   </div>
   <div class="text-center">
-    <%= link_to "Back to community", community_path(@event.community), class: "btn btn-dark" %> 
+    <%= link_to "Back to community", community_path(@event.community), class: "btn btn-dark" %>
   </div>
