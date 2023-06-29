@@ -128,7 +128,7 @@ class UserTicketsController < ApplicationController
 
       result.write("composite_image.png")
       @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
-      UserTicketMailer.with(user: @user_ticket.user, user_ticket: @user_ticket).send_ticket.deliver_now
+      #UserTicketMailer.with(user: @user_ticket.user, user_ticket: @user_ticket).send_ticket.deliver_now
       redirect_to confirmation_page_path(@user_ticket), alert: "You have successfully purchased a ticket!"
     else
       render :new, status: :unprocessable_entity, alert: "Failed to buy the tickets."
