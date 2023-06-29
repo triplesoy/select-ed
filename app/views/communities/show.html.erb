@@ -211,7 +211,8 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                             <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
                               <div class="card-title" style="color: gray; font-size: 12px;"><%= event.address %></div>
                             <% else %>
-                              <div class="card-title" style="color: gray; font-size: 12px;">Address hidden - members only.</div>
+                              <div class="card-title" style="color: gray; font-size: 12px;">Address hidden - members only</div>
+                            <% end %>
                             </div>
                           </div>
                         </div>
