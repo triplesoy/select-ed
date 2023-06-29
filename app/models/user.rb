@@ -24,6 +24,8 @@ class User < ApplicationRecord
    validates :country, presence: true
    validates :instagram_handle, presence: true
    validates :occupation, presence: true
+   validates :email, presence: true
+
 
   before_validation :sanitize_instagram_handle
 
