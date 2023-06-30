@@ -15,6 +15,10 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
+    @markers = [{
+      lat: @event.latitude,
+      lng: @event.longitude
+    }]
     @user = current_user
     @user_ticket = @event.user_tickets.each do |user_ticket|
       if user_ticket.user_id == @user.id
@@ -23,11 +27,7 @@ class EventsController < ApplicationController
       return @user_ticket
     end
 
-    @markers = [{
-      lat: @event.latitude,
-      lng: @event.longitude
-    }]
-    authorize @event
+
 
     unless @event.user == current_user
       # Redirect or handle unauthorized access here
