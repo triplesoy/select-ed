@@ -1,5 +1,4 @@
 class Community < ApplicationRecord
-
   extend FriendlyId
   friendly_id :title, use: :slugged
 
@@ -11,9 +10,6 @@ class Community < ApplicationRecord
   has_many :members, through: :community_users, source: :user
   has_many :community_join_requests, dependent: :destroy
   has_many :join_request_users, through: :community_join_requests, source: :user
-
-
-
 
   validates :title, presence: true, on: :create
   validates :description, presence: true, on: :create, length: { minimum: 20 }
@@ -38,6 +34,17 @@ class Community < ApplicationRecord
 
   def moderator
     self.community_users.where(role: "moderator")
+  end
+
+  def youtube_banner=(url)
+    if url.blank?
+      super(nil)
+    else
+      regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      video_id = url.match(regex)[1]
+      embed_url = "https://www.youtube.com/embed/#{video_id}?autoplay=1&controls=0&mute=1&showinfo=0&loop=1&rel=0&disablekb=0&controls=0"
+      super(embed_url)
+    end
   end
 end
 

@@ -23,8 +23,6 @@ class CommunitiesController < ApplicationController
     end
   end
 
-
-
   def new
     @community = Community.new
     authorize @community
@@ -56,21 +54,21 @@ end
 
   def update
     @community = Community.find_by(slug: params[:id])
+    authorize @community
 
-    community_params = params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video)
+    community_params = params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video, :youtube_banner)
 
     if params[:community][:photos].present?
       @community.photos.attach(params[:community][:photos])
     end
 
     if @community.update(community_params)
-      redirect_to community_path(@community), notice: "community was successfully updated."
+      redirect_to community_path(@community), notice: "Community was successfully updated."
     else
       render :edit
     end
-
-    authorize @community
   end
+
   def destroy
     @community.destroy!
     redirect_to communities_path, status: :see_other
@@ -113,7 +111,7 @@ end
   private
 
   def community_params
-    params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video, photos: [], photos_delete: [])
+    params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :youtube_banner, :is_visible, :video, photos: [], photos_delete: [])
   end
 
   def set_community
