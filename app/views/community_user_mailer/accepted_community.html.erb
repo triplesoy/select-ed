@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>Hey <%= @user.first_name %>!
+      <br>
+      You've just been accepted as a member of the <%= @community.title %>'s community!    </p>
+    <p> You can now RSVP to any event of thos community and retrieve your QR code tickets online.
+      <p>Visit <%= link_to(@community.title, community_url(@community)) %>'s' page to check-out the incoming events!
+        <p>
+          The nubanuba team.</p>
+      </body>
+    </html>

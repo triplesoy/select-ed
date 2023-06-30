@@ -25,7 +25,10 @@ class CommunityJoinRequestsController < ApplicationController
     authorize @join_request
     if params[:status] == "accepted"
       @join_request.update(status: "accepted")
-      CommunityUser.create!(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member", status: "accepted" )
+      @community_user = CommunityUser.create!(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member", status: "accepted" )
+
+      CommunityUserMailer.with(community_user: @community_user, user: @community_user.user, community: @community).accepted_community.deliver_now
+
       redirect_to dashboard_path(@community), notice:'Member added to community.'
     else
       @join_request.destroy
@@ -33,6 +36,7 @@ class CommunityJoinRequestsController < ApplicationController
       community_user.destroy if community_user.present?
     end
   end
+
 
   def destroy
     @join_request = CommunityJoinRequest.find(params[:id])

@@ -88,7 +88,7 @@
                           <% elsif t.model == "free" %>
                             <h2 class="my-2"><%= "MEMBER" %></h2>
                             <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark col-12 #{"disabled btn-warning" if t.quantity == 0}" do %>
-                              <%= t.quantity > 0 ? "Buy" : "Sold out" %>
+                              <%= t.quantity > 0 ? "Free" : "Sold out" %>
                               <!--p>Tickets available: <%#= t.quantity %></p-->
                             <% end %>
                           <% else %>
