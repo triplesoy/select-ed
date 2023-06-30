@@ -14,8 +14,14 @@ class EventsController < ApplicationController
   end
 
   def show
+    authorize @event
     @user = current_user
-    @ticket = Ticket.find_by(id: params[:id])
+    @user_ticket = @event.user_tickets.each do |user_ticket|
+      if user_ticket.user_id == @user.id
+        @user_ticket = user_ticket
+      end
+      return @user_ticket
+    end
 
     @markers = [{
       lat: @event.latitude,
