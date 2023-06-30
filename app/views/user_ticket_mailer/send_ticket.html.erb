@@ -1,31 +1,71 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <style>
-    .container {
-      max-width: 75%;
-      margin: 0 auto;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Hey <%= @user.first_name %>, here's your ticket!</h2>
-    <p>Thanks for purchasing a ticket to <%= @community.title %>'s <%= @event.title %>'s event!</p>
-<p>As a reminder, the party starts at <b><%= @event.start_time.strftime("%l:%M %p on %A, %B #{ @event.start_time.day.ordinalize }") %></b>, and will be held at <b><%= @event.address %></b>.</p>
-    <center>
-      <div class="image-wrapper" style="overflow: hidden;">
-        <div class="qr-code">
-          <% if @user_ticket.qrcode.attached? %>
-            <div class="qr-image">
-              <%= link_to(cl_image_tag(@user_ticket.qrcode.key, width: "40%", height: "40%", alt: "QR code for ticket", class: "img-fluid"), cl_image_path(@user_ticket.qrcode.key), target: "_blank") %>
+  <head>
+    <style>
+      .container-fluid {
+        position: relative;
+        border: 2px solid black;
+      }
+
+      .image-wrapper {
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+        padding: 20px 0;
+        background-color: black;
+      }
+
+      .logo {
+        display: inline-block;
+        max-width: 15%;
+        height: auto;
+      }
+
+      .image {
+      margin: 10px;
+      }
+      .content {
+        display: flex;
+      }
+
+      .col-lg-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 10px;
+      }
+
+      .qr-image {
+        width: 100%;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="image-wrapper">
+        <%= image_tag("https://res.cloudinary.com/dif8ww5ed/image/upload/v1687760788/logo2_x9qcsy.png", class: "logo") %>
+      </div>
+      <div class="content">
+        <div class="col-lg-6">
+          <h2>Hey <%= @user.first_name %>, here's your ticket!</h2>
+          <p>Thanks for purchasing a ticket to <%= @community.title %>'s <%= @event.title %>'s event!</p>
+          <p>As a reminder, the party starts at <b><%= @event.start_time.strftime("%l:%M %p on %A, %B #{ @event.start_time.day.ordinalize }") %></b>, and will be held at <b><%= @event.address %></b>.</p>
+          <p>See you soon!</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="image" style="overflow: hidden;">
+            <div class="qr-code">
+              <% if @user_ticket.qrcode.attached? %>
+                <div class="qr-image m-5">
+                  <%= link_to(cl_image_tag(@user_ticket.qrcode.key, width: "350px", height: "auto", alt: "QR code for ticket", class: "img-fluid"), cl_image_path(@user_ticket.qrcode.key), target: "_blank") %>
+                </div>
+              <% end %>
             </div>
-          <% end %>
+          </div>
         </div>
       </div>
-    </center>
-    <p>See you soon!</p>
-  </div>
-</body>
+    </div>
+    <!-- Include the Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
 </html>
