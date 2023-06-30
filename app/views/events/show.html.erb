@@ -35,7 +35,7 @@
                         GET TICKET
                       </button>
                     <%else %>
-                      <button href="#" type="button" class="btn btn-dark position-absolute bottom-0 start-0 end-0">
+                      <button onclick="window.location.href='<%= ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, id: @user_ticket.id) %>'" type="button" class="btn btn-dark position-absolute bottom-0 start-0 end-0">
                         TICKET ALREADY PURCHASED
                       </button>
                     <%end %>

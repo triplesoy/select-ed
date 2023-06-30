@@ -106,7 +106,7 @@ class UserTicketsController < ApplicationController
 
       result.combine_options do |c|
         c.gravity 'South'
-        c.pointsize '100'
+        c.pointsize '70'
         c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
         c.draw "text 1,220 '#{current_user.full_name.upcase}'"
         c.fill 'white'
@@ -136,7 +136,7 @@ class UserTicketsController < ApplicationController
 
       result.write("composite_image.png")
       @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
-      
+
       UserTicketMailer.with(user: @user_ticket.user, user_ticket: @user_ticket).send_ticket.deliver_now
       redirect_to confirmation_page_path(@user_ticket), alert: "You have successfully purchased a ticket!"
     else
