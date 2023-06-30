@@ -77,10 +77,14 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
         <div class="black-banner-main">
           <h5 class="card-title" style="font-size: 24px"><%= @community.title.upcase %></h5>
         </div>
-        <div class="youtube-video-wrapper">
-          <iframe src="https://www.youtube.com/embed/K9cT_jgU2y0?autoplay=1&controls=0&mute=1&showinfo=0&loop=1&rel=0&disablekb=0&controls=" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div class="black-banner-main ">
+        <% if @community.youtube_banner.present? %>
+          <div class="youtube-video-wrapper">
+            <iframe src="<%= @community.youtube_banner %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        <% else %>
+<%= image_tag(cl_image_path(@community.photos.first.key), class: "community-photo", style: "object-fit: cover; object-position: top; max-height: 300px; width: 100%; height: auto;", alt: "Community photo") %>
+           <% end %>
+          <div class="black-banner-main ">
           <div class="banner-under-video ">
             <div class="location">
               <span>

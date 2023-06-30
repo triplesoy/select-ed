@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_28_060853) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_30_204408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,6 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_060853) do
     t.string "category"
     t.string "slug"
     t.text "short_description"
+    t.string "youtube_banner"
     t.index ["slug"], name: "index_communities_on_slug", unique: true
     t.index ["user_id"], name: "index_communities_on_user_id"
   end
@@ -103,7 +104,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_060853) do
   create_table "tickets", force: :cascade do |t|
     t.string "model"
     t.integer "price"
-    t.integer "quantity"
+    t.integer "quantity", default: 0
     t.string "r_code"
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
