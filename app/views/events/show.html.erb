@@ -35,7 +35,7 @@
                         GET TICKET
                       </button>
                     <%else %>
-                      <button onclick="window.location.href='<%= ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, id: @user_ticket.id) %>'" type="button" class="btn btn-dark position-absolute bottom-0 start-0 end-0">
+                      <button href="#" type="button" class="btn btn-dark position-absolute bottom-0 start-0 end-0">
                         TICKET ALREADY PURCHASED
                       </button>
                     <%end %>
@@ -80,20 +80,20 @@
                                 <%= f.text_field :code, placeholder: "Enter code", class: "form-control code" %>
                                 <%= f.submit "Redeem", class: "btn btn-outline-dark mt-2 col-12" %>
                               <% end %>
-                              <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark d-none buy col-12 #{"disabled btn-warning" if t.quantity == 0}" do %>
+                              <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark d-none buy col-12 #{"disabled" if t.quantity == 0}" do %>
                                 <%= t.quantity > 0 ? "Buy" : "Sold out" %>
                                 <!--p>Tickets available: <%#= t.quantity %></p-->
                               <% end %>
                             </div>
                           <% elsif t.model == "free" %>
                             <h2 class="my-2"><%= "MEMBER" %></h2>
-                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark col-12 #{"disabled btn-warning" if t.quantity == 0}" do %>
-                              <%= t.quantity > 0 ? "Free" : "Sold out" %>
+                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn #{t.quantity > 0 ? 'btn-outline-dark' : 'btn-outline-warning'} col-12 #{'disabled' if t.quantity == 0}" do %>
+                              <%= t.quantity > 0 ? "Buy" : "Sold out" %>
                               <!--p>Tickets available: <%#= t.quantity %></p-->
                             <% end %>
                           <% else %>
                             <h2 class="my-2"><%= t.model.upcase %></h2>
-                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark col-12 #{"disabled btn-warning" if t.quantity == 0}" do %>
+                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn #{t.quantity > 0 ? 'btn-outline-dark' : 'btn-outline-warning'} col-12 #{'disabled' if t.quantity == 0}" do %>
                               <%= t.quantity > 0 ? "Buy" : "Sold out" %>
                               <!--p>Tickets available: <%#= t.quantity %></p-->
                             <% end %>
