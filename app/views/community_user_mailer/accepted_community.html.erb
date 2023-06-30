@@ -4,11 +4,13 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <p>Hey <%= @user.first_name %>, you've just been been accepted to become a member of the <%= @community.title %>'s community!    </p>
-    <p> You can now attend their events and receive your QR code diretly!    </p>
+    <p>Hey <%= @user.first_name %>!
+    <br>You've just been accepted as a member of the <%= @community.title %>'s community!    </p>
+    <p> You can now RSVP and retrieve your QR code tickets online. </p>
 
-    You can visite their community page at
+<p>Visit the <%= link_to @community.title, community_url(@community) %>'s community page to check out the incoming events. </p>
 
 The nubanuba team.
+
     </body>
   </html>
