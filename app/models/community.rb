@@ -1,5 +1,4 @@
 class Community < ApplicationRecord
-
   extend FriendlyId
   friendly_id :title, use: :slugged
 
@@ -39,9 +38,25 @@ class Community < ApplicationRecord
   def moderator
     self.community_users.where(role: "moderator")
   end
+
+
+  def youtube_banner=(url)
+    if url.blank?
+      super(nil)
+    else
+      regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      video_id = url.match(regex)[1]
+      embed_url = "https://www.youtube.com/embed/#{video_id}?autoplay=1&controls=0&mute=1&showinfo=0&loop=1&rel=0&disablekb=0&controls=0"
+      super(embed_url)
+    end
+  end
 end
 
 private
+
+def photos_presence
+  errors.add(:photos, "can't be blank") unless photos.attached?
+end
 
 def photos_presence
   errors.add(:photos, "can't be blank") unless photos.attached?
