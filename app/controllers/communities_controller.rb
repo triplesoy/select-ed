@@ -54,6 +54,7 @@ end
 
   def update
     @community = Community.find_by(slug: params[:id])
+    authorize @community
 
     community_params = params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video, :youtube_banner)
 
@@ -62,12 +63,10 @@ end
     end
 
     if @community.update(community_params)
-      redirect_to community_path(@community), notice: "community was successfully updated."
+      redirect_to community_path(@community), notice: "Community was successfully updated."
     else
       render :edit
     end
-
-    authorize @community
   end
 
   def destroy
