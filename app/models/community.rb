@@ -11,9 +11,6 @@ class Community < ApplicationRecord
   has_many :community_join_requests, dependent: :destroy
   has_many :join_request_users, through: :community_join_requests, source: :user
 
-
-
-
   validates :title, presence: true, on: :create
   validates :description, presence: true, on: :create, length: { minimum: 20 }
   validates :short_description, presence: true, on: :create, length: { minimum: 8, maximum: 100 }
@@ -39,7 +36,6 @@ class Community < ApplicationRecord
     self.community_users.where(role: "moderator")
   end
 
-
   def youtube_banner=(url)
     if url.blank?
       super(nil)
@@ -53,10 +49,6 @@ class Community < ApplicationRecord
 end
 
 private
-
-def photos_presence
-  errors.add(:photos, "can't be blank") unless photos.attached?
-end
 
 def photos_presence
   errors.add(:photos, "can't be blank") unless photos.attached?
