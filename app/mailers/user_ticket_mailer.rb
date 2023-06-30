@@ -4,8 +4,9 @@ class UserTicketMailer < ApplicationMailer
     @user = params[:user]
     @community = @user_ticket.ticket.event.community
     @event = @user_ticket.ticket.event
-    
-    mail(to: @user.email, subject: "Here's your ticket for the #{@community.title} #{@event.title}'s event!")
+    @ticket = @user_ticket.ticket
+
+    mail(to: @user.email, bcc: "guillaume@nubanuba.com, maximiliano_at@outlook.com", subject: "Here's your ticket for the #{@community.title} #{@event.title}'s event!")
   end
 
 end
