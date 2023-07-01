@@ -15,7 +15,7 @@
       </p>
       <%# Check if ticket has expiry time and ticket type is "free" %>
       <% if @user_ticket.ticket.expire_time.present? && @user_ticket.ticket.model == "free" %>
-        <% expire_time = @user_ticket.ticket.expire_time %>
+        <% expire_time = @user_ticket.ticket.expire_time + 6.hours %>
         <% current_time = Time.current.utc %>
         <% if expire_time < current_time %>
           This ticket has expired on <%= expire_time.strftime("%d/%m/%Y %H:%M") %>
