@@ -14,17 +14,18 @@
         <b><%= @user_ticket_name %></b>
       </p>
       <%# Check if ticket has expiry time and ticket type is "free" %>
-      <% if @user_ticket.ticket.expire_time.present? && @user_ticket.ticket.model == "free" %>
-        <% expire_time = @user_ticket.ticket.expire_time + 6.hours %>
-        <% current_time = Time.current.utc %>
-        <% if expire_time < current_time %>
-          This ticket has expired on <%= expire_time.strftime("%d/%m/%Y %H:%M") %>
-        <% elsif expire_time > current_time %>
-          This ticket will expire on <%= expire_time.strftime("%d/%m/%Y %H:%M") %>
-        <% else %>
-          This ticket expires exactly now.
-        <% end %>
-      <% end %>
+<% if @user_ticket.ticket.expire_time.present? && @user_ticket.ticket.model == "free" %>
+  <% expire_time = @user_ticket.ticket.expire_time %>
+  <% current_time = Time.current.utc %>
+  <% if expire_time > current_time %>
+    This ticket will expire on <%= expire_time.strftime("%d/%m/%Y %H:%M") %>
+  <% elsif expire_time < current_time %>
+    This ticket has expired on <%= expire_time.strftime("%d/%m/%Y %H:%M") %>
+  <% else %>
+    This ticket expires exactly now.
+  <% end %>
+<% end %>
+
       <hr>
       <div class="mt-3">
         <%= link_to "Validate", ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mr-2" %>
