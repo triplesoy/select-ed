@@ -186,7 +186,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
             <h5 class="card-title">Upcoming events</h5>
           </div>
           <div class="card-body bg-white justify-content-center">
-            <% if @community.events.present? && @community.events.any? { |event| event.start_time >= Date.today } %>
+            <% if @community.events.present? && @community.events.any? { |event| event.start_time - 6.hours >= Date.today } %>
               <div class="container-fluid ">
                 <% unless @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
                   <div class="non-member-text">
@@ -235,7 +235,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
   </div>
 </div>
 <%# PAST EVENT %>
-<% past_events = @community.events.select { |event| event.start_time < Date.today } %>
+<% past_events = @community.events.select { |event| event.start_time - 6.hours < Date.today } %>
 <% if past_events.any? %>
   <div class="container col-12mt-4">
     <div class="row justify-content-center">
