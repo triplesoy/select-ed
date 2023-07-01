@@ -186,7 +186,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
             <h5 class="card-title">Upcoming events</h5>
           </div>
           <div class="card-body bg-white justify-content-center">
-            <% if @community.events.any? { |event| event.start_time + 6.hours >= DateTime.current } %>
+            <% if @community.events.any? { |event| event.start_time >= Date.today } %>
 
 
               <div class="container-fluid ">
@@ -237,7 +237,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
   </div>
 </div>
 <%# PAST EVENT %>
-<% past_events = past_events = @community.events.select { |event| event.start_time + 6.hours < DateTime.current } %>
+<% past_events = @community.events.select { |event| event.start_time < Date.today } %>
 
 
 <% if past_events.any? %>
