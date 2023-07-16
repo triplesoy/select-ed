@@ -1,79 +1,82 @@
-<%# Check if ticket status is "pending" %>
-<% if @user_ticket.scanned == "pending" %>
-  <div class="card shadow mx-auto m-3 p-3" style="width: 18rem;">
-    <div class="card-body text-center">
-      <h5 class="card-title font-weight-bold text-success mb-3">
-        <i class="fas  fa-check-circle fa-4x text-success mr-2"></i><br>
-        Ticket is valid and hasn't been scanned yet.
-        <br>
-        <small class="text-muted">Type: <%= @user_ticket.ticket.model.capitalize %></small>
-      </h5>
-      <p class="card-text mb-3">
-        Ticket user name:
-        <br>
-        <b><%= @user_ticket_name %></b>
-      </p>
-      <%# Check if ticket has expiry time and ticket type is "free" %>
-<% if @user_ticket.ticket.expire_time.present? && @user_ticket.ticket.model == "free" %>
-  <% expire_time = @user_ticket.ticket.expire_time %>
-  <% current_time = Time.current.utc %>
-  <% if expire_time > current_time %>
-    This ticket will expire on <%= expire_time.strftime("%d/%m/%Y %H:%M") %>
-  <% elsif expire_time < current_time %>
-    This ticket has expired on <%= expire_time.strftime("%d/%m/%Y %H:%M") %>
-  <% else %>
-    This ticket expires exactly now.
-  <% end %>
-<% end %>
-
-<%# added this above %>
-
-      <hr>
-      <div class="mt-3">
-        <%= link_to "Validate", ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mr-2" %>
-        <%= link_to "Reject", ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id,  scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger ml-2" %>
-      </div>
-    </div>
-  </div>
-<% else %>
-  <%# Check if ticket has been accepted or rejected %>
-  <% if @user_ticket.scanned == "accepted" || @user_ticket.scanned == "rejected" %>
-    <div class="card shadow mx-auto m-3 p-3" style="width: 18rem;">
-      <div class="card-body text-center">
-        <%# Check if free ticket has expired %>
-        <% if @user_ticket.ticket.model == "free" && @user_ticket.has_expired? %>
+<div class="card shadow mx-auto m-5 p-3" style="width: 18rem;">
+  <div class="card-body text-center">
+    <h5 class="card-title font-weight-bold text-success mb-3">
+      <%# Check if event is still going on %>
+      <% if Time.now.in_time_zone("America/Mexico_City") < @event.end_time.in_time_zone("America/Mexico_City") %>
+        <%# Check if ticket has been scanned before %>
+        <% if @user_ticket.scanned == "accepted" || @user_ticket.scanned == "rejected" %>
           <h5 class="card-title font-weight-bold text-danger mb-3">
-            <i class="fas fa-times-circle fa-4x text-danger mr-2"></i><br>
+            <i class="fas fa-times-circle fa-4x text-dangerz mr-2"></i><br>
             <br>
-            <b> WARNING:</b> <br>
-            This ticket has expired on <%= @user_ticket.ticket.expire_time.in_time_zone("America/Mexico_City").strftime("%d/%m/%Y at %H:%M") %>
+            <b> WARNING </b><br>
             <br>
-            <br>
-            <small class="text-muted">Type: <%= @user_ticket.ticket.model.capitalize %></small>
-          </h5>
+            Ticket has already been scanned and <%= @user_ticket.scanned %>, <%= time_ago_in_words(@user_ticket.updated_at) %> ago.<br>
+            <%# if not scanned (i.e pending), check if ticket is a free ticket or not %>
+          <% elsif @user_ticket.ticket.model == "free" %>
+            <% if @user_ticket.ticket.expire_time.present? %>
+              <% expire_time = @user_ticket.ticket.expire_time.in_time_zone("America/Mexico_City") %>
+              <% current_time = Time.now.in_time_zone("America/Mexico_City") %>
+              <% if current_time < expire_time %>
+                <h5 class="card-title font-weight-bold text-success mb-3">
+                  <i class="fas  fa-check-circle fa-4x text-success mr-2"></i><br>
+                  Valid ticket, will expire on <%= expire_time.in_time_zone("America/Mexico_City").strftime("%d/%m/%Y %H:%M") %>
+                </h5>
+              <% else  %>
+                <h5 class="card-title font-weight-bold text-danger mb-3">
+                  <i class="fa-solid fa-hourglass-end fa-4x text-danger mr-2"></i><br>
+                  <br>
+                  <b> WARNING </b><br>
+                  <br>
+                  Ticket has expired on <%= expire_time.in_time_zone("America/Mexico_City").strftime("%d/%m/%Y %H:%M") %>
+                </h5>
+              <% end %>
+            <% else %>
+              <h5 class="card-title font-weight-bold text-success mb-3">
+                <i class="fas  fa-check-circle fa-4x text-success mr-2"></i><br>
+                This free ticket is valid.
+              </h5>
+            <% end %>
+            <%# Check if ticket is not a free ticket with an expire time (free without expire or VIP or paid ticket) %>
+          <% else %>
+            <h5 class="card-title font-weight-bold text-success mb-3">
+              <i class="fas  fa-check-circle fa-4x text-success mr-2"></i><br>
+              Ticket is valid and hasn't been scanned yet.
+            </h5>
+          <% end %>
         <% else %>
           <h5 class="card-title font-weight-bold text-danger mb-3">
-            <i class="fas fa-times-circle fa-4x text-danger mr-2"></i><br>
+            <i class="fa-solid fa-hourglass-end fa-4x text-danger mr-2"></i><br>
             <br>
-            <b> WARNING: </b><br>
-            This ticket was already scanned and <%= @user_ticket.scanned %> on the <%= @user_ticket.updated_at.in_time_zone("America/Mexico_City").strftime("%d/%m/%Y at %H:%M") %>
+            <b> WARNING </b><br>
             <br>
+            Ticket not valid. <br>
             <br>
-            <small class="text-muted">Type: <%= @user_ticket.ticket.model.capitalize %></small>
+            Event ended on <%= @event.end_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %>
           </h5>
         <% end %>
-        <p class="card-text mb-3">
-          Ticket user name:
-          <br>
-          <b><%= @user_ticket_name %></b>
-        </p>
-        <div class="mt-3">
-          <%= link_to "Pending", ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "pending"), data: {turbo_method: :patch}, class: "btn btn-warning mr-2" %>
-          <%= link_to (@user_ticket.scanned == "accepted" ? "Reject" : "Validate"), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: (@user_ticket.scanned == "accepted" ? "rejected" : "accepted")), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to change the status of this ticket?"}, class: "btn btn-#{@user_ticket.scanned == 'accepted' ? 'danger' : 'success'} ml-2" %>
-        </div>
-      </div>
+      </h5>
+      Ticket type: <%= @user_ticket.ticket.model.capitalize %><br><br>
+      <b><%= @user_ticket_name %></b><br>
+      <%= Time.now.year - @user.birthdate.year %> years old<br>
+      <%=  @user.country %><br>
+      <br>
+      <div class="d-flex justify-content-center">
+        <% if @user_ticket.scanned == "accepted" %>
+          <%= link_to fa_icon('hourglass'), ticket_user_ticket_path(@user_ticket, scanned: "pending"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to set this ticket back to pending?"}, class: "btn btn-warning mx-4" %>
+          <%= link_to fa_icon('times'), ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger mx-4" %>
+        <% elsif @user_ticket.scanned == "rejected" %>
+          <%= link_to fa_icon('check'), ticket_user_ticket_path(@user_ticket, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mx-4" %>
+          <%= link_to fa_icon('hourglass'), ticket_user_ticket_path(@user_ticket, scanned: "pending"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to set this ticket back to pending?"}, class: "btn btn-warning mx-4" %>
+        <% else %> <!-- When ticket is pending or nil -->
+          <%= link_to fa_icon('check'), ticket_user_ticket_path(@user_ticket, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mx-4" %>
+          <%= link_to fa_icon('times'), ticket_user_ticket_path(@user_ticket, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger mx-4" %>
+        <% end %>
+      </div><br>
+      <% if @user_ticket.scanned != "pending" %>
+        <h4 class="text-muted font-italic small" style="font-family: 'Courier New', Courier, monospace;">
+          Last update:<br> <%= @user_ticket.updated_at.in_time_zone("America/Mexico_City").strftime('%d/%m/%y, %H:%M') %>
+        </h4>
+      <% end %>
     </div>
-  <% else %>
-    <h5 class="card-title">There was an error with this ticket.</h5>
-  <% end %>
-<% end %>
+  </div>
+</div>

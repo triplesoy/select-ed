@@ -19,8 +19,8 @@ class Community < ApplicationRecord
   validates :country, presence: true, on: :create
   validates :city, presence: true, on: :create
   validates :title, uniqueness: { case_sensitive: false }, on: :create
-  # validates :photos, presence: true, on: :create
-  validates :is_visible, presence: true, on: :create
+  #validates :photos, presence: true, on: :create
+  validates :is_visible, inclusion: { in: [true, false ]}, on: :create
   validate :photos_presence
 
 

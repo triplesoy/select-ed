@@ -5,9 +5,9 @@
         <div class="content-wrapper text-center text-white" style="background-color: rgba(256, 256, 256, 0.6);">
           <h1 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">TICKET</h1>
           <h2 class="card-title" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);"><%= @event.title.upcase %></h2>
-          <p class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); display: inline-block;"><%= @event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></p>
+          <p class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); display: inline-block;"><%= @event.start_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></p>
           <p class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); display: inline-block;"> - </p>
-          <p class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); display: inline-block;"><%= @event.end_time.strftime('%a,  %d/%m/%y, %H:%M') %></p>
+          <p class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); display: inline-block;"><%= @event.end_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></p>
           <h5 class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);"><%= @event.address %></h5>
         </div>
       </div>

@@ -15,18 +15,13 @@ class TicketsController < ApplicationController
 
   def create
     @community = Community.find_by(slug: params[:community_id])
-    @free_quantity = params["ticket_details"]["free"]["quantity"]
-    @regular_quantity = params["ticket_details"]["regular"]["quantity"]
-    @regular_price = params["ticket_details"]["regular"]["price"]
-    @vip_quantity = params["ticket_details"]["vip"]["quantity"]
-    @vip_r_code = params["ticket_details"]["vip"]["r_code"]
 
     @free_ticket = Ticket.new(event: @event, model: "free", price: 0)
     @regular_ticket = Ticket.new(event: @event, model: "regular")
     @vip_ticket = Ticket.new(event: @event, model: "vip", price: 0)
 
     @free_ticket.quantity = params["ticket_details"]["free"]["quantity"]
-    @free_ticket.expire_time = params["ticket_details"]["free"]["expire_time"]
+    @free_ticket.expire_time = local_to_utc(params["ticket_details"]["free"]["expire_time"]) if params["ticket_details"]["free"]["expire_time"].present?
     @regular_ticket.quantity = params["ticket_details"]["regular"]["quantity"]
     @regular_ticket.price = params["ticket_details"]["regular"]["price"]
     @vip_ticket.quantity = params["ticket_details"]["vip"]["quantity"]
@@ -37,9 +32,6 @@ class TicketsController < ApplicationController
     authorize @vip_ticket
 
     if @free_ticket.save && @regular_ticket.save && @vip_ticket.save
-      if @free_ticket.quantity.to_i.positive? && @free_ticket.expire_time.present?
-        @free_ticket.expire_time = @free_ticket.expire_time.to_datetime.in_time_zone("America/Mexico_City")
-      end
       redirect_to community_path(@community), alert: "You have successfully created the event!"
     else
       render :new, status: :unprocessable_entity, alert: "Failed to create the event."
@@ -92,4 +84,12 @@ class TicketsController < ApplicationController
   def set_ticket
     @ticket = @event.tickets
   end
+
+  def local_to_utc(local_time_string)
+    Time.use_zone('Mexico City') do
+      local_time = Time.zone.parse(local_time_string)
+      local_time.utc
+    end
+  end
+
 end

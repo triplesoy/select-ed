@@ -84,7 +84,7 @@
                   <% if upcoming_events.exists? %>
                     <i class="fa-solid fa-calendar-days" style="color: gray;"></i>
                     <span style="text-decoration: none; color: #B9624F">Next Event:</span>
-                    <%= content_tag(:span, upcoming_events.first.start_time.strftime('%A, %B %-d') + ordinal_suffix(upcoming_events.first.start_time.day), style: "text-decoration: none; color: #B9624F; font-weight: bold;") %>
+                    <%= content_tag(:span, upcoming_events.first.start_time.in_time_zone("America/Mexico_City").strftime('%A, %B %-d') + ordinal_suffix(upcoming_events.first.start_time.day), style: "text-decoration: none; color: #B9624F; font-weight: bold;") %>
                   <% else %>
                   <% end %>
                   <br>
