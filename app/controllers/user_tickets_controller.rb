@@ -213,6 +213,7 @@ class UserTicketsController < ApplicationController
   private
 
   def set_user_ticket
+    puts "User Ticket ID: #{params[:id]}"
     @user_ticket = UserTicket.find(params[:id])
   end
 
