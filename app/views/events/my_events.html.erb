@@ -4,7 +4,7 @@
       <h2>Upcoming Events</h2>
       <div class="row">
         <% @my_events.each do |event| %>
-          <% if event.end_time >= Date.today %>
+          <% if event.end_time.in_time_zone("America/Mexico_City") >= Date.today.in_time_zone("America/Mexico_City") %>
             <div class="col-lg-3 col-md-6 col-sm-12 my-3 ">
               <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
                 <div class="image-wrapper" style="height: 250px; overflow: hidden;">
@@ -20,8 +20,8 @@
                   </div>
                   <br>
                   <br>
-                  <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
-                  <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
+                  <div class="card-title" style="color: #B9624F;"><%= event.start_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></div>
+                  <div class="card-title" style="color: #B9624F;"><%= event.end_time.in_time_zone("America/Mexico_City").strftime('%a - %d/%m/%y - %H:%M') %></div>
                   <div class="card-title" style="color: gray; font-size: 12px;"><%= event.address %></div>
                 </div>
               </div>
@@ -33,7 +33,7 @@
   </div>
 </div>
 <% @my_events.each do |event| %>
-  <% if event.end_time < Date.today %>
+  <% if event.end_time.in_time_zone("America/Mexico_City") < Date.today.in_time_zone("America/Mexico_City") %>
     <div class="container-fluid">
       <div class="row">
         <div class="container mx-auto ms-4">

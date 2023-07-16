@@ -49,7 +49,7 @@
         <div class="col-lg-6">
           <h2>Hey <%= @user.first_name %>, here's your ticket!</h2>
           <p>Thanks for purchasing a ticket to <%= @community.title %>'s <%= @event.title %>'s event!</p>
-          <p>As a reminder, the party starts at <b><%= @event.start_time.strftime("%l:%M %p on %A, %B #{ @event.start_time.day.ordinalize }") %></b>, and will be held at <b><%= @event.address %></b>.</p>
+          <p>As a reminder, the party starts at <b><%= @event.start_time.in_time_zone("America/Mexico_City").strftime("%l:%M %p on %A, %B #{ @event.start_time.in_time_zone("America/Mexico_City").day.ordinalize }") %></b>, and will be held at <b><%= @event.address %></b>.</p>
           <p>See you soon!</p>
         </div>
         <div class="col-lg-6">
@@ -57,7 +57,7 @@
             <div class="qr-code">
               <% if @user_ticket.qrcode.attached? %>
                 <div class="qr-image m-5">
-                  <%= link_to(cl_image_tag(@user_ticket.qrcode.key, width: "350px", height: "auto", alt: "QR code for ticket", class: "img-fluid"), cl_image_path(@user_ticket.qrcode.key), target: "_blank") %>
+<%= link_to(image_tag(url_for(@user_ticket.qrcode), width: "350px", height: "auto", alt: "QR code for ticket", class: "img-fluid"), url_for(@user_ticket.qrcode), target: "_blank") if @user_ticket.qrcode.attached? %>
                 </div>
               <% end %>
             </div>

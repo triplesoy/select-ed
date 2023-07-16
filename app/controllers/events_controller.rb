@@ -1,6 +1,8 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:edit, :update, :show, :destroy, :event_dashboard]
   before_action :set_community, only: [:index, :show, :destroy, :edit, :update]
+  before_action :set_ticket, only: [:show]
+
   skip_after_action :verify_authorized, only: :my_events
 
   def index
@@ -42,13 +44,19 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
-    @event.community = Community.friendly.find(params[:community_id])
     @community = Community.friendly.find(params[:community_id])
+    @event = Event.new(event_params.except(:start_time, :end_time)) # remove start and end time from event_params
+    @event.community = @community
     @event.user = current_user
+
+    # parse start_time and end_time as Mexico City time, then convert to UTC
+    start_time = ActiveSupport::TimeZone['America/Mexico_City'].parse(event_params[:start_time]).utc
+    end_time = ActiveSupport::TimeZone['America/Mexico_City'].parse(event_params[:end_time]).utc
+
+    @event.start_time = start_time
+    @event.end_time = end_time
+
     if @event.save
-      @event.update(start_time: @event.start_time.to_datetime.in_time_zone("America/Mexico_City"))
-      @event.update(end_time: @event.end_time.to_datetime.in_time_zone("America/Mexico_City"))
       redirect_to new_community_event_ticket_path(@community, @event)
     else
       respond_to do |format|
@@ -61,6 +69,8 @@ class EventsController < ApplicationController
 
     authorize @event
   end
+
+
 
   def edit
     authorize @event
@@ -134,5 +144,10 @@ class EventsController < ApplicationController
   def set_event
     @event = Event.friendly.find(params[:id])
   end
+
+  def set_ticket
+    @ticket = @event.tickets
+  end
+
 
 end

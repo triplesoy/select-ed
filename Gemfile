@@ -12,6 +12,8 @@ gem "cloudinary"
 
 gem 'countries'
 
+gem 'font-awesome-rails'
+
 
 
 

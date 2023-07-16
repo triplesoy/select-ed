@@ -1,6 +1,6 @@
 class UserTicketsController < ApplicationController
-  before_action :set_ticket, only: [:edit, :update, :show, :new, :create, :update]
   before_action :set_user_ticket, only: [:edit, :update, :show, :destroy, :confirmation, :validation]
+  before_action :set_ticket, only: [:edit, :update, :show, :destroy, :confirmation, :validation]
 
   def index
   end
@@ -75,7 +75,7 @@ class UserTicketsController < ApplicationController
       result.combine_options do |c|
         c.gravity 'North'
         c.pointsize '90'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
+        c.font Rails.root.join('app', 'assets', 'fonts', 'fonts', 'GlacialIndifference-Regular.otf').to_s
         c.fill 'black'
         c.draw "text 2,82 '#{@community.title.upcase}'"
       end
@@ -83,7 +83,7 @@ class UserTicketsController < ApplicationController
       result.combine_options do |c|
         c.gravity 'North'
         c.pointsize '90'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
         c.fill 'white'
         c.draw "text 1,80 '#{@community.title.upcase}'"
       end
@@ -91,7 +91,7 @@ class UserTicketsController < ApplicationController
       result.combine_options do |c|
         c.gravity 'North'
         c.pointsize '90'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
         c.draw "text 1,220 '#{@event.title.upcase}'"
         c.fill 'white'
       end
@@ -99,26 +99,26 @@ class UserTicketsController < ApplicationController
       result.combine_options do |c|
         c.gravity 'North'
         c.pointsize '70'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
-        c.draw "text 1,420 '#{@event.start_time.strftime('%a,  %d/%m/%y, %H:%M')}'"
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
+        c.draw "text 1,420 '#{formatted_start_time}'"
         c.fill 'white'
       end
 
       result.combine_options do |c|
         c.gravity 'South'
         c.pointsize '70'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
         c.draw "text 1,220 '#{current_user.full_name.upcase}'"
         c.fill 'white'
       end
 
       if @user_ticket.ticket.model == "free" && @user_ticket.ticket.expire_time.present?
-        valid_until = @user_ticket.ticket.expire_time.to_datetime.strftime("%H:%M on %d/%m/%Y")
+        valid_until = formatted_expire_time(@user_ticket.ticket.expire_time)
 
         result.combine_options do |c|
           c.gravity 'South'
           c.pointsize '50'
-          c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
+          c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
           c.draw "text 2,82 'VALID UNTIL: #{valid_until}'"
           c.fill 'white'
         end
@@ -128,14 +128,17 @@ class UserTicketsController < ApplicationController
         result.combine_options do |c|
           c.gravity 'South'
           c.pointsize '70'
-          c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.ttf').to_s
+          c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
           c.draw "text 2,82 'VIP TICKET'"
           c.fill 'white'
         end
       end
 
-      result.write("composite_image.png")
-      @user_ticket.qrcode.attach(io: File.open("composite_image.png"), filename: "qr_code.png", content_type: "image/png")
+      composite_image_path = Rails.root.join('tmp', 'composite_image.png').to_s
+      result.write(composite_image_path)
+      limit_image_size(composite_image_path, 650) # Limit image size to 650 KB
+
+      @user_ticket.qrcode.attach(io: File.open(composite_image_path), filename: "qr_code.png", content_type: "image/png")
 
       UserTicketMailer.with(user: @user_ticket.user, user_ticket: @user_ticket).send_ticket.deliver_now
       redirect_to confirmation_page_path(@user_ticket), alert: "You have successfully purchased a ticket!"
@@ -170,7 +173,6 @@ class UserTicketsController < ApplicationController
   def confirmation
     @ticket = @user_ticket.ticket
     @event = @ticket.event
-    @user_ticket
     authorize @user_ticket
 
     @markers = [
@@ -182,10 +184,9 @@ class UserTicketsController < ApplicationController
   end
 
   def validation
+    @user = @user_ticket.user
+    @event = @user_ticket.ticket.event
     @user_ticket_name = @user_ticket.user.full_name
-    unless @user_ticket.ticket.expire_time.nil?
-      @user_ticket.update(scanned: "rejected") if @user_ticket.has_expired?
-    end
 
     authorize @user_ticket
   end
@@ -216,10 +217,40 @@ class UserTicketsController < ApplicationController
   end
 
   def set_ticket
-    @ticket = Ticket.find(params[:ticket_id])
+    @ticket = @user_ticket.ticket
+  end
+
+  def limit_image_size(image_path, max_size)
+    image = MiniMagick::Image.open(image_path)
+    image.quality("85%")
+    image.strip
+    image.combine_options do |c|
+      c.resize "50%"
+    end
+    image.write(image_path)
+
+    while File.size(image_path) > max_size.kilobytes
+      image.combine_options do |c|
+        c.resize "90%"
+      end
+      image.write(image_path)
+    end
+  end
+
+  def formatted_start_time
+    @event.start_time.in_time_zone("America/Mexico_City").strftime('%a, %d/%m/%y, %H:%M')
+  end
+
+  def formatted_expire_time(expire_time)
+    expire_time.to_datetime.in_time_zone("America/Mexico_City").strftime("%H:%M on %d/%m/%Y")
   end
 
   def user_ticket_params
     params.require(:user_ticket).permit(:scanned)
   end
+
+
+
+
+
 end
