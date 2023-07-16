@@ -1,6 +1,8 @@
 class UserTicketsController < ApplicationController
   before_action :set_user_ticket, only: [:edit, :update, :show, :destroy, :confirmation, :validation]
-  before_action :set_ticket, only: [:edit, :update, :show, :destroy, :confirmation, :validation]
+  before_action :set_ticket, only: [:create, :edit, :update, :show, :destroy, :confirmation, :validation]
+
+
 
   def index
   end
@@ -75,7 +77,7 @@ class UserTicketsController < ApplicationController
       result.combine_options do |c|
         c.gravity 'North'
         c.pointsize '90'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'fonts', 'GlacialIndifference-Regular.otf').to_s
+        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
         c.fill 'black'
         c.draw "text 2,82 '#{@community.title.upcase}'"
       end
@@ -217,8 +219,9 @@ class UserTicketsController < ApplicationController
   end
 
   def set_ticket
-    @ticket = @user_ticket.ticket
+    @ticket = Ticket.find(params[:ticket_id])
   end
+
 
   def limit_image_size(image_path, max_size)
     image = MiniMagick::Image.open(image_path)
@@ -248,9 +251,5 @@ class UserTicketsController < ApplicationController
   def user_ticket_params
     params.require(:user_ticket).permit(:scanned)
   end
-
-
-
-
 
 end
