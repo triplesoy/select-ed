@@ -104,12 +104,13 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
           <p class="card-text">
             <% if join_request.present? && join_request.status == "pending" %>
               <div class="col-8 request-sent" style="margin: 0 auto; text-align: center;">
-                Membership request sent <%= time_ago_in_words(join_request.created_at) %> ago. <br>
+              <b>  Membership request sent <%= time_ago_in_words(join_request.created_at) %> ago. </b><br>
                 Please wait for the community owner to approve your request. <br>
                 If your account is private, make sure you added  <a href="https://www.instagram.com/<%= @community.instagram_handle_members %>/" target="_blank"><%= @community.title %></a> to your instagram.
               </div>
               <br>
             <% end %>
+
           </p>
           <%= @community.description %>
           <%# code to display the join button based on different conditions: %>
@@ -144,10 +145,14 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              This community requires a quick Instagram verification. <b>If your account is private, please send an invite request to their Instagram</b><br>
-              <center><body><br>
-                  <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
-                      Add on Instagram
+              This community requires a quick Instagram verification. <b>If your account is private, please send an invite request to their Instagram.</b><br><br>
+             First <center><body>
+
+ <a class="instagram-button" href="https://www.instagram.com/<%= @community.instagram_handle_members %>/" target="_blank">Add <%= @community.title %> on Instagram</a>
+
+
+
+
                     </a></body> </center><br>
                 Then join this community.<br>
                 <br>
