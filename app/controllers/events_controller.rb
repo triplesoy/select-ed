@@ -76,23 +76,29 @@ class EventsController < ApplicationController
     authorize @event
   end
 
-  def update
-    @event = Event.find_by(slug: params[:id])
+def update
+  @event = Event.find_by(slug: params[:id])
 
-    event_params = params.require(:event).permit(:title, :description, :address, :start_time, :end_time)
+  # parse start_time and end_time as Mexico City time, then convert to UTC
+  start_time = ActiveSupport::TimeZone['America/Mexico_City'].parse(params[:event][:start_time]).utc if params[:event][:start_time].present?
+  end_time = ActiveSupport::TimeZone['America/Mexico_City'].parse(params[:event][:end_time]).utc if params[:event][:end_time].present?
 
-    if params[:event][:photos].present?
-      @event.photos.attach(params[:event][:photos])
-    end
+  event_params = params.require(:event).permit(:title, :description, :address)
+  event_params[:start_time] = start_time if start_time.present?
+  event_params[:end_time] = end_time if end_time.present?
 
-    if @event.update(event_params)
-      redirect_to community_event_path(@event.community, @event), notice: "Event was successfully updated."
-    else
-      render :edit
-    end
-
-    authorize @event
+  if params[:event][:photos].present?
+    @event.photos.attach(params[:event][:photos])
   end
+
+  if @event.update(event_params)
+    redirect_to community_event_path(@event.community, @event), notice: "Event was successfully updated."
+  else
+    render :edit
+  end
+
+  authorize @event
+end
 
   def destroy
     @event.destroy

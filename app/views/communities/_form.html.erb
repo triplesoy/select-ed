@@ -15,7 +15,7 @@
   <%= f.input :category, required: true, label: "Community category" %>
   <%= f.input :instagram_handle_main, required: false, label: "Instagram handle of your community to display", input_html: { id: 'main_instagram' } %>
   <%= f.input :photos, required: true, as: :file, input_html: { multiple: true } %>
-  <%= f.input :youtube_banner, required: false, label: "If you want a video banner to display instead of the photo, enter the complete youtube URL:" %>
+  <%= f.input :youtube_banner, required: false, label: "If you want a video banner to display instead of the photo, enter the complete YouTube URL:" %>
   <%= f.input :country, required: true, label: "Country" %>
   <%= f.input :city, required: true, label: "City" %>
   <b><%= "Community Settings" %></b>
@@ -23,12 +23,12 @@
   <div>
     <%= f.input :public, label: "Community access", required: true, as: :radio_buttons, collection: [['Public (Everyone can join)', true], ['Private (Request required)', false]] %>
     <div id="instagram_member_section" style="display: block;">
-      If your community is private, and if you require members to add you on a specific instagram account, please enter the handle here:<br>
+      If your community is private, and if you require members to add you on a specific Instagram account, please enter the handle here:<br>
       <br>
-      <!-- New button -->
       <%= f.input :instagram_handle_members, required: false, label: "Instagram to join request", input_html: { id: 'members_instagram' } %>
-      <button type="button" id="copy_instagram_handle" class="btn btn-outline-dark">Click here if same as main Instagram above</button><br>
-      <br>
+      <!-- Add the button -->
+      <button type="button" class="btn btn-outline-dark" onclick="copyInstagramHandle()">Click here if same as main Instagram above</button>
+      <br><br>
     </div>
     <%= f.input :is_visible, label: "Visibility", required: true, as: :radio_buttons, collection: [['Visible (Visible on the index page)', true], ['Hidden (Not shown on index)', false]] %>
   </div>
@@ -36,13 +36,8 @@
 <% end %>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('copy_instagram_handle').addEventListener('click', function() {
-      const mainInstagram = document.getElementById('main_instagram');
-      const membersInstagram = document.getElementById('members_instagram');
-      membersInstagram.value = mainInstagram.value;
-    });
-
-;
-  });
+  function copyInstagramHandle() {
+    var mainInstagramHandle = document.getElementById('main_instagram').value;
+    document.getElementById('members_instagram').value = mainInstagramHandle;
+  }
 </script>
