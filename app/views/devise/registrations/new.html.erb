@@ -10,6 +10,7 @@
           <div class="birthdate-inputs">
             <%= f.input :birthdate, required: true, html5: true, input_html: { min: Date.today - 100.years } %>
           </div>
+<%= f.input :gender, required: true, collection: ['Male', 'Female'] %>
           <%= f.input :email, required: true,
                       autofocus: true,
                       input_html: { autocomplete: "email" } %>

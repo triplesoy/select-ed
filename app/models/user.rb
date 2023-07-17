@@ -25,12 +25,11 @@ class User < ApplicationRecord
    validates :instagram_handle, presence: true
    validates :occupation, presence: true
    validates :email, presence: true
-
+   validates :gender, presence: true, inclusion: { in: %w(Male Female) }
 
   before_validation :sanitize_instagram_handle
 
   validates :instagram_handle, format: { with: /\A[a-z0-9_.]{1,30}\Z/i, message: "is not a valid Instagram handle" }
-
 
   def has_ticket_with_event?(event)
     self.user_tickets.any? { |user_ticket| user_ticket.ticket.event == event }

@@ -75,7 +75,8 @@ end
       redirect_to dashboard_path(@community), alert: 'Admin user cannot be removed.'
     else
       @community_user.destroy
-      CommunityJoinRequest.find_by(user: @community_user.user, community: @community).destroy
+      request = CommunityJoinRequest.find_by(user: @community_user.user, community: @community)
+      request.destroy if request
       redirect_to dashboard_path(@community), notice: 'Community user successfully removed.'
     end
   end

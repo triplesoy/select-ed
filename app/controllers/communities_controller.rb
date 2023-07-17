@@ -111,7 +111,7 @@ end
   private
 
   def community_params
-    params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :youtube_banner, :is_visible, :video, photos: [], photos_delete: [])
+    params.require(:community).permit(:title, :description, :short_description, :category, :country, :instagram_handle_main, :instagram_handle_members, :city, :public, :youtube_banner, :is_visible, :video, photos: [], photos_delete: [])
   end
 
   def set_community

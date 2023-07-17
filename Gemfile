@@ -12,11 +12,6 @@ gem "cloudinary"
 
 gem 'countries'
 
-gem 'font-awesome-rails'
-
-
-
-
 gem 'simple-form-datepicker'
 gem "split_datetime"
 
