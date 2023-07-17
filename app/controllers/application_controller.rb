@@ -13,8 +13,8 @@ class ApplicationController < ActionController::Base
   private
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :birthdate, :address, :country, :instagram_handle, :occupation, :avatar])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :birthdate, :address, :country, :instagram_handle, :occupation, :avatar])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :birthdate, :address, :country, :instagram_handle, :occupation, :avatar, :gender, :phone_number])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :birthdate, :address, :country, :instagram_handle, :occupation, :avatar, :gender, :phone_number])
   end
 
   def user_not_authorized

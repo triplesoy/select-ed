@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_30_204408) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_17_171850) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,7 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_30_204408) do
     t.text "description"
     t.string "country"
     t.string "city"
-    t.boolean "public", default: false
+    t.boolean "public"
     t.boolean "is_visible"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -56,6 +56,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_30_204408) do
     t.string "slug"
     t.text "short_description"
     t.string "youtube_banner"
+    t.string "instagram_handle_members"
+    t.string "instagram_handle_main"
     t.index ["slug"], name: "index_communities_on_slug", unique: true
     t.index ["user_id"], name: "index_communities_on_user_id"
   end
@@ -145,6 +147,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_30_204408) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "gender"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

@@ -23,6 +23,12 @@ class Community < ApplicationRecord
   validates :is_visible, inclusion: { in: [true, false ]}, on: :create
   validate :photos_presence
 
+  validates :instagram_handle_main, format: { with: /\A[a-z0-9_.]{1,30}\Z/i, message: "is not a valid Instagram handle" }
+  validates :instagram_handle_members, format: { with: /\A[a-z0-9_.]{1,30}\Z/i, message: "is not a valid Instagram handle" }
+
+  before_validation :sanitize_instagram_handle_main
+  before_validation :sanitize_instagram_handle_members
+
 
   has_many_attached :photos
   has_one_attached :video
@@ -46,6 +52,19 @@ class Community < ApplicationRecord
       super(embed_url)
     end
   end
+end
+
+
+def sanitize_instagram_handle_main
+  uri = URI.parse(instagram_handle_main)
+  self.instagram_handle = uri.path.gsub('/', '') if uri.host&.include?('instagram.com')
+rescue URI::InvalidURIError
+end
+
+def sanitize_instagram_handle_members
+  uri = URI.parse(instagram_handle_members)
+  self.instagram_handle = uri.path.gsub('/', '') if uri.host&.include?('instagram.com')
+rescue URI::InvalidURIError
 end
 
 private

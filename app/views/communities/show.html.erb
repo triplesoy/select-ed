@@ -1,7 +1,5 @@
-<%
-community_user = CommunityUser.find_by(user: current_user, community: @community)
-join_request = CommunityJoinRequest.find_by(user: current_user, community: @community)
-%>
+<% community_user = CommunityUser.find_by(user: current_user, community: @community)
+join_request = CommunityJoinRequest.find_by(user: current_user, community: @community) %>
 <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container">
     <div class="row justify-content-center">
@@ -101,125 +99,150 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
             </div>
           </div>
         </div>
-        <%# Begining of the text for the community %>
+        <%# Text to display for private community where the member request is pending  %>
         <div class="card-body bg-white">
           <p class="card-text">
-            <% if join_request.present? && join_request.status == "pending"%>
+            <% if join_request.present? && join_request.status == "pending" %>
               <div class="col-8 request-sent" style="margin: 0 auto; text-align: center;">
                 Membership request sent <%= time_ago_in_words(join_request.created_at) %> ago. <br>
                 Please wait for the community owner to approve your request. <br>
-                <b>If your account is private, make sure you added <a href="https://www.instagram.com/cultura_subterranea_members_/" target=blank_>cultura_subterranea_members_</a>
-                </b>
+                If your account is private, make sure you added  <a href="https://www.instagram.com/<%= @community.instagram_handle_members %>/" target="_blank"><%= @community.title %></a> to your instagram.
               </div>
               <br>
             <% end %>
-            <%= @community.description %>
-            <!-- Button trigger modal -->
-            <% unless (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
-              <br>
-              <% unless join_request.present? && join_request.status == "pending"%>
-                <center>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Request to join <%= @community.title %>
-                  </button>
-                </center>
-              <% end %>
-              <!-- Modal -->
-              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="staticBackdropLabel">Join the <%= @community.title %> community!</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      This community requires a quick Instagram verification. <b>If your account is private, please send an invite request to their Instagram</b><br>
-                      <center><body><br>
-                          <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
-                              Add on Instagram
-                            </a></body> </center><br>
-                        Then join this community.<br>
-                        <br>
-                        <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
-                          <center> <%= f.submit 'Request to join this community', class: "btn btn-success" %><br>
-                            <center>
-                            <% end %>
-                            <br>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Understood</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <%# END MDOAL  %>
-              <% end %>
+          </p>
+        </div>
+        <%= @community.description %>
+        <%# code to display the join button based on different conditions: %>
+        <% unless (@community.user == current_user ||
+           (current_user && current_user.is_member_of?(@community)) ||
+           (current_user && current_user.is_moderator_of?(@community)) ||
+           (current_user && current_user.admin)) %>
+        <br>
+        <% if @community.public? && current_user.present? && !current_user.is_member_of?(@community) %>
+          <center>
+            <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+              <%= f.button 'Join ' + @community.title, type: "submit", class: "btn btn-primary", data: { turbo_method: :post } %>
+            <% end %>
+          </center>
+        <% elsif !@community.public? && current_user.present? && !current_user.is_member_of?(@community) %>
+          <% unless join_request.present? && join_request.status == "pending"%>
+            <center>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Request to join <%= @community.title %>
+              </button>
+            </center>
+          <% end %>
+        <% end %>
+      <% end %>
+      <!-- Modal -->
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Join the <%= @community.title %> community!</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
-        </p>
-      </div>
-    </div>
-  </div>
-  <%# end of display community card%>
-  <%# start of display of upcomming community events%>
-  <div class="container col-12mt-4">
-    <div class="row justify-content-center">
-      <div class="col-md-11" >
-        <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px">
-          <div class="black-banner">
-            <h5 class="card-title">Upcoming events</h5>
-          </div>
-          <div class="card-body bg-white justify-content-center">
-            <% if @community.events.any? { |event| event.start_time >= Date.today } %>
-              <div class="container-fluid ">
-                <% unless @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
-                  <div class="non-member-text">
-                    These events are only accessible to the members of this community. <br>
+            <div class="modal-body">
+              This community requires a quick Instagram verification. <b>If your account is private, please send an invite request to their Instagram</b><br>
+              <center><body><br>
+                  <a class="instagram-button" href="https://www.instagram.com/cultura_subterranea_members_/" target="_blank"><b>
+                      Add on Instagram
+                    </a></body> </center><br>
+                Then join this community.<br>
+                <br>
+                <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+                  <center> <%= f.submit 'Request to join this community', class: "btn btn-success" %><br>
+                    <center>
+                      <br>
+                    </div>
                   </div>
-                <% end %>
-                <div class="row col-12 justify-content-start">
-                  <% @community.events.sort_by(&:start_time).each do |event| %>
-                    <% if event.start_time >= Date.today %>
-                      <div class="col-lg-4 col-md-6 col-sm-12 my-3 d-flex align-items-center justify-content-center">
-                        <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
-                          <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                            <% if event.photos.attached? %>
-                              <a href="<%= community_event_path(event.community, event) %>">
-                                <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Upcoming event">
-                              </a>
-                            <% end %>
-                          </div>
-                          <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
-                            <div class="card-title">
-                              <a href="<%= community_event_path(event.community, event) %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="card-title" style="color: #B9624F;"><%= event.start_time.in_time_zone('America/Mexico_City').strftime('%a,  %d/%m/%y, %H:%M') %></div>
-                            <div class="card-title" style="color: #B9624F;"><%= event.end_time.in_time_zone('America/Mexico_City').strftime('%a - %d/%m/%y - %H:%M') %></div>
-                            <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
-                              <div class="card-title" style="color: gray; font-size: 12px;"><%= event.address %></div>
-                            <% else %>
-                              <div class="card-title" style="color: gray; font-size: 12px;">Address hidden - members only</div>
-                            <% end %>
-                          </div>
-                        </div>
-                      </div>
-                    <% end %>
-                  <% end %>
                 </div>
               </div>
             </div>
-          <% else %>
-            This community doesn't have upcoming events
-          <% end %>
+          </div>
+          <%# END MDOAL  %>
+        <% end %>
+      </div>
+    </div>
+  </p>
+</div>
+</div>
+</div>
+<%# end of display community card%>
+<%# start of display of upcomming community events%>
+<div class="container col-12mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-11" >
+      <div class="card mb-4"  style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); border-radius: 5px">
+        <div class="black-banner">
+          <h5 class="card-title">Upcoming events</h5>
         </div>
+        <div class="card-body bg-white justify-content-center">
+          <% if @community.events.any? { |event| event.start_time >= Date.today } %>
+            <div class="container-fluid ">
+              <% unless @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
+                <div class="non-member-text">
+                  These events are only accessible to the members of this community. <br>
+                </div>
+              <% end %>
+              <div class="row col-12 justify-content-start">
+                <% @community.events.sort_by(&:start_time).each do |event| %>
+                  <% if event.start_time >= Date.today %>
+                    <div class="col-lg-4 col-md-6 col-sm-12 my-3 d-flex align-items-center justify-content-center">
+                      <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
+                        <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+                          <% if event.photos.attached? %>
+                            <% is_authorized = @community.user == current_user ||
+                                 (current_user && current_user.is_moderator_of?(@community)) ||
+                                 (current_user && current_user.is_member_of?(@community)) ||
+                                 (current_user && current_user.admin) %>
+                            <a href="<%= is_authorized ? community_event_path(event.community, event) : '#' %>" data-bs-toggle="<%= is_authorized ? '' : 'modal' %>" data-bs-target="<%= is_authorized ? '' : '#modal' %>">
+                              <img src="<%= cl_image_path event.photos.first.key %>" class="card-img-top" alt="Upcoming event">
+                            </a>
+                          <% end %>
+                        </div>
+                        <div class="card-body position-relative" style="height: 200px; overflow: hidden;">
+                          <div class="card-title">
+                            <a href="<%= is_authorized ? community_event_path(event.community, event) : '#' %>" data-bs-toggle="<%= is_authorized ? '' : 'modal' %>" data-bs-target="<%= is_authorized ? '' : '#modal' %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+                          </div>
+                          <br>
+                          <br>
+                          <div class="card-title" style="color: #B9624F;"><%= event.start_time.in_time_zone('America/Mexico_City').strftime('%a,  %d/%m/%y, %H:%M') %></div>
+                          <div class="card-title" style="color: #B9624F;"><%= event.end_time.in_time_zone('America/Mexico_City').strftime('%a - %d/%m/%y - %H:%M') %></div>
+                          <div class="card-title" style="color: gray; font-size: 12px;"><%= is_authorized ? event.address : 'Address hidden - members only' %></div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+              <!-- Modal popup -->
+              <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalLabel">Access Restricted</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      You must be a member of <%= @community.title %> to view the event.
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          This community doesn't have upcoming events
+        <% end %>
       </div>
     </div>
   </div>
+</div>
 </div>
 <%# PAST EVENT %>
 <% past_events = @community.events.select { |event| event.end_time < Date.today } %>
