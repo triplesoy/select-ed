@@ -111,30 +111,30 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
               <br>
             <% end %>
           </p>
-        </div>
-        <%= @community.description %>
-        <%# code to display the join button based on different conditions: %>
-        <% unless (@community.user == current_user ||
+          <%= @community.description %>
+          <%# code to display the join button based on different conditions: %>
+          <% unless (@community.user == current_user ||
            (current_user && current_user.is_member_of?(@community)) ||
            (current_user && current_user.is_moderator_of?(@community)) ||
            (current_user && current_user.admin)) %>
-        <br>
-        <% if @community.public? && current_user.present? && !current_user.is_member_of?(@community) %>
-          <center>
-            <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
-              <%= f.button 'Join ' + @community.title, type: "submit", class: "btn btn-primary", data: { turbo_method: :post } %>
-            <% end %>
-          </center>
-        <% elsif !@community.public? && current_user.present? && !current_user.is_member_of?(@community) %>
-          <% unless join_request.present? && join_request.status == "pending"%>
+          <br>
+          <% if @community.public? && current_user.present? && !current_user.is_member_of?(@community) %>
             <center>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Request to join <%= @community.title %>
-              </button>
+              <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+                <%= f.button 'Join ' + @community.title, type: "submit", class: "btn btn-primary", data: { turbo_method: :post } %>
+              <% end %>
             </center>
+          <% elsif !@community.public? && current_user.present? && !current_user.is_member_of?(@community) %>
+            <% unless join_request.present? && join_request.status == "pending"%>
+              <center>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  Request to join <%= @community.title %>
+                </button>
+              </center>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
+      </div>
       <!-- Modal -->
       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
