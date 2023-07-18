@@ -1,13 +1,9 @@
-# Preview all emails at http://localhost:3000/rails/mailers/user_ticket_mailer
 class UserTicketMailerPreview < ActionMailer::Preview
   def send_ticket
-    @user_ticket = params[:user_ticket]
-    @user = params[:user]
-    @community = @user_ticket.ticket.event.community
-    @event = @user_ticket.ticket.event
-    @ticket = @user_ticket.ticket
+    user_ticket = UserTicket.first # Replace with the appropriate record or create a test record if needed
+    user = user_ticket.user
+    
 
-    mail(to: @user.email, subject: "Here's your ticket for the #{@community.title} #{@event.title}'s event!")
+    UserTicketMailer.with(user_ticket: user_ticket, user: user).send_ticket
   end
-
 end

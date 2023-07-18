@@ -1,71 +1,201 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
-      .container-fluid {
-        position: relative;
-        border: 2px solid black;
+      body, html {
+        font-family: "Segoe UI", sans-serif;
+        color: #ffffff;
+        background-color: black;
+        line-height: 1.6;
       }
 
-      .image-wrapper {
+      .container-fluid {
+        position: relative;
+        max-width: 66.6%;
+        margin: auto;
+        background-color: white;
+        color: black;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+        overflow: auto;
+        padding: 20px;
+      }
+
+      .banner {
         width: 100%;
-        overflow: hidden;
+        padding: 40px 0;
         text-align: center;
-        padding: 20px 0;
         background-color: black;
       }
 
       .logo {
         display: inline-block;
-        max-width: 15%;
+        max-width: 70%;
         height: auto;
       }
 
-      .image {
-      margin: 10px;
+      @media screen and (min-width: 384px) { /* For tablet and above */
+        .logo {
+          max-width: 30%;
+        }
+        .community-image  {
+          max-width: 85%; /* Adjust as needed */
+          height: auto; /* Adjust as needed */
+          margin: 0 auto; /* Add this to center the image */
+        }
       }
+
+      @media screen and (min-width: 768px) { /* For tablet and above */
+        .logo {
+          max-width: 30%;
+        }
+        .community-image  {
+          max-width: 95%; /* Adjust as needed */
+          height: auto; /* Adjust as needed */
+          margin: 0 auto; /* Add this to center the image */
+        }
+      }
+
+      @media screen and (min-width: 1024px) { /* For laptop and above */
+        .logo {
+          max-width: 20%;
+        }
+      }
+
       .content {
-        display: flex;
+        font-size: 16px;
+        padding: 20px;
       }
 
-      .col-lg-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-        padding: 0 10px;
+      .content p {
+        margin-bottom: 20px;
       }
 
-      .qr-image {
-        width: 100%;
+      .footer {
+        background-color: black;
+        color: white;
+        padding: 20px;
         text-align: center;
+      }
+
+      .footer {
+        padding: 20px 0;
+        background-color: black;
+        color: #FFFFFF;
+        font-family: 'Segoe UI', sans-serif;
+      }
+
+      .footer-contact {
+        display: flex;
+        justify-content: space-around;
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+      }
+
+      .footer-contact li a {
+        color: #FFFFFF;
+        text-decoration: none;
+      }
+
+      .footer-contact li a:hover {
+        color: #CCCCCC;
+      }
+
+      .qr-code {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .qr-image img {
+        width: 60%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .font-icon {
+        color: orange; /* Adjust the color as needed */
+        font-size: 20px; /* Adjust the size as needed */
+      }
+
+      .font-icon.brown {
+        color: brown; /* Adjust the color as needed */
+      }
+
+      .font-icon.brown:before {
+        content: "\f059";
+      }
+
+      .font-icon.orange:before {
+        content: "\f135";
+      }
+
+      .font-icon:before {
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
       }
     </style>
   </head>
   <body>
+    <div class="banner">
+      <a href="https://www.nubanuba.com">
+        <img src="https://res.cloudinary.com/dif8ww5ed/image/upload/v1687760788/logo2_x9qcsy.png" alt="Nubanuba Logo" class="logo">
+      </a>
+    </div>
     <div class="container-fluid">
-      <div class="image-wrapper">
-        <%= image_tag("https://res.cloudinary.com/dif8ww5ed/image/upload/v1687760788/logo2_x9qcsy.png", class: "logo") %>
+      <div class="content-wrapper">
+        <h2>Hey <%= @user.first_name %>, here's your ticket!</h2>
+        <p>Thanks for purchasing a ticket to <%= @community.title %>'s <%= @event.title %>'s event!</p>
+        <p><b><i class="fas fa-calendar-alt fa-lg" style="color: #db6300;"></i> When?</b><br>
+          The event will start at <b><%= @event.start_time.in_time_zone("America/Mexico_City").strftime("%l:%M %p on %A, %B #{ @event.start_time.in_time_zone("America/Mexico_City").day.ordinalize }") %></b>. <br>
+        <p>  <i class="fas fa-map-marker-alt fa-lg" style="color: #db6300;"></i></i><b> Where?</b><br>
+        It will be held at <b><%= @event.address %></b>.
+        <br>
+
+        <% if @user_ticket.ticket.expire_time.present? %>
+        <p>  Remember, your ticket is only valid until <b><%= @user_ticket.ticket.expire_time.in_time_zone("America/Mexico_City").strftime("%l:%M %p") %></b>. After that time, you might be charged to enter the event.
+          <br>
+          <br>
+        <% end %>
+        <p>See you soon!</p>
       </div>
-      <div class="content">
-        <div class="col-lg-6">
-          <h2>Hey <%= @user.first_name %>, here's your ticket!</h2>
-          <p>Thanks for purchasing a ticket to <%= @community.title %>'s <%= @event.title %>'s event!</p>
-          <p>As a reminder, the party starts at <b><%= @event.start_time.in_time_zone("America/Mexico_City").strftime("%l:%M %p on %A, %B #{ @event.start_time.in_time_zone("America/Mexico_City").day.ordinalize }") %></b>, and will be held at <b><%= @event.address %></b>.</p>
-          <p>See you soon!</p>
-        </div>
-        <div class="col-lg-6">
-          <div class="image" style="overflow: hidden;">
-            <div class="qr-code">
-              <% if @user_ticket.qrcode.attached? %>
-                <div class="qr-image m-5">
-                  <%= link_to(cl_image_tag(@user_ticket.qrcode.key, width: "350px", height: "auto", alt: "QR code for ticket", class: "img-fluid"), cl_image_path(@user_ticket.qrcode.key), target: "_blank") %>
-                </div>
-              <% end %>
-            </div>
+      <div class="qr-code">
+        <% if @user_ticket.qrcode.attached? %>
+          <div class="qr-image m-5">
+            <%= link_to(cl_image_tag(@user_ticket.qrcode.key, width: "50%", height: "auto", alt: "QR code for ticket", class: "img-fluid"), cl_image_path(@user_ticket.qrcode.key), target: "_blank") %>
           </div>
-        </div>
+        <% end %>
       </div>
     </div>
-    <!-- Include the Bootstrap JS -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  </body>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="list-unstyled footer-contact">
+          <li>
+            <a href="mailto:contact@nubanuba.com" target="_blank" rel="noopener noreferrer">
+              <i class="fas fa-envelope"></i>
+              contact@nubanuba.com
+            </a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/nubanuba_app/" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-instagram"></i>
+              nubanuba_app
+            </a>
+          </li>
+        </ul>
+        <p class="text-center copyright">© 2023 nubanuba.com - enabling meaningful experiences</p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- Include the Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
 </html>

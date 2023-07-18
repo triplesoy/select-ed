@@ -1,43 +1,186 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
-      .container-fluid {
-        position: relative;
-        border: 2px solid black;
+      body, html {
+        font-family: "Segoe UI", sans-serif;
+        color: #ffffff;
+        background-color: black;
+        line-height: 1.6;
       }
 
-      .image-wrapper {
+      .container-fluid {
+        position: relative;
+        max-width: 66.6%;
+        margin: auto;
+        background-color: white;
+        color: black;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+        overflow: auto;
+        padding: 20px;
+      }
+
+      .banner {
         width: 100%;
-        overflow: hidden;
+        padding: 40px 0;
         text-align: center;
-        padding: 20px 0;
         background-color: black;
       }
 
       .logo {
         display: inline-block;
-        max-width: 15%;
+        max-width: 70%;
         height: auto;
+      }
+
+      @media screen and (min-width: 384px) { /* For tablet and above */
+        .logo {
+          max-width: 30%;
+        }
+        .community-image  {
+          max-width: 85%; /* Adjust as needed */
+          height: auto; /* Adjust as needed */
+          margin: 0 auto; /* Add this to center the image */
+        }
+      }
+
+      @media screen and (min-width: 768px) { /* For tablet and above */
+        .logo {
+          max-width: 30%;
+        }
+        .community-image  {
+          max-width: 95%; /* Adjust as needed */
+          height: auto; /* Adjust as needed */
+          margin: 0 auto; /* Add this to center the image */
+        }
+      }
+
+      @media screen and (min-width: 1024px) { /* For laptop and above */
+        .logo {
+          max-width: 20%;
+        }
+      }
+
+      .content {
+        font-size: 16px;
+        padding: 20px;
+      }
+
+      .content p {
+        margin-bottom: 20px;
+      }
+
+      .footer {
+        background-color: black;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .footer {
+        padding: 20px 0;
+        background-color: black;
+        color: #FFFFFF;
+        font-family: 'Segoe UI', sans-serif;
+      }
+
+      .footer-contact {
+        display: flex;
+        justify-content: space-around;
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+      }
+
+      .footer-contact li a {
+        color: #FFFFFF;
+        text-decoration: none;
+      }
+
+      .footer-contact li a:hover {
+        color: #CCCCCC;
+      }
+
+      .copyright {
+        text-align: center;
+        font-size: 0.9em;
+      }
+      .community-image {
+        display: block;
+        position: relative;
+        width: 100%; /* Adjust as needed */
+        height: 50%; /* Adjust as needed */
+        margin: 0 auto; /* Add this to center the image */
+      }
+
+      .community-thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .gradient-overlay {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; /* This makes the gradient cover the entire image */
+        background: linear-gradient(to top, rgba(255,255,255,1) 20%, rgba(255,255,255,0.1));
+        z-index: 2;
+        border-radius: 5px;
       }
     </style>
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="image-wrapper">
+    <div class="banner">
+      <a href="https://www.nubanuba.com">
         <%= image_tag("https://res.cloudinary.com/dif8ww5ed/image/upload/v1687760788/logo2_x9qcsy.png", class: "logo") %>
+      </a>
+    </div>
+    <div class="container-fluid">
+      <div class="content-wrapper">
+        <p>Hey <%= @user.first_name %>,</p>
+        <p>You've just been accepted as a member of the <b><%= @community.title %> community.</b></p>
+        <!-- Add image here -->
+        <div class="community-image">
+          <%= image_tag(cl_image_path(@community.photos.first.key), class: "community-thumbnail") %>
+          <div class="gradient-overlay"></div>
+        </div>
+        <p>You now have the ability to RSVP to any event in this community and retrieve your QR code tickets online. Visit <%= link_to(@community.title, community_url(@community)) %>'s page to check out the incoming events!</p>
+        <p>Kind regards,</p>
+        <p>The nubanuba team.</p>
       </div>
-      <div class="content">
-        <p>Hey <%= @user.first_name %>!
-          You've just been accepted as a member of the <%= @community.title %>'s community!    </p>
-        <p> You can now RSVP to any event of thos community and retrieve your QR code tickets online.
-          <p>Visit <%= link_to(@community.title, community_url(@community)) %>'s' page to check-out the incoming events!
-            <p>
-              The nubanuba team.</p>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <ul class="list-unstyled footer-contact">
+              <li>
+                <a href="mailto:contact@nubanuba.com" target="_blank" rel="noopener noreferrer">
+                  <i class="fas fa-envelope"></i>
+                  contact@nubanuba.com
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/nubanuba_app/" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-instagram"></i>
+                  nubanuba_app
+                </a>
+              </li>
+            </ul>
+            <p class="text-center copyright">© 2023 nubanuba.com - enabling meaningful experiences</p>
           </div>
         </div>
       </div>
-    </div>
+    </footer>
     <!-- Include the Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   </body>

@@ -6,15 +6,17 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
-  host = "nubanuba.com"
-  config.action_mailer.default_url_options = {host: host}
-  # SMTP settings for gmail
-  config.action_mailer.smtp_settings = {address:              "smtp.gmail.com",
-                                        port:                 587,
-                                        user_name:            ENV['GMAIL_USERNAME'],
-                                        password:             ENV['GMAIL_PASSWORD'],
-                                        authentication:       "plain",
-                                        enable_starttls_auto: true}
+  host = 'www.nubanuba.com'
+  config.action_mailer.default_url_options = {host: host, protocol: 'https'}
+
+  config.action_mailer.smtp_settings = {
+    address:              "smtp.gmail.com",
+    port:                 587,
+    user_name:            ENV['GMAIL_USERNAME'],
+    password:             ENV['GMAIL_PASSWORD'],
+    authentication:       "plain",
+    enable_starttls_auto: true
+  }
   # Code is not reloaded between requests.
   config.cache_classes = true
 
