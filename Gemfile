@@ -9,6 +9,8 @@ gem "mini_magick"
 gem "geocoder"
 gem "mapbox-sdk"
 gem "cloudinary"
+gem 'font-awesome-rails'
+
 
 gem 'countries'
 

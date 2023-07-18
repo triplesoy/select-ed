@@ -88,13 +88,14 @@ class UserTicketsController < ApplicationController
         c.draw "text 1,80 '#{@community.title.upcase}'"
       end
 
-      result.combine_options do |c|
-        c.gravity 'North'
-        c.pointsize '90'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
-        c.draw "text 1,220 '#{@event.title.upcase}'"
-        c.fill 'white'
-      end
+      # Commenting the section which prints the event title on the ticket becasue of the issue with Revn
+      # result.combine_options do |c|
+      #   c.gravity 'North'
+      #   c.pointsize '90'
+      #   c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
+      #   c.draw "text 1,220 '#{@event.title.upcase}'"
+      #   c.fill 'white'
+      # end
 
       result.combine_options do |c|
         c.gravity 'North'
