@@ -56,7 +56,7 @@ end
     @community = Community.find_by(slug: params[:id])
     authorize @community
 
-    community_params = params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video, :youtube_banner)
+    community_params = params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video, :youtube_banner, photos: [], photos_delete: [])
 
     if params[:community][:photos].present?
       @community.photos.attach(params[:community][:photos])
