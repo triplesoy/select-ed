@@ -72,39 +72,33 @@
                   </div>
                   <div class="modal-body">
                     <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-12 my-5">
+                      <div class="col-sm-12 my-5">
+                        <% @event.tickets.each do |t| %>
+                          <% if t.model == "free" %>
+                            <h2 class="my-2"><%= "Member" %></h2>
+                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn #{t.quantity > 0 ? 'btn-outline-dark' : 'btn-outline-warning'} col-12 #{'disabled' if t.quantity == 0}" do %>
+                              <%= t.quantity > 0 ? "Get" : "Sold out" %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                        <br>
+                        <br>
+                        <br>
                         <% @event.tickets.each do |t| %>
                           <% if t.model == "vip" %>
-                            <div data-controller="redeem">
+                            <a id="show-vip" href="#" style="color: #333; text-decoration: none; display: block; text-align: center; margin-top: 20px;">I have a VIP code</a>
+                            <div id="vip-code-container" style="display: none;" data-controller="redeem">
                               <h2 class="my-2"><%= t.model.upcase %></h2>
                               <%= form_with url: :redeem_ticket, data: { action: "submit->redeem#redeemCode", id: t.id } do |f| %>
                                 <%= f.text_field :code, placeholder: "Enter code", class: "form-control code" %>
                                 <%= f.submit "Redeem", class: "btn btn-outline-dark mt-2 col-12" %>
                               <% end %>
                               <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark d-none buy col-12 #{"disabled" if t.quantity == 0}" do %>
-                                <%= t.quantity > 0 ? "Buy" : "Sold out" %>
-                                <!--p>Tickets available: <%#= t.quantity %></p-->
+                                <%= t.quantity > 0 ? "Redeem" : "Sold out" %>
                               <% end %>
                             </div>
-                          <% elsif t.model == "free" %>
-                            <h2 class="my-2"><%= "Member" %></h2>
-                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn #{t.quantity > 0 ? 'btn-outline-dark' : 'btn-outline-warning'} col-12 #{'disabled' if t.quantity == 0}" do %>
-                              <%= t.quantity > 0 ? "Get" : "Sold out" %>
-                              <!--p>Tickets available: <%#= t.quantity %></p-->
-                            <% end %>
-                          <% else %>
-                            <h2 class="my-2"><%= t.model.capitalize %></h2>
-                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn #{t.quantity > 0 ? 'btn-outline-dark' : 'btn-outline-warning'} col-12 #{'disabled' if t.quantity == 0}" do %>
-                              <%= t.quantity > 0 ? "Buy" : "Sold out" %>
-                              <!--p>Tickets available: <%#= t.quantity %></p-->
-                            <% end %>
                           <% end %>
                         <% end %>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-12 my-5">
-                        <div class="image-wrapper" style="height: 400px; overflow: hidden;">
-                          <img src="<%= cl_image_path @event.photos.first.key %>" class="card-img-top" alt="Listing Image">
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -114,12 +108,26 @@
                 </div>
               </div>
             </div>
-            <div class="text-center">
-              <%= link_to "Back to community", communities_path(@community), class: "btn btn-dark" %>
-            </div>
+          </div>
+          <div class="text-center">
+            <%= link_to "Back to community", communities_path(@community), class: "btn btn-dark" %>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+</div>
+<script>
+  window.onload = function() {
+    document.getElementById("show-vip").addEventListener("click", function(event){
+      event.preventDefault();
+      var vipContainer = document.getElementById("vip-code-container");
+      if (vipContainer.style.display === "none") {
+        vipContainer.style.display = "block";
+      } else {
+        vipContainer.style.display = "none";
+      }
+    });
+  }
+</script>
