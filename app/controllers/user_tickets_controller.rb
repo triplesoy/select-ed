@@ -72,44 +72,47 @@ class UserTicketsController < ApplicationController
         c.geometry "+#{qr_position_x}+#{qr_position_y}"
       end
 
+      def escape_special_characters(text)
+        text.gsub(/['"\\$&]/) { |char| '\\' + char }
+      end
+
       result.combine_options do |c|
         c.gravity 'North'
         c.pointsize '90'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'fonts', 'GlacialIndifference-Regular.otf').to_s
+c.font "Glacial-Indifference-Regular"
         c.fill 'black'
-        c.draw "text 2,82 '#{@community.title.upcase}'"
+        c.draw "text 2,82 '#{escape_special_characters(@community.title.upcase)}'"
       end
 
       result.combine_options do |c|
         c.gravity 'North'
         c.pointsize '90'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
+c.font "Glacial-Indifference-Regular"
         c.fill 'white'
-        c.draw "text 1,80 '#{@community.title.upcase}'"
+        c.draw "text 1,80 '#{escape_special_characters(@community.title.upcase)}'"
       end
 
-      # Commenting the section which prints the event title on the ticket becasue of the issue with Revn
-      # result.combine_options do |c|
-      #   c.gravity 'North'
-      #   c.pointsize '90'
-      #   c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
-      #   c.draw "text 1,220 '#{@event.title.upcase}'"
-      #   c.fill 'white'
-      # end
+       result.combine_options do |c|
+         c.gravity 'North'
+         c.pointsize '90'
+ c.font "Glacial-Indifference-Regular"
+         c.draw "text 1,220 '#{escape_special_characters(@event.title.upcase)}'"
+         c.fill 'white'
+       end
 
       result.combine_options do |c|
         c.gravity 'North'
         c.pointsize '70'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
-        c.draw "text 1,420 '#{formatted_start_time}'"
+c.font "Glacial-Indifference-Regular"
+        c.draw "text 1,420 '#{escape_special_characters(formatted_start_time)}'"
         c.fill 'white'
       end
 
       result.combine_options do |c|
         c.gravity 'South'
         c.pointsize '70'
-        c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
-        c.draw "text 1,220 '#{current_user.full_name.upcase}'"
+c.font "Glacial-Indifference-Regular"
+        c.draw "text 1,220 '#{escape_special_characters(current_user.full_name.upcase)}'"
         c.fill 'white'
       end
 
@@ -119,8 +122,8 @@ class UserTicketsController < ApplicationController
         result.combine_options do |c|
           c.gravity 'South'
           c.pointsize '50'
-          c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
-          c.draw "text 2,82 'VALID UNTIL: #{valid_until}'"
+  c.font "Glacial-Indifference-Regular"
+          c.draw "text 2,82 'Valid until: #{valid_until}'"
           c.fill 'white'
         end
       end
@@ -129,7 +132,7 @@ class UserTicketsController < ApplicationController
         result.combine_options do |c|
           c.gravity 'South'
           c.pointsize '70'
-          c.font Rails.root.join('app', 'assets', 'fonts', 'GlacialIndifference-Regular.otf').to_s
+  c.font "Glacial-Indifference-Regular"
           c.draw "text 2,82 'VIP TICKET'"
           c.fill 'white'
         end

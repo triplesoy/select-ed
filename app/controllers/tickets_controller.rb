@@ -22,8 +22,16 @@ class TicketsController < ApplicationController
 
     @free_ticket.quantity = params["ticket_details"]["free"]["quantity"]
     @free_ticket.expire_time = local_to_utc(params["ticket_details"]["free"]["expire_time"]) if params["ticket_details"]["free"]["expire_time"].present?
-    @regular_ticket.quantity = params["ticket_details"]["regular"]["quantity"]
-    @regular_ticket.price = params["ticket_details"]["regular"]["price"]
+
+    if params["ticket_details"]["regular"]
+      @regular_ticket.quantity = params["ticket_details"]["regular"]["quantity"]
+      @regular_ticket.price = params["ticket_details"]["regular"]["price"]
+    else
+      @regular_ticket.quantity = 0
+      # Set a default price or handle the nil case appropriately
+      @regular_ticket.price = 0
+    end
+
     @vip_ticket.quantity = params["ticket_details"]["vip"]["quantity"]
     @vip_ticket.r_code = params["ticket_details"]["vip"]["r_code"]
 
@@ -37,6 +45,7 @@ class TicketsController < ApplicationController
       render :new, status: :unprocessable_entity, alert: "Failed to create the event."
     end
   end
+
 
   def edit
     @ticket = Ticket.find(params[:id])

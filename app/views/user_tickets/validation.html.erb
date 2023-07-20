@@ -1,11 +1,9 @@
-<% expire_time = @user_ticket.ticket.expire_time.in_time_zone("America/Mexico_City") %>
+<% expire_time = @user_ticket.ticket.expire_time.in_time_zone("America/Mexico_City") if @user_ticket.ticket.expire_time.present? %>
 <% current_time = Time.now.in_time_zone("America/Mexico_City") %>
 <div class="card shadow mx-auto m-5 p-3" style="width: 18rem;">
   <div class="card-body text-center">
     <h5 class="card-title font-weight-bold text-success mb-3">
-      <%# Check if event is still going on %>
       <% if Time.now.in_time_zone("America/Mexico_City") < @event.end_time.in_time_zone("America/Mexico_City") %>
-        <%# Check if ticket has been scanned before %>
         <% if @user_ticket.scanned == "accepted" || @user_ticket.scanned == "rejected" %>
           <h5 class="card-title font-weight-bold text-danger mb-3">
             <%= fa_icon "times-circle 4x", class: "text-danger mr-2" %><br>
@@ -13,7 +11,6 @@
             <b> WARNING </b><br>
             <br>
             Ticket has already been scanned and <%= @user_ticket.scanned %>, <%= time_ago_in_words(@user_ticket.updated_at) %> ago.<br>
-            <%# if not scanned (i.e pending), check if ticket is a free ticket or not %>
           <% elsif @user_ticket.ticket.model == "free" %>
             <% if @user_ticket.ticket.expire_time.present? %>
               <% if current_time < expire_time %>
@@ -36,7 +33,6 @@
                 This free ticket is valid.
               </h5>
             <% end %>
-            <%# Check if ticket is not a free ticket with an expire time (free without expire or VIP or paid ticket) %>
           <% else %>
             <h5 class="card-title font-weight-bold text-success mb-3">
               <%= fa_icon "check-circle 4x", class: "text-success mr-2" %><br>
@@ -61,19 +57,19 @@
       <%= Time.now.year - @user.birthdate.year %> years old<br>
       <%=  @user.country %><br>
       <br>
-      <% if Time.now.in_time_zone("America/Mexico_City") < @event.end_time.in_time_zone("America/Mexico_City") && (expire_time.nil? || current_time < expire_time) %>
-      <div class="d-flex justify-content-center">
-        <% if @user_ticket.scanned == "accepted" %>
-          <%= link_to fa_icon('hourglass-end'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "pending"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to set this ticket back to pending?"}, class: "btn btn-warning mx-4" %>
-          <%= link_to fa_icon('times'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger mx-4" %>
-        <% elsif @user_ticket.scanned == "rejected" %>
-          <%= link_to fa_icon('check'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mx-4" %>
-          <%= link_to fa_icon('hourglass-end'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "pending"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to set this ticket back to pending?"}, class: "btn btn-warning mx-4" %>
-        <% else %> <!-- When ticket is pending or nil -->
-          <%= link_to fa_icon('check'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mx-4" %>
-          <%= link_to fa_icon('times'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger mx-4" %>
-        <% end %>
-      </div>
+      <% if Time.now.in_time_zone("America/Mexico_City") < @event.end_time.in_time_zone("America/Mexico_City") && (expire_time.nil? || (expire_time.present? && current_time < expire_time)) %>
+        <div class="d-flex justify-content-center">
+          <% if @user_ticket.scanned == "accepted" %>
+            <%= link_to fa_icon('hourglass-end'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "pending"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to set this ticket back to pending?"}, class: "btn btn-warning mx-4" %>
+            <%= link_to fa_icon('times'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger mx-4" %>
+          <% elsif @user_ticket.scanned == "rejected" %>
+            <%= link_to fa_icon('check'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mx-4" %>
+            <%= link_to fa_icon('hourglass-end'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "pending"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to set this ticket back to pending?"}, class: "btn btn-warning mx-4" %>
+          <% else %> <!-- When ticket is pending or nil -->
+            <%= link_to fa_icon('check'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "accepted"), data: {turbo_method: :patch}, class: "btn btn-success mx-4" %>
+            <%= link_to fa_icon('times'), ticket_user_ticket_path(ticket_id: @user_ticket.ticket.id, user_ticket_id: @user_ticket.id, scanned: "rejected"), data: {turbo_method: :patch, turbo_confirm: "Are you sure you want to reject this ticket?"}, class: "btn btn-danger mx-4" %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
