@@ -83,7 +83,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
             </div>
             <div class ="community-type" >
               <% if !@community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
-                <i class="fa-solid fa-lock-open" style="color: green; font-weight: bold;"></i> &nbsp;<span style="color: green; font-weight: bold;">you're a member</span>
+                <i class="fas fa-solid fa-lock-open" style="color: green; font-weight: bold;"></i> &nbsp;<span style="color: green; font-weight: bold;">you're a member</span>
               <% elsif !@community.public? %>
                 <i class="fas fa-lock"></i>&nbsp;Private community
               <% elsif @community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
