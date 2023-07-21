@@ -62,12 +62,15 @@ end
       @community.photos.attach(params[:community][:photos])
     end
 
-    if @community.update(community_params)
+    if @community.update(community_params.except(:photos))
       redirect_to community_path(@community), notice: "Community was successfully updated."
     else
+      flash[:alert] = @community.errors.full_messages.join(", ")
       render :edit
     end
   end
+
+
 
   def destroy
     @community.destroy!
