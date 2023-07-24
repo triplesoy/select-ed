@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-G3gBs9j+XCfQQV//JSE4ZMME41YBllGtCG+Ky7Oc34ESsxdI6wAhAVikZcNuHT1VVja8U34Yix0ayOo/2ISUQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
   .small-font {
     font-size: 0.8rem; /* Adjust this value as needed */
@@ -58,9 +60,9 @@
                   <td><%= jr.user.email %></td>
                   <td><%= Time.now.year - jr.user.birthdate.year %></td>
                   <% if jr.user.gender == "Male" %>
-                    <td  style="text-align: center;"><i class="fa-solid fa-mars-stroke fa-lg" style="color: #005eff;"></i></td>
+                    <td  style="text-align: center;"><i class="fas fa-solid fa-mars-stroke fa-lg" style="color: #005eff;"></i></td>
                   <% else %>
-                    <td  style="text-align: center;"><i class="fa-solid fa-venus fa-lg" style="color: #ff00c8;"></i></td>
+                    <td  style="text-align: center;"><i class="fas fa-solid fa-venus fa-lg" style="color: #ff00c8;"></i></td>
                   <% end %>
                   <td><%= jr.user.country %></td>
                   <td><%= jr.user.occupation %></td>
