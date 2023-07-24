@@ -87,11 +87,11 @@
               <th scope="col">Last name</th>
               <th scope="col">Insta</th>
               <th scope="col">Actions</th>
-              <th scope="col">E-mail</th>
               <th scope="col">Age</th>
               <th scope="col"  style="text-align: center;">Gender</th>
               <th scope="col">Nationality</th>
               <th scope="col">Occupation</th>
+              <th scope="col">E-mail</th>
               <th scope="col">Role</th>
             </tr>
           </thead>
@@ -128,24 +128,26 @@
                       </div>
                     </div>
                   </td>
-                  <td><%= c.user.email %></td>
                   <td><%= Time.now.year - c.user.birthdate.year %></td>
                   <% if c.user.gender == "Male" %>
-                    <td  style="text-align: center;"><i class="fa-solid fa-mars-stroke fa-lg" style="color: #005eff;"></i></td>
+                    <td  style="text-align: center;"><i class="fas fa-solid fa-mars-stroke fa-lg" style="color: #005eff;"></i></td>
+                  <% elsif c.user.gender == "Female" %>
+                    <td  style="text-align: center;"><i class="fas fa-solid fa-venus fa-lg" style="color: #ff00c8;"></i></td>
                   <% else %>
-                    <td  style="text-align: center;"><i class="fa-solid fa-venus fa-lg" style="color: #ff00c8;"></i></td>
-                  <% end %>
-                  <td><%= c.user.country %></td>
-                  <td><%= c.user.occupation %></td>
-                  <td><%= c.role %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
+                    <td  style="text-align: center;"> - </i></td>
+                <% end %>
+                <td><%= c.user.country %></td>
+                <td><%= c.user.occupation %></td>
+                <td><%= c.user.email %></td>
+                <td><%= c.role %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+</div>
 </div>
 <div class="row">
   <div class="col-12 text-center">
