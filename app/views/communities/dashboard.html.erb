@@ -32,11 +32,12 @@
                 <th scope="col">User ID</th>
                 <th scope="col">First name</th>
                 <th scope="col">Last name</th>
-                <th scope="col">Instagram Handle</th>
+                <th scope="col">Insta</th>
                 <th scope="col">Decision</th>
                 <th scope="col">Request status</th>
                 <th scope="col">E-mail</th>
                 <th scope="col">Age</th>
+                <th scope="col"  style="text-align: center;">Gender</th>
                 <th scope="col">Nationality</th>
                 <th scope="col">Occupation</th>
               </tr>
@@ -56,6 +57,11 @@
                   <td><%= "Pending since #{time_ago_in_words(jr.created_at)} ago" %></td>
                   <td><%= jr.user.email %></td>
                   <td><%= Time.now.year - jr.user.birthdate.year %></td>
+                  <% if jr.user.gender == "Male" %>
+                    <td  style="text-align: center;"><i class="fa-solid fa-mars-stroke fa-lg" style="color: #005eff;"></i></td>
+                  <% else %>
+                    <td  style="text-align: center;"><i class="fa-solid fa-venus fa-lg" style="color: #ff00c8;"></i></td>
+                  <% end %>
                   <td><%= jr.user.country %></td>
                   <td><%= jr.user.occupation %></td>
                 </tr>
@@ -79,10 +85,11 @@
               <th scope="col">User ID</th>
               <th scope="col">First name</th>
               <th scope="col">Last name</th>
-              <th scope="col">Instagram Handle</th>
+              <th scope="col">Insta</th>
               <th scope="col">Actions</th>
               <th scope="col">E-mail</th>
               <th scope="col">Age</th>
+              <th scope="col"  style="text-align: center;">Gender</th>
               <th scope="col">Nationality</th>
               <th scope="col">Occupation</th>
               <th scope="col">Role</th>
@@ -123,6 +130,11 @@
                   </td>
                   <td><%= c.user.email %></td>
                   <td><%= Time.now.year - c.user.birthdate.year %></td>
+                  <% if c.user.gender == "Male" %>
+                    <td  style="text-align: center;"><i class="fa-solid fa-mars-stroke fa-lg" style="color: #005eff;"></i></td>
+                  <% else %>
+                    <td  style="text-align: center;"><i class="fa-solid fa-venus fa-lg" style="color: #ff00c8;"></i></td>
+                  <% end %>
                   <td><%= c.user.country %></td>
                   <td><%= c.user.occupation %></td>
                   <td><%= c.role %></td>
