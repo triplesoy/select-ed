@@ -43,7 +43,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
           <div class="card-body">
             <p class="card-text d-flex justify-content-around">
               Members: <%= @community.members.count %> |
-              Since this week: <%= @community.community_users.where("created_at > ?", Date.current.beginning_of_week).count %> |
+              Pending requests: <%= @community.community_join_requests.count %> |
               Events created: <%= @community.events.count %>
             </p>
           </div>
@@ -89,7 +89,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
               <% elsif @community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
                 <i class="fas fa-solid fa-lock-open" style="color: green; font-weight: bold;"></i> &nbsp;<span style="color: green; font-weight: bold;">you're a member</span>
               <% elsif @community.public? %>
-                <i class="fa-solid fa-lock-open"></i>&nbsp;Public community
+                <i class="fas fa-solid fa-lock-open"></i>&nbsp;Public community
               <% end %>
             </div>
             <div class="member-count">
@@ -104,13 +104,12 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
           <p class="card-text">
             <% if join_request.present? && join_request.status == "pending" %>
               <div class="col-8 request-sent" style="margin: 0 auto; text-align: center;">
-              <b>  Membership request sent <%= time_ago_in_words(join_request.created_at) %> ago. </b><br>
+                <b>  Membership request sent <%= time_ago_in_words(join_request.created_at) %> ago. </b><br>
                 Please wait for the community owner to approve your request. <br>
                 If your account is private, make sure you added  <a href="https://www.instagram.com/<%= @community.instagram_handle_members %>/" target="_blank"><%= @community.title %></a> to your instagram.
               </div>
               <br>
             <% end %>
-
           </p>
           <%= @community.description %>
           <%# code to display the join button based on different conditions: %>
@@ -145,32 +144,28 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              This community requires a quick Instagram verification. <b>If your account is private, please send an invite request to their Instagram.</b><br><br>
-             First <center><body>
-
- <a class="instagram-button" href="https://www.instagram.com/<%= @community.instagram_handle_members %>/" target="_blank">Add <%= @community.title %> on Instagram</a>
-
-
-
-
-                    </a></body> </center><br>
-                Then join this community.<br>
-                <br>
-                <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
-                  <center> <%= f.submit 'Request to join this community', class: "btn btn-success" %><br>
-                    <center>
-                      <br>
-                    </div>
-                  </div>
+              This community requires a quick Instagram verification. <b>If your account is private, please send an invite request to their Instagram.</b><br>
+              <br>
+              First <center><body>
+                  <a class="instagram-button" href="https://www.instagram.com/<%= @community.instagram_handle_members %>/" target="_blank">Add <%= @community.title %> on Instagram</a>
+                </a></body> </center><br>
+            Then join this community.<br>
+            <br>
+            <%= form_for @join_request, url: community_community_join_requests_path(@community), method: :post do |f| %>
+              <center> <%= f.submit 'Request to join this community', class: "btn btn-success" %><br>
+                <center>
+                  <br>
                 </div>
               </div>
             </div>
           </div>
-          <%# END MDOAL  %>
-        <% end %>
+        </div>
       </div>
-    </div>
-  </p>
+      <%# END MDOAL  %>
+    <% end %>
+  </div>
+</div>
+</p>
 </div>
 </div>
 </div>

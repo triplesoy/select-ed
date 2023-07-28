@@ -46,8 +46,6 @@ class CommunitiesController < ApplicationController
   end
 end
 
-
-
   def edit
     authorize @community
   end
@@ -56,11 +54,10 @@ end
     @community = Community.find_by(slug: params[:id])
     authorize @community
 
-    community_params = params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video, :youtube_banner, photos: [], photos_delete: [])
-
     if params[:community][:photos].present?
       @community.photos.attach(params[:community][:photos])
     end
+
 
     if @community.update(community_params.except(:photos))
       redirect_to community_path(@community), notice: "Community was successfully updated."
@@ -69,7 +66,6 @@ end
       render :edit
     end
   end
-
 
 
   def destroy
