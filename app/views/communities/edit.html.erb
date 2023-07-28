@@ -1,43 +1,61 @@
-<h1>Edit Community</h1>
 <div class="position-relative m-3">
   <div class="col-12 col-md-6 offset-lg-3">
-    <div class="bg-white rounded p-3 shadow">
-      <%= simple_form_for (@community) do |f| %>
-        <%= f.error_notification %>
-        <div class="form-inputs">
-          <%= f.input :title, label: "Title" %>
-          <%= f.input :short_description, required: true, label: "Short description (seen on the  main index page)" %>
-          <%= f.input :description, required: true, label: "Description (seen on your community page)", input_html: { rows: 5 } %>
-          <%= f.input :category, label: "Category" %>
-          <%= f.input :youtube_banner, required: false, label: "If you want a video banner, enter the youtube URL" %>
-          <%= f.input :photos, as: :file, input_html: { multiple: true } %>
-          <% if @community.photos.attached? %>
-            <div class="row">
-              <% @community.photos.each do |photo| %>
-                <div class="col-md-3">
-                  <%= image_tag photo, class: "img-thumbnail" %>
-                  <%= link_to destroy_community_photo_path(community_id: @community.id, photo_id: photo.id), data: { confirm: "Are you sure?", turbo_method: :delete } do %>
-                    <i class="fas fa-trash-alt"></i>
-                  <% end %>
-                </div>
+    <div class="bg-white rounded p-3 shadow ">
+      <h3>  <%= "Edit your community" %></h3>
+      <%= simple_form_for @community do |f| %>
+        <% if @community.errors.any? %>
+          <div id="error_explanation">
+            <h4><%= pluralize(@community.errors.count, "error") %> prohibited this event from being saved:</h4>
+            <ul>
+              <% @community.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
               <% end %>
-            </div>
-          <% end %>
-          <%= f.input :country, label: "Country" %>
-          <%= f.input :city, label: "City" %>
-          <%# <%= f.input :public, label: "Public?", as: :boolean %>
-          <%# <%= f.input :is_visible, label: "Visible?", as: :boolean %>
-        </div>
+            </ul>
+          </div>
+        <% end %>
+        <%= f.input :title, required: true, label: "Community name" %>
+        <%= f.input :short_description, required: true, label: "Short description (seen on the index page)", input_html: { maxlength: 100 } %>
+        <%= f.input :description, required: true, label: "Description (seen on the community page)", input_html: { rows: 5, maxlength: 1000 } %>
+        <%= f.input :category, required: true, label: "Community category" %>
+        <%= f.input :instagram_handle_main, required: false, label: "Instagram handle of your community to display", input_html: { id: 'main_instagram' } %>
+        <%= f.input :photos, required: true, as: :file, input_html: { multiple: true } %>
+        <% if @community.photos.attached? %>
+          <div class="row">
+            <% @community.photos.each do |photo| %>
+              <div class="col-md-3">
+                <%= image_tag photo, class: "img-thumbnail" %>
+                <%= link_to destroy_community_photo_path(community_id: @community.id, photo_id: photo.id), data: { confirm: "Are you sure?", turbo_method: :delete } do %>
+                  <i class="fas fa-trash-alt"></i>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <%= f.input :youtube_banner, required: false, label: "If you want a video banner to display instead of the photo, enter the complete YouTube URL:" %>
+        <%= f.input :country, required: true, label: "Country" %>
+        <%= f.input :city, required: true, label: "City" %>
+        <b><%= "Community Settings" %></b>
+        <hr>
         <div>
-          <%# <%= f.input :public, label: "Public?", as: :boolean %>
-          <%# <%= f.input :is_visible, label: "Visible?", as: :boolean %>
-          <%= f.input :public, label: "Publicity", as: :radio_buttons, collection: [['Public (Everyone can join)', true], ['Private (Request required)', false]], checked: @community.public? ? true : false %>
-          <%= f.input :is_visible, label: "Visibility", as: :radio_buttons, collection: [['Visible (Everyone can see)', true], ['Hidden (Only members can see)', false]], checked: @community.is_visible? ? true : false %>
+          <%= f.input :public, label: "Community access", required: true, as: :radio_buttons, collection: [['Public (Everyone can join)', true], ['Private (Request required)', false]], checked: @community.public? ? true : false %>
+          <div id="instagram_member_section" style="display: block;">
+            If your community is private, and if you require members to add you on a specific Instagram account, please enter the handle here:<br>
+            <br>
+            <%= f.input :instagram_handle_members, required: false, label: "Instagram to join request", input_html: { id: 'members_instagram' } %>
+            <button type="button" class="btn btn-outline-dark" onclick="copyInstagramHandle()">Click here if same as main Instagram above</button>
+            <br>
+            <br>
+          </div>
+          <%= f.input :is_visible, label: "Visibility", required: true, as: :radio_buttons, collection: [['Visible (Visible on the index page)', true], ['Hidden (Not shown on index)', false]], checked: @community.is_visible? ? true : false %>
         </div>
-        <div class="form-actions">
-          <%= f.button :submit, "Update community", class: "btn btn-outline-dark" %>
-        </div>
+        <%= f.submit "Update Community", class: "btn btn-outline-dark" %>
       <% end %>
+      <script>
+        function copyInstagramHandle() {
+          var mainInstagramHandle = document.getElementById('main_instagram').value;
+          document.getElementById('members_instagram').value = mainInstagramHandle;
+        }
+      </script>
     </div>
   </div>
 </div>

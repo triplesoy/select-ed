@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-G3gBs9j+XCfQQV//JSE4ZMME41YBllGtCG+Ky7Oc34ESsxdI6wAhAVikZcNuHT1VVja8U34Yix0ayOo/2ISUQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 <style>
   .small-font {
     font-size: 0.8rem; /* Adjust this value as needed */
@@ -149,14 +148,12 @@
       </div>
     </div>
   </div>
-</div>
-</div>
-<div class="row">
-  <div class="col-12 text-center">
-    <% if @community.user == current_user || (current_user && current_user.admin) %>
-      <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete()" %>
-    <% end %>
-    <%= link_to "Return to my communities", communities_path, class: "btn btn-dark ml-3" %>
+  <div class="row">
+    <div class="col-12 text-center">
+      <% if @community.user == current_user || (current_user && current_user.admin) %>
+        <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete()" %>
+      <% end %>
+      <%= link_to "Return to my communities", communities_path, class: "btn btn-dark ml-3" %>
+    </div>
   </div>
-</div>
 </div>

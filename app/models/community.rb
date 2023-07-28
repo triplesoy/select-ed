@@ -12,7 +12,7 @@ class Community < ApplicationRecord
   has_many :join_request_users, through: :community_join_requests, source: :user
 
   validates :title, presence: true, uniqueness: { case_sensitive: false }
-  validates :description, presence: true, length: { minimum: 20 }
+  validates :description, presence: true, length: { minimum: 20, maximum: 1000 }
   validates :short_description, presence: true, length: { minimum: 8, maximum: 100 }
   validates :category, presence: true
   validates :country, presence: true
@@ -28,6 +28,7 @@ class Community < ApplicationRecord
 
   has_many_attached :photos
   has_one_attached :video
+
 
   def pending_community_join_requests
     community_join_requests.where(status: "pending")
