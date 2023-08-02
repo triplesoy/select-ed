@@ -18,11 +18,11 @@
   }
 </style>
 <div class="container-fluid">
-  <h1 class="text-center my-4"><%= @community.title %> community dashboard</h1>
+  <h3 class="text-center my-4"><%= @community.title %> community dashboard</h3>
   <% unless @community.public? %>
     <div class="card shadow-lg  mb-5 bg-white rounded small-font">
       <div class="card-header" id="membersRequestsHeading">
-        <h3 class="mb-0">Members requests</h3>
+        <h4 class="mb-0">Members requests</h4>
       </div>
       <div class="card-body no-padding">
         <div class="table-responsive">
@@ -75,7 +75,7 @@
   <% end %>
   <div class="card shadow-lg  mb-5 bg-white rounded small-font">
     <div class="card-header" id="communityMembersHeading">
-      <h3 class="mb-0">Community Members</h3>
+      <h4 class="mb-0">Community Members</h4>
     </div>
     <div class="card-body no-padding">
       <div class="table-responsive">
@@ -150,10 +150,23 @@
   </div>
   <div class="row">
     <div class="col-12 text-center">
-      <% if @community.user == current_user || (current_user && current_user.admin) %>
-        <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete()" %>
-      <% end %>
-      <%= link_to "Return to my communities", communities_path, class: "btn btn-dark ml-3" %>
+<% if @community.user == current_user || (current_user && current_user.admin) %>
+  <div>
+    <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete(event)" %>
+  </div>
+<% end %><p><br>
+<%= link_to "Go back", community_path(@community), class: "btn btn-dark ml-3" %>
+
+<script>
+  function confirmDelete(event) {
+    var userInput = prompt("Type 'delete' to confirm deletion:");
+    if (userInput !== "delete") {
+      event.preventDefault(); // Prevent the default deletion action
+      alert("Confirmation failed. Deletion canceled.");
+    }
+  }
+</script>
+
     </div>
   </div>
 </div>

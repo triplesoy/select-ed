@@ -1,7 +1,26 @@
-<h1> <%= @event.title %>  - DASHBOARD</h1>
-<div class="container">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-G3gBs9j+XCfQQV//JSE4ZMME41YBllGtCG+Ky7Oc34ESsxdI6wAhAVikZcNuHT1VVja8U34Yix0ayOo/2ISUQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+  .small-font {
+    font-size: 0.8rem; /* Adjust this value as needed */
+  }
+  .no-padding {
+    padding: 0!important; /* This overrides the default padding of the card-body class */
+  }
+  .extra-small-btn {
+    padding: 2px 6px;
+    font-size: 0.7rem;
+  }
+    /* Add this to reduce padding on table cells */
+  table.table td, table.table th {
+    padding: 5px !important; /* You can adjust this value as needed */
+        white-space: nowrap; /* This prevents text from wrapping to the next line */
+
+  }
+</style>
+<div class="container-fluid">
+  <h3 class="text-center my-2"> <%= @event.title %>'s event dashboard</h3>
   <div class="row justify-content-center">
-    <div class="col-6">
+    <div class="col-12 mt-3">
       <div class="card mb-2">
         <div class="black-banner">
           <h5 class="card-title">Events settings</h5>
@@ -15,14 +34,15 @@
       </div>
     </div>
   </div>
-  <div class=" p-3 mb-2 bg-white rounded">
-    <div class="card">
-      <div class="card-header" id="communityMembersHeading">
-        <h3 class="mb-0">Global tickets statistics</h3>
-      </div>
-      <div class="card-body">
+
+  <div class="card shadow-lg  mb-3 bg-white rounded small-font">
+    <div class="card-header" id="globalTicketsStats">
+      <h4 class="mb-0">Global tickets statistics</h4>
+    </div>
+    <div class="card-body no-padding">
+      <div class="table-responsive">
         <table class="table">
-          <thead class="table-dark">
+          <thead class="table table-striped table-dark">
             <tr>
               <th scope="col">Ticket released</th>
               <th scope="col">Tickets sold</th>
@@ -44,14 +64,14 @@
       </div>
     </div>
   </div>
-  <div class="p-3 mb-2 bg-white rounded">
-    <div class="card">
-      <div class="card-header" id="communityMembersHeading">
-        <h3 class="mb-0">Tickets breakdown statistics</h3>
-      </div>
-      <div class="card-body">
+  <div class="card shadow-lg  mb-3 bg-white rounded small-font">
+    <div class="card-header" id="membersRequestsHeading">
+      <h4 class="mb-0">Tickets breakdown statistics</h4>
+    </div>
+    <div class="card-body no-padding">
+      <div class="table-responsive">
         <table class="table">
-          <thead class="table-dark">
+          <thead class="table table-striped table-dark">
             <tr>
               <th scope="col">Type </th>
               <th scope="col">Released Tickets </th>
@@ -78,21 +98,18 @@
         </table>
         <% vip_ticket = @event.tickets.find_by(model: "vip") %>
         <% if vip_ticket && vip_ticket.r_code.present? %>
-          <h5>Redeem code VIP ticket: <span style="color: blue; font-weight: bold;"><%= vip_ticket.r_code %></span></h5>
-        <% end %>
+          Redeem code VIP ticket: <span style="color: blue; font-weight: bold;"><%= vip_ticket.r_code %></span>         <% end %>
       </div>
     </div>
   </div>
-  <div class=" p-3 mb-3 bg-white rounded">
-    <div class="card">
-      <div class="card-header" id="communityMembersHeading">
-        <h3 class="mb-0">Event participants</h3>
-      </div>
- Gender ratio<br>
- <%=  %>
-      <div class="card-body">
+  <div class="card shadow-lg  mb-3 bg-white rounded small-font">
+    <div class="card-header" id="eventPaticipants">
+      <h4 class="mb-0">Event participants</h4>
+    </div>
+    <div class="card-body no-padding">
+      <div class="table-responsive">
         <table class="table">
-          <thead class="table-dark">
+          <thead class="table table-striped table-dark">
             <tr>
               <th scope="col">#</th>
               <th scope="col">User ID</th>

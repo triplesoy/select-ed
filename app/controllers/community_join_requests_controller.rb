@@ -19,7 +19,6 @@ class CommunityJoinRequestsController < ApplicationController
     end
   end
 
-
   def update
     @join_request = CommunityJoinRequest.find(params[:id])
     authorize @join_request
@@ -28,6 +27,7 @@ class CommunityJoinRequestsController < ApplicationController
       @community_user = CommunityUser.create!(user_id: @join_request.user_id, community_id: @join_request.community_id, role: "member", status: "accepted" )
 
       CommunityUserMailer.with(community_user: @community_user, user: @community_user.user, community: @community).accepted_community.deliver_now
+      @join_request.destroy
 
       redirect_to dashboard_path(@community), notice:'Member added to community.'
     else

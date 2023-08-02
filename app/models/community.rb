@@ -2,6 +2,9 @@ class Community < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
 
+  belongs_to :owner, class_name: 'User', foreign_key: 'user_id'
+
+
   belongs_to :user
   has_many :events, dependent: :destroy
   has_many :tickets, through: :events

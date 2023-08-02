@@ -11,9 +11,8 @@ class CommunityPolicy < ApplicationPolicy
   end
 
   def show?
-    user.present?
+true
   end
-
 
   def new?
     true
@@ -43,7 +42,7 @@ class CommunityPolicy < ApplicationPolicy
     true
   end
 
-  def communities_owned
+  def communities_owned?
     true
   end
 

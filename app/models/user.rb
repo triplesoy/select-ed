@@ -3,6 +3,8 @@ class User < ApplicationRecord
   require 'uri'
   has_many :events
 
+  has_many :owned_communities, class_name: 'Community'
+
 
   has_many :user_tickets
   has_many :tickets, through: :user_tickets
@@ -10,7 +12,9 @@ class User < ApplicationRecord
   has_many :community_users
   has_many :communities, through: :community_users
   has_many :community_join_requests, through: :communities
+
   has_many :my_communities, through: :community_join_requests, source: :community
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -51,6 +55,10 @@ class User < ApplicationRecord
     self.community_users.any? { |cu| cu.community == community && cu.role == "admin" }
   end
 
+  def is_admin_of_any?
+    self.community_users.any? { |cu| cu.role == "admin" }
+  end
+
   def role_of_this(community)
     return "owner" if community.user == self
     self.community_users.find_by(community: community).role if self.community_users.find_by(community: community)
@@ -64,6 +72,10 @@ class User < ApplicationRecord
     uri = URI.parse(instagram_handle)
     self.instagram_handle = uri.path.gsub('/', '') if uri.host&.include?('instagram.com')
   rescue URI::InvalidURIError
+  end
+
+  def owned_communities
+    self.communities.where(community_users: { role: 'admin' })
   end
 
 end

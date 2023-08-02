@@ -43,6 +43,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
           <div class="card-body">
             <p class="card-text d-flex justify-content-around">
               Members: <%= @community.members.count %> |
+              Ratio : <%= (@community.members.where(gender: "Male").count.to_i / @community.members.count) * 100 %>% M - <%= (@community.members.where(gender: "Female").count.to_i / @community.members.count) * 100 %>% F |
               Pending requests: <%= @community.community_join_requests.count %> |
               Events created: <%= @community.events.count %>
             </p>
@@ -111,7 +112,17 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
               <br>
             <% end %>
           </p>
-          <%= @community.description %>
+          <%# code to display only when users are not connected to the website %>
+          <% if !user_signed_in? %>
+            <div class="col-12" style="margin: 0 auto; text-align: center;">
+              <b>Join nubanuba to request a membership to <%= @community.title %> and attend events.</b><br>
+              <br>
+              <a href="/users/sign_up" class="btn btn-primary">Sign up</a>
+              <a href="/users/sign_in" class="btn btn-primary">Log in</a>
+            </div>
+          <% else %>
+            <%= @community.description %>
+          <% end %>
           <%# code to display the join button based on different conditions: %>
           <% unless (@community.user == current_user ||
            (current_user && current_user.is_member_of?(@community)) ||
@@ -210,7 +221,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                           <br>
                           <div class="card-title" style="color: #B9624F;"><%= event.start_time.in_time_zone('America/Mexico_City').strftime('%a,  %d/%m/%y, %H:%M') %></div>
                           <div class="card-title" style="color: #B9624F;"><%= event.end_time.in_time_zone('America/Mexico_City').strftime('%a - %d/%m/%y - %H:%M') %></div>
-                          <div class="card-title" style="color: gray; font-size: 12px;"><%= is_authorized ? event.address : 'Address hidden - members only' %></div>
+                          <div class="card-title" style="color: gray; font-size: 80%;"><%= is_authorized ? event.address : 'Address hidden - members only' %></div>
                         </div>
                       </div>
                     </div>
@@ -275,7 +286,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                             <br>
                             <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
                             <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
-                            <div class="card-title" style="color: gray;"><%= event.address %></div>
+                            <div class="card-title" style="color: gray; font-size: 80%;"><%= event.address %></div>
                           </div>
                         </div>
                       </div>
