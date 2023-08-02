@@ -50,6 +50,7 @@ class TicketsController < ApplicationController
   def edit
     @ticket = Ticket.find(params[:id])
     authorize @ticket
+
   end
 
   def update

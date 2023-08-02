@@ -1,12 +1,12 @@
 class CommunitiesController < ApplicationController
   require 'countries'
 
-  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :set_community, only: [:show, :edit, :update, :destroy, :dashboard]
 
   def index
-    @communities = policy_scope(Community)
-    @communities = Community.all
+    @communities = policy_scope(Community).all
+    # @communities = Community.all
   end
 
   def show
@@ -14,13 +14,19 @@ class CommunitiesController < ApplicationController
     @events = @community.events
     @join_request = CommunityJoinRequest.new
     @community_user = CommunityUser.new
-    @my_events = current_user&.events_going_to
 
-    if current_user.nil?
-      redirect_to new_user_session_path
-    else
-      render :show
+
+    if current_user
+      @my_events = current_user.events_going_to
+      @communities = current_user.owned_communities
     end
+
+
+    # if current_user.nil?
+    #   redirect_to new_user_session_path
+    # else
+    #   render :show
+    # end
   end
 
   def new
@@ -46,6 +52,8 @@ class CommunitiesController < ApplicationController
   end
 end
 
+
+
   def edit
     authorize @community
   end
@@ -54,10 +62,11 @@ end
     @community = Community.find_by(slug: params[:id])
     authorize @community
 
+    community_params = params.require(:community).permit(:title, :description, :short_description, :category, :country, :city, :public, :is_visible, :video, :youtube_banner, photos: [], photos_delete: [])
+
     if params[:community][:photos].present?
       @community.photos.attach(params[:community][:photos])
     end
-
 
     if @community.update(community_params.except(:photos))
       redirect_to community_path(@community), notice: "Community was successfully updated."
@@ -66,6 +75,7 @@ end
       render :edit
     end
   end
+
 
 
   def destroy
@@ -101,6 +111,20 @@ end
 
     authorize @my_communities
   end
+
+  # def communities_owned
+  #   @communities_owned = Community.joins(:community_users).where(community_users: { user_id: current_user.id, role: 'admin' })
+
+
+  #   if @communities_owned.empty?
+  #     flash[:notice] = "You haven't created any communities yet!"
+  #     redirect_to root_path
+  #   else
+  #     @communities_owned.each { |community| authorize community }
+  #   end
+
+  #   authorize @communities_owned
+  # end
 
   def events_owned
     @events_owned = current_user.events

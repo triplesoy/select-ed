@@ -23,9 +23,13 @@
   vertical-align: middle;
 }
 
-
 .nav-text {
-  color: #ffffff !important;;
+  color: #ffffff;
+}
+
+
+.nav-admin {
+  color: #ffffff ;
 }
 
 
@@ -35,6 +39,17 @@
 
 
 .dropdown-item:hover {
-  color: #0F4C75 !important;
+  color: #75280f !important;
   background-color: white !important;
+}
+
+.community-item {
+  display: block;
+  /* Add any other styles here to match the rest of your menu */
+}
+
+.community-link {
+  color: #fff !important;
+  background-color: black;
+  text-decoration: none !important; /* Remove underline */
 }
