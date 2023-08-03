@@ -286,7 +286,6 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                             <br>
                             <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
                             <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
-                            <div class="card-title" style="color: gray; font-size: 80%;"><%= event.address %></div>
                           </div>
                         </div>
                       </div>
