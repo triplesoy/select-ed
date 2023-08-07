@@ -46,9 +46,11 @@ class ApplicationController < ActionController::Base
       end
       @unread_notifications_count = @notifications.select do |notification|
         # Check if notification is unread and its associated join request is still present
-        notification.read_at.nil? && notification.params && notification.params[:community_join_request].present?
+        notification.read_at.nil? && notification.params[:community_join_request].present?
       end.count
     end
   end
+
+
 
 end
