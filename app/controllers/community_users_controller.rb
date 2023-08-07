@@ -39,7 +39,7 @@ def make_moderator
   authorize @community_user
   if current_user == @community_user.user
     redirect_to dashboard_path(@community_user.community), alert: 'As an admint, you cannot make yourself moderator.'
-  elsif (current_user.admin || current_user == @community_user.community.user)
+  elsif (current_user.admin || current_user == @community_user.community.owner)
     @community_user.update(role: "moderator")
     redirect_to dashboard_path(@community_user.community), notice: 'User successfully made moderator.'
   else
@@ -52,7 +52,7 @@ def remove_moderator
   authorize @community_user
   if current_user == @community_user.user
     redirect_to dashboard_path(@community_user.community), alert: 'You cannot remove yourself as moderator.'
-  elsif (current_user.admin || current_user == @community_user.community.user)
+  elsif (current_user.admin || current_user == @community_user.community.owner)
     @community_user.update(role: "member")
     redirect_to dashboard_path(@community_user.community), notice: 'User successfully removed as moderator.'
   else

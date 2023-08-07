@@ -12,9 +12,14 @@ class CommunityJoinRequestsController < ApplicationController
        redirect_to community_path(@community), notice: 'You are now a member of this community.'
       else
         @join_request = CommunityJoinRequest.new(user_id: current_user.id, community_id: @community.id, status: "pending")
-          if @join_request.save!
-           redirect_to community_path(@community), notice: 'Your request has been sent.'
-          end
+        if @join_request.save!
+          # Fetch the owner of the community
+          community_owner = @community.owner
+
+          # Send notification to the owner
+          NewCommunityJoinRequestNotification.with(community_join_request: @join_request).deliver(community_owner) if community_owner.present?
+          redirect_to community_path(@community), notice: 'Your request has been sent.'
+        end
       end
     end
   end

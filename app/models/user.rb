@@ -13,6 +13,9 @@ class User < ApplicationRecord
   has_many :communities, through: :community_users
   has_many :community_join_requests, through: :communities
 
+  has_many :notifications, as: :recipient, dependent: :destroy
+
+
   has_many :my_communities, through: :community_join_requests, source: :community
 
   # Include default devise modules. Others available are:
@@ -60,7 +63,7 @@ class User < ApplicationRecord
   end
 
   def role_of_this(community)
-    return "owner" if community.user == self
+    return "owner" if community.owner == self
     self.community_users.find_by(community: community).role if self.community_users.find_by(community: community)
   end
 

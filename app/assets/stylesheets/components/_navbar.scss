@@ -53,3 +53,50 @@
   background-color: black;
   text-decoration: none !important; /* Remove underline */
 }
+
+.notification-badge {
+  transform: translate(-100%, -50%);
+}
+
+
+.notif-box {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 7000;
+  width: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 2px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.notif-box-text {
+  text-decoration: none;
+  color: #000000;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  padding: 10px; /* Add padding */
+  display: block; /* Make the link block level so it takes up the full width */
+}
+.thumbnail-class {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%; /* To make the div round */
+  margin-right: 10px; /* To add some space between the image and the text */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+
+.notif-box-text:hover {
+  background-color: #eeeeee;
+}
+
+.notif-box-text.unread {
+  background-color: #fdfdbc; /* Yellow-ish color for unread notifications */
+}

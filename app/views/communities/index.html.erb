@@ -36,9 +36,9 @@
               </a>
             <% end %>
             <div class="membership-icon position-absolute top-0 end-0 bg-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; transform: translate(20%, -30%); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
-              <% if !community.public? && (community.user == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
+              <% if !community.public? && (community.owner == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
                 <i class="fas fa-solid fa-user-check text-success" style="font-size: 24px;"></i>
-              <% elsif community.public? && community.user == current_user %>
+              <% elsif community.public? && community.owner == current_user %>
                 <i class="fas fa-solid fa-user-check text-primary" style="font-size: 24px;"></i>
               <% elsif community.public? %>
                 <i class="fas fa-solid fa-lock-open text-warning" style="font-size: 24px;"></i>
@@ -55,11 +55,11 @@
                   </div>
                   <br>
                   <%#WRITE THE CODE SO WE DISPLAY DIFFERENT JOINNING OPTIONS BASED ON THE STATUS OF THE USER: ie. PRIVATE COMMUNITY - NEED TO SEND REQUEST TO JOIN / PUBLIC COMMUNITY - JOIN / YOU ARE A MEMBER OF THIS COMMUNITY%>
-                  <% if !community.public? && (community.user == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
+                  <% if !community.public? && (community.owner == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
                     <i class="fas fa-check" style="color: green;"></i>
                     <span class="">You are a member of this private community</span>
                     <br>
-                  <% elsif community.public? && (community.user == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
+                  <% elsif community.public? && (community.owner == current_user || (current_user && current_user.is_member_of?(community)) || (current_user && current_user.is_moderator_of?(community)) || (current_user && current_user.admin )) %>
                     <i class="fas fa-check" style="color: green;"></i>
                     <span class="">You are a member of this public community</span> <br>
                     <%# to update to show the pending requets on the index%>

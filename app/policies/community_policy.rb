@@ -23,19 +23,20 @@ true
   end
 
   def edit?
-    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.owner == user || user.admin
   end
 
+
   def update?
-    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.owner == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def destroy?
-    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.owner == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def dashboard?
-    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.owner == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def my_communities?
@@ -47,6 +48,6 @@ true
   end
 
   def destroy_community_photo?
-    record.user == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.owner == user || record.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 end

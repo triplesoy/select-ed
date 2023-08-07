@@ -2,10 +2,9 @@ class Community < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  belongs_to :owner, class_name: 'User', foreign_key: 'user_id'
+  belongs_to :community_owner, class_name: 'User', foreign_key: 'user_id'
 
 
-  belongs_to :user
   has_many :events, dependent: :destroy
   has_many :tickets, through: :events
   has_many :user_tickets, through: :tickets
@@ -31,6 +30,18 @@ class Community < ApplicationRecord
 
   has_many_attached :photos
   has_one_attached :video
+
+  def owner
+    # Find the community user with role 'admin'
+    community_user = self.community_users.find_by(role: 'admin')
+
+    # If no such user exists, raise an exception
+    raise "No admin exists for Community ##{id}" unless community_user.present?
+
+    # Otherwise, return the corresponding user
+    community_user.user
+  end
+
 
 
   def pending_community_join_requests
