@@ -105,3 +105,5 @@ group :development, :test do
 gem 'letter_opener'
   gem 'faker'
 end
+
+gem "noticed", "~> 1.6"

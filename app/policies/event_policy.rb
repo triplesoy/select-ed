@@ -10,11 +10,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def show?
-    record.community.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin || record.community.community_users.where(user: user, role: "member").exists?
+    record.community.owner== user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin || record.community.community_users.where(user: user, role: "member").exists?
   end
 
   def new?
-    record.community.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.community.owner== user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def create?
@@ -43,11 +43,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def event_dashboard?
-    record.community.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.community.owner== user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
   def destroy_event_photo?
-    record.community.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
+    record.community.owner== user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
   end
 
 end

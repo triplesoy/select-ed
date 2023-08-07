@@ -1,33 +1,55 @@
-import { Controller } from "@hotwired/stimulus"
-import { end } from "@popperjs/core";
+import { Controller } from "@hotwired/stimulus";
 
-// Connects to data-controller="redeem"
 export default class extends Controller {
-  connect() {
-    console.log("conectado")
-  }
-
   redeemCode(e) {
     e.preventDefault();
-    console.log(e.target)
-    const code = e.target.querySelector('.code').value;
+    console.log("Redeeming code...");
+
+    const codeInput = e.target.querySelector('.code');
+    const code = codeInput.value;
 
     fetch(`/tickets/${e.target.dataset.id}/redeem?code=${code}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
       }
     })
-    .then(response => response.json())
-    .then((data) => {
-      if (!data.error) {
-        const buyBtn = e.target.parentElement.querySelector('.buy');
-        e.target.classList.add('d-none');
-        buyBtn.classList.remove('d-none');
-      } else {
-        window.alert(data.error);
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Code verification failed");
       }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Code verified. Buying ticket...");
 
+      if (!data.error) {
+        const redeemURL = e.target.parentElement.querySelector('.buy').href;
+        console.log(`Redeem URL: ${redeemURL}`);
+
+        return fetch(redeemURL, {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+          }
+        });
+      } else {
+        throw new Error(data.error);
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Ticket redemption failed");
+      }
+      window.alert("Ticket redeemed successfully!");
+    })
+    .catch(error => {
+      console.error(error);
+      window.alert(error.message);
+    })
+    .finally(() => {
+      codeInput.value = ""; // Clear the input
     });
   }
 }

@@ -1,6 +1,6 @@
 <% community_user = CommunityUser.find_by(user: current_user, community: @community)
 join_request = CommunityJoinRequest.find_by(user: current_user, community: @community) %>
-<% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+<% if @community.owner == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-11 col-md-12 col-sm-12 mt-3">
@@ -12,7 +12,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
             <p class="card-text d-flex justify-content-around ">
               <div class="btn-group">
                 <%= link_to "Community dashboard", dashboard_path(@community), class: "btn btn-outline-dark me-2" %>
-                <% if @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+                <% if @community.owner == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
                   <% if @community.events.present? %>
                     <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Events dashboard
@@ -44,7 +44,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
             <p class="card-text d-flex justify-content-around">
               Members: <%= @community.members.count %> |
               Ratio : <%= (@community.members.where(gender: "Male").count.to_i / @community.members.count) * 100 %>% M - <%= (@community.members.where(gender: "Female").count.to_i / @community.members.count) * 100 %>% F |
-              Pending requests: <%= @community.community_join_requests.count %> |
+              Pending requests: <%= @community.community_join_requests.where(status: "pending").count %> |
               Events created: <%= @community.events.count %>
             </p>
           </div>
@@ -83,11 +83,11 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
               <% end %>
             </div>
             <div class ="community-type" >
-              <% if !@community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
+              <% if !@community.public? && (@community.owner == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
                 <i class="fas fa-solid fa-lock-open" style="color: green; font-weight: bold;"></i> &nbsp;<span style="color: green; font-weight: bold;">you're a member</span>
               <% elsif !@community.public? %>
                 <i class="fas fa-lock"></i>&nbsp;Private community
-              <% elsif @community.public? && (@community.user == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
+              <% elsif @community.public? && (@community.owner == current_user || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin )) %>
                 <i class="fas fa-solid fa-lock-open" style="color: green; font-weight: bold;"></i> &nbsp;<span style="color: green; font-weight: bold;">you're a member</span>
               <% elsif @community.public? %>
                 <i class="fas fa-solid fa-lock-open"></i>&nbsp;Public community
@@ -117,14 +117,14 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
             <div class="col-12" style="margin: 0 auto; text-align: center;">
               <b>Join nubanuba to request a membership to <%= @community.title %> and attend events.</b><br>
               <br>
-              <a href="/users/sign_up" class="btn btn-primary">Sign up</a>
               <a href="/users/sign_in" class="btn btn-primary">Log in</a>
+              <a href="/users/sign_up" class="btn btn-primary">Sign up</a>
             </div>
           <% else %>
             <%= @community.description %>
           <% end %>
           <%# code to display the join button based on different conditions: %>
-          <% unless (@community.user == current_user ||
+          <% unless (@community.owner == current_user ||
            (current_user && current_user.is_member_of?(@community)) ||
            (current_user && current_user.is_moderator_of?(@community)) ||
            (current_user && current_user.admin)) %>
@@ -192,7 +192,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
         <div class="card-body bg-white justify-content-center">
           <% if @community.events.any? { |event| event.start_time >= Date.today } %>
             <div class="container-fluid ">
-              <% unless @community.user == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
+              <% unless @community.owner == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.is_member_of?(@community)) || (current_user && current_user.admin) %>
                 <div class="non-member-text">
                   These events are only accessible to the members of this community. <br>
                 </div>
@@ -204,7 +204,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                       <div class="card shadow-lg" style="width: 18rem; height: 27rem;">
                         <div class="image-wrapper" style="height: 250px; overflow: hidden;">
                           <% if event.photos.attached? %>
-                            <% is_authorized = @community.user == current_user ||
+                            <% is_authorized = @community.owner == current_user ||
                                  (current_user && current_user.is_moderator_of?(@community)) ||
                                  (current_user && current_user.is_member_of?(@community)) ||
                                  (current_user && current_user.admin) %>
@@ -284,8 +284,8 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                             </div>
                             <br>
                             <br>
-                            <div class="card-title" style="color: #B9624F;"><%= event.start_time.strftime('%a,  %d/%m/%y, %H:%M') %></div>
-                            <div class="card-title" style="color: #B9624F;"><%= event.end_time.strftime('%a - %d/%m/%y - %H:%M') %></div>
+                            <div class="card-title" style="color: #B9624F;"><%= event.start_time.in_time_zone('America/Mexico_City').strftime('%a,  %d/%m/%y, %H:%M') %></div>
+                            <div class="card-title" style="color: #B9624F;"><%= event.end_time.in_time_zone('America/Mexico_City').strftime('%a - %d/%m/%y - %H:%M') %></div>
                           </div>
                         </div>
                       </div>

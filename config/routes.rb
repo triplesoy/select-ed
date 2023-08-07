@@ -19,6 +19,10 @@ end
 
   patch "make-moderator", to: "community_users#make_moderator", as: :make_moderator
   patch "remove-moderator", to: "community_users#remove_moderator", as: :remove_moderator
+  patch "notifications/read_all", to: "notifications#mark_all_as_read", as: :read_all
+
+
+
   # patch '/tickets/:id/edit', to: 'tickets#update', as: 'edit_ticket'
 
 

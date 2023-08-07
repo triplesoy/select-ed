@@ -36,7 +36,7 @@ class CommunitiesController < ApplicationController
 
   def create
     @community = Community.new(community_params)
-    @community.user = current_user
+    @community.community_owner = current_user
     authorize @community
 
     if @community.save

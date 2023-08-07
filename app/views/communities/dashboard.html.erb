@@ -150,7 +150,7 @@
   </div>
   <div class="row">
     <div class="col-12 text-center">
-<% if @community.user == current_user || (current_user && current_user.admin) %>
+<% if @community.owner == current_user || (current_user && current_user.admin) %>
   <div>
     <%= link_to "Delete my community", community_path(@community), data: { turbo_method: :delete }, class: "btn btn-danger", onclick: "confirmDelete(event)" %>
   </div>

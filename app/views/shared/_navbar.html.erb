@@ -1,19 +1,28 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <div class="navbar sticky-top navbar-expand-sm navbar-dark navbar-lewagon" style="">
   <div class="container-fluid" style="">
     <%= link_to(root_path, class: "navbar-brand") do %>
       <%= image_tag("https://res.cloudinary.com/dif8ww5ed/image/upload/v1688144550/nubanubalogov3_jtdked.png", class: "logo logo-align") %>
     <% end %>
+    <%# Start of bell icon code %>
     <% if user_signed_in? %>
       <% if current_user&.is_admin_of_any? %>
-        <div class="bell-icon col d-flex justify-content-end">
+        <div class="bell-icon col d-flex justify-content-end position-relative">
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <i class="fas fa-solid fa-bell fa-xl me-3" style="color: #fafafa; "></i>
+            <li class="nav-item position-relative">
+              <i class="fas fa-solid fa-bell me-3" style="color: #fafafa; font-size: 1.5em; vertical-align: middle;"></i>
+              <% if @unread_notifications_count > 0 %>
+                <span class="notification-badge position-absolute translate-middle badge rounded-pill bg-danger" style="top: 0; right: 0;">
+                  <%= @unread_notifications_count %>
+                  <span class="visually-hidden">unread messages</span>
+                </span>
+              <% end %>
             </li>
           </ul>
         </div>
       <% end %>
     <% end %>
+    <%# End of bell icon code %>
     <button class="pl-3 navbar-toggler end-0 top-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -71,19 +80,61 @@
     <% end %>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script>
-  $(document).ready(function() {
-    $('.community-dropdown').click(function(e) {
-      e.stopPropagation(); // Prevent the event from propagating up and closing the parent dropdown
-      $('.community-collapse').collapse('toggle');
-    });
+<div class="notif-box" id="notifBox" style="display: none;">
+  <% if @notifications %>
+    <% @notifications.first(5).each do |notification| %>
+      <% join_request = notification.params[:community_join_request] %>
+      <% if join_request %> <!-- Check if join_request exists before using it -->
+        <a class="notif-box-text <%= 'unread' if notification.read_at.nil? %>" href="<%= dashboard_path(join_request.community) %>">
+          <%= image_tag(cl_image_path(join_request.community.photos.first.key), class: "thumbnail-class") %>
+          <%= join_request.user.first_name %> requested to join <%= join_request.community.title %>.
+          <br style="margin-bottom: -10px;">
+          <i style="color: #75280f; font-size: 0.8em; float: right; margin-top: -10px;"> <%= time_ago_in_words(notification.created_at).capitalize %> ago. </i>
+        </a>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function() {
+      $('.community-dropdown').click(function(e) {
+        e.stopPropagation(); // Prevent the event from propagating up and closing the parent dropdown
+        $('.community-collapse').collapse('toggle');
+      });
 
-    $('body').on('click', function (e) {
-      if (!$('.community-collapse').is(e.target) && $('.community-collapse').has(e.target).length === 0 && $('.show').has(e.target).length === 0) {
+      $('body').on('click', function (e) {
+        if (!$('.community-collapse').is(e.target) && $('.community-collapse').has(e.target).length === 0 && $('.show').has(e.target).length === 0) {
           $('.community-collapse').collapse('hide');
-      }
+        }
+
+        // Check if the click is outside the notification box
+        if ($('#notifBox').css('display') === 'block' && !$('#notifBox').is(e.target) && $('#notifBox').has(e.target).length === 0 && !$('.fa-bell').is(e.target)) {
+          $('#notifBox').hide();
+        }
+      });
+
+      document.querySelector('.fa-bell').addEventListener('click', function() {
+        var notifBox = document.querySelector('#notifBox');
+        notifBox.style.display = notifBox.style.display === 'none' ? 'block' : 'none';
+      });
     });
-  });
-</script>
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#notifBox').on('click', function() {
+        $.ajax({
+          type: 'PATCH',
+          url: '/notifications/read_all',
+          data: { authenticity_token: $('[name="csrf-token"]').attr('content') },
+          success: function() {
+            console.log('Notifications marked as read');
+            // You might also want to update the notification count in the UI here
+          },
+          error: function() {
+            console.log('Error marking notifications as read');
+          }
+        });
+      });
+    });
+  </script>
