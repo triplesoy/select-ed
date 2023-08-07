@@ -62,7 +62,7 @@
 .notif-box {
   position: fixed;
   top: 70px;
-  right: 20px;
+  right: 3px;
   z-index: 7000;
   width: auto;
   background-color: #fff;
@@ -75,10 +75,10 @@
 .notif-box-text {
   text-decoration: none;
   color: #000000;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   margin-bottom: 2px;
-  padding: 10px; /* Add padding */
+  padding: 8px; /* Add padding */
   display: block; /* Make the link block level so it takes up the full width */
 }
 .thumbnail-class {

@@ -89,7 +89,7 @@
           <%= image_tag(cl_image_path(join_request.community.photos.first.key), class: "thumbnail-class") %>
           <%= join_request.user.first_name %> requested to join <%= join_request.community.title %>.
           <br style="margin-bottom: -10px;">
-          <i style="color: #75280f; font-size: 0.8em; float: right; margin-top: -10px;"> <%= time_ago_in_words(notification.created_at).capitalize %> ago. </i>
+          <i style="color: #75280f; font-size: 0.6em; float: right; margin-top: -10px;"> <%= time_ago_in_words(notification.created_at).capitalize %> ago. </i>
         </a>
         <% end %>
       <% end %>
