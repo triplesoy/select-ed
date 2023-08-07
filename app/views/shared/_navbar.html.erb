@@ -6,7 +6,7 @@
     <% end %>
     <%# Start of bell icon code %>
     <% if user_signed_in? %>
-      <% if current_user&.is_admin_of_any? %>
+      <% if current_user&.is_admin_of_any? || current_user.admin? %>
         <div class="bell-icon col d-flex justify-content-end position-relative">
           <ul class="navbar-nav">
             <li class="nav-item position-relative">
