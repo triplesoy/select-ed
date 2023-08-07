@@ -39,17 +39,18 @@ class ApplicationController < ActionController::Base
 
   def set_notifications
     if user_signed_in?
-      @notifications = if current_user.admin?
-                         Notification.order(created_at: :desc)
-                       else
-                         current_user.notifications.order(created_at: :desc)
-                       end
-
+      if current_user.admin?
+        @notifications = Notification.all.order(created_at: :desc)
+      else
+        @notifications = current_user.notifications.order(created_at: :desc)
+      end
       @unread_notifications_count = @notifications.select do |notification|
-        notification.read_at.nil? && CommunityJoinRequest.exists?(notification.params[:community_join_request_id])
+        notification.read_at.nil? && notification.payload[:community_join_request_id].present? && CommunityJoinRequest.exists?(notification.payload[:community_join_request_id])
       end.count
     end
   end
+
+
 
 
 
