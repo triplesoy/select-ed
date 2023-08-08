@@ -1,5 +1,7 @@
 class NewCommunityJoinRequestNotification < Noticed::Base
   deliver_by :database
+  # deliver_by :email, mailer: 'CommentMailer', delay: 5.hours, unless: :read?
+
   param :community_join_request
 
   def to
