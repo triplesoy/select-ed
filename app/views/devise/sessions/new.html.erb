@@ -19,8 +19,9 @@
       <% end %>
         <div class="flex-begin">
           <%= link_to "Sign up", new_user_registration_path, class: "btn btn-outline-dark mt-3" %>
-        </div>
-       <%# <%= render "devise/shared/links" %>
+        </div><br>
+  <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+
     </div>
   </div>
 </div>
