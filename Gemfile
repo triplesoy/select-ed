@@ -10,6 +10,10 @@ gem "geocoder"
 gem "mapbox-sdk"
 gem "cloudinary"
 gem 'font-awesome-rails'
+gem 'sidekiq'
+gem 'redis'
+
+
 
 
 gem 'countries'

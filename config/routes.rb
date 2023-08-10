@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: 'communities#index'
   devise_for :users
+  require 'sidekiq/web'
 
   resources :communities do
     resources :community_join_requests, only: [:index, :create, :update, :destroy]
@@ -45,5 +46,8 @@ end
 
   delete "events/photos/:id", to: "events#destroy_event_photo", as: :destroy_event_photo
   delete "communities/photos/:id", to: "communities#destroy_community_photo", as: :destroy_community_photo
+
+  mount Sidekiq::Web => '/sidekiq'
+  
 
 end
