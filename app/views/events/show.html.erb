@@ -1,114 +1,122 @@
-<% if @community.owner == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
+<% if user_has_dashboard_access? %>
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12 col-sm-12 mt-4">
         <div class="card mb-4">
           <div class="card-body">
             <h5 class="card-title">Event dashboard</h5>
-            <p class="card-text">
-              <li> Manage join membership requests<br>
-                <li> View users history<br>
-                  <li> Set moderator permissions<br>
-                    <br>
-                    <%= link_to "Go to the event dashboard", event_dashboard_path(@event), class: "btn btn-outline-dark" %>
-                  </p>
-                </div>
-              </div>
-            </div>
-          <% end %>
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-lg-6 col-md-6 my-3">
-                <div class="card border shadow" style="height: 500px;">
-                  <div class="banner">
-                    <div class="image-wrapper" style="height: 250px; overflow: hidden;">
-                      <% if @event.photos.attached? %>
-                        <img src="<%= cl_image_path @event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
-                      <% end %>
-                    </div>
-                    <h2 class="card-title" style="color: black; font-size: 25px;"><%= @event.title.upcase %></h2>
-                    <p class="card-text" style="color: #B9624F; display: inline-block;"><%= @event.start_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></p>
-                    <p class="card-text" style="color: #B9624F; display: inline-block;"> - </p>
-                    <p class="card-text" style="color: #B9624F; display: inline-block;"><%= @event.end_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></p>
-                    <h5 class="card-title" style="color: gray; font-size: 18px;"><%= @event.address %></h5>
-                    <% unless current_user.has_ticket_with_event?(@event) %>
-                      <button type="button" class="btn btn-success position-absolute bottom-0 start-0 end-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        GET TICKET
-                      </button>
-                    <%else %>
-                      <button onclick="window.location.href='<%=  my_tickets_path(user: current_user)  %>'" type="button" class="btn btn-dark position-absolute bottom-0 start-0 end-0">
-                        TICKET ALREADY PURCHASED
-                      </button>
-                    <%end %>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 my-3">
-                <div class="card border shadow" style="height: 500px;"
-
-        data-controller="map"
-        data-map-markers-value="<%= @markers.to_json %>"
-        data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
-                </div>
-              </div>
-            </div>
-          </div>
-          <% if flash[:success] %>
-            <div class="alert alert-success mt-4">
-              <%= flash[:success] %>
-            </div>
-          <% elsif flash[:error] %>
-            <div class="alert alert-danger mt-4">
-              <%= flash[:error] %>
-            </div>
-          <% end %>
-          <!-- Modal -->
-          <div class="container-fluid">
-            <div class="modal fade my-4" style="height: 100vh" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header text-center" style="background-color: black; color: white;">
-                    <h1 class="modal-title fs-5 col-12" id="staticBackdropLabel">TICKETS</h1>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-12 my-5">
-                        <% @event.tickets.sort_by { |t| t.model == 'vip' ? 1 : 0 }.each do |t| %>
-                          <% if t.model == "free" %>
-                            <h2 class="my-2"><%= "Member" %></h2>
-                            <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn #{t.quantity > 0 ? 'btn-outline-dark' : 'btn-outline-warning'} col-12 #{'disabled' if t.quantity == 0}" do %>
-                              <%= t.quantity > 0 ? "Get" : "Sold out" %>
-
-                            <% end %>
-                                          <br> <br><hr>
-                          <% elsif t.model == "vip" %>
-                            <div data-controller="redeem">
-                              <h4 class="my-2"><%="Got a VIP access code?"%></h4>
-                              <%= form_with url: :redeem_ticket, data: { action: "submit->redeem#redeemCode", id: t.id } do |f| %>
-                                <%= f.text_field :code, placeholder: "Enter code", class: "form-control code" %>
-                                <%= f.submit "Redeem", class: "btn btn-outline-dark mt-2 col-12" %>
-                              <% end %>
-                              <%= link_to ticket_user_tickets_path(t), data: { turbo_method: :post }, class: "btn btn-outline-dark d-none buy col-12 #{"disabled" if t.quantity == 0}" do %>
-                                <%= t.quantity > 0 ? "Code is correct! Get your ticket" : "Sold out" %>
-                              <% end %>
-                            </div>
-                          <% end %>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-dark col-12" data-bs-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="text-center">
-              <%= link_to "Back to community", communities_path(@community), class: "btn btn-dark" %>
-            </div>
+            <ul class="dashboard-list">
+              <li>Manage join membership requests</li>
+              <li>View users history</li>
+              <li>Set moderator permissions</li>
+            </ul>
+            <%= link_to "Go to the event dashboard", event_dashboard_path(@event), class: "btn btn-outline-dark" %>
           </div>
         </div>
       </div>
     </div>
   </div>
+<% end %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 my-3">
+      <div class="card border shadow" style="height: 500px;">
+        <div class="banner">
+          <div class="image-wrapper" style="height: 250px; overflow: hidden;">
+            <% if @event.photos.attached? %>
+              <img src="<%= cl_image_path @event.photos.first.key %>" class="card-img-top" alt="Listing Image" style="object-fit: cover; width: 100%;">
+            <% end %>
+          </div>
+          <h2 class="card-title" style="color: black; font-size: 25px;"><%= @event.title.upcase %></h2>
+          <p class="card-text" style="color: #B9624F; display: inline-block;"><%= @event.start_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></p>
+          <p class="card-text" style="color: #B9624F; display: inline-block;"> - </p>
+          <p class="card-text" style="color: #B9624F; display: inline-block;"><%= @event.end_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></p>
+          <h5 class="card-title" style="color: gray; font-size: 18px;"><%= @event.address %></h5>
+          <% unless current_user.has_ticket_with_event?(@event) %>
+            <button type="button" class="btn btn-success position-absolute bottom-0 start-0 end-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              GET TICKET
+            </button>
+          <%else %>
+            <button onclick="window.location.href='<%=  my_tickets_path(user: current_user)  %>'" type="button" class="btn btn-dark position-absolute bottom-0 start-0 end-0">
+              TICKET ALREADY PURCHASED
+            </button>
+          <%end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 my-3">
+      <div class="card border shadow" style="height: 500px;"
+
+        data-controller="map"
+        data-map-markers-value="<%= @markers.to_json %>"
+        data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+      </div>
+    </div>
+  </div>
 </div>
+<% if flash[:success] %>
+  <div class="alert alert-success mt-4">
+    <%= flash[:success] %>
+  </div>
+<% elsif flash[:error] %>
+  <div class="alert alert-danger mt-4">
+    <%= flash[:error] %>
+  </div>
+<% end %>
+<!-- Modal -->
+<div class="container-fluid">
+  <div class="modal fade my-4" style="height: 100vh" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header text-center" style="background-color: black; color: white;">
+          <h1 class="modal-title fs-5 col-12" id="staticBackdropLabel">TICKETS</h1>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 my-5">
+              <% if @regular_ticket %>
+                <h2 class="my-2">Regular</h2>
+                <%= link_to ticket_user_tickets_path(@regular_ticket), data: { turbo_method: :post }, class: "btn #{@regular_ticket.quantity > 0 ? 'btn-outline-dark' : 'btn-outline-warning'} col-12 #{'disabled' if @regular_ticket.quantity == 0}" do %>
+                  <%= @regular_ticket.quantity > 0 ? "Get" : "Sold out" %>
+                <% end %>
+                <hr>
+              <% end %>
+              <% if @free_ticket %>
+                <h2 class="my-2">Member</h2>
+                <%= link_to ticket_user_tickets_path(@free_ticket), data: { turbo_method: :post }, class: "btn #{@free_ticket.quantity > 0 ? 'btn-outline-dark' : 'btn-outline-warning'} col-12 #{'disabled' if @free_ticket.quantity == 0}" do %>
+                  <%= @free_ticket.quantity > 0 ? "Get" : "Sold out" %>
+                <% end %>
+                <hr>
+              <% end %>
+              <% if @vip_ticket %>
+                <div data-controller="redeem">
+                  <h4 class="my-2">Got a VIP access code?</h4>
+                  <%= form_with url: :redeem_ticket, data: { action: "submit->redeem#redeemCode", id: @vip_ticket.id } do |f| %>
+                    <%= f.text_field :code, placeholder: "Enter code", class: "form-control code" %>
+                    <%= f.submit "Redeem", class: "btn btn-outline-dark mt-2 col-12" %>
+                  <% end %>
+                  <%= link_to ticket_user_tickets_path(@vip_ticket), data: { turbo_method: :post }, class: "btn btn-outline-dark d-none buy col-12 #{"disabled" if @vip_ticket.quantity == 0}" do %>
+                    <%= @vip_ticket.quantity > 0 ? "Code is correct! Get your ticket" : "Sold out" %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark col-12" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center">
+  <%= link_to "Back to community", communities_path(@community), class: "btn btn-dark" %>
+</div>
+<%# </div>
+<li><%= "Regular ticket: #{@regular_ticket.inspect}" %>
+<%# </li>
+<li><%= "Free ticket: #{@free_ticket.inspect}" %>
+<%# </li>
+<li><%= "VIP ticket: #{@vip_ticket.inspect}" %>
+<%# </li> %>

@@ -48,6 +48,6 @@ end
   delete "communities/photos/:id", to: "communities#destroy_community_photo", as: :destroy_community_photo
 
   mount Sidekiq::Web => '/sidekiq'
-  
+
 
 end

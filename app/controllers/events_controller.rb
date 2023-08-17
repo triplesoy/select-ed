@@ -2,6 +2,8 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:edit, :update, :show, :destroy, :event_dashboard]
   before_action :set_community, only: [:index, :show, :destroy, :edit, :update]
   before_action :set_ticket, only: [:show]
+  helper_method :user_has_dashboard_access?
+
 
   skip_after_action :verify_authorized, only: :my_events
 
@@ -17,6 +19,10 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
+    @event = Event.friendly.find(params[:id])
+    @regular_ticket = @event.tickets.find_by(model: 'regular')
+    @free_ticket = @event.tickets.find_by(model: 'free')
+    @vip_ticket = @event.tickets.find_by(model: 'vip')
     @markers = [{
       lat: @event.latitude,
       lng: @event.longitude
@@ -27,6 +33,7 @@ class EventsController < ApplicationController
         @user_ticket = user_ticket
       end
       return @user_ticket
+
     end
 
 
@@ -135,6 +142,15 @@ end
     @event = Event.friendly.find(params[:id])
     @tickets = @event.tickets
   end
+
+
+  def user_has_dashboard_access?
+    @community.owner == current_user ||
+    (current_user && current_user.is_moderator_of?(@community)) ||
+    (current_user && current_user.admin)
+  end
+
+
 
 
   private

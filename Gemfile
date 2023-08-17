@@ -12,6 +12,7 @@ gem "cloudinary"
 gem 'font-awesome-rails'
 gem 'sidekiq'
 gem 'redis'
+gem 'stripe'
 
 
 

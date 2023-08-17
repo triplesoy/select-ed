@@ -1,37 +1,83 @@
-<div class="col-lg-12 col-md-6 col-sm-6 ticket-form">
+<style>
+  .input-currency-wrapper {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 0 8px;
+      border-radius: 4px;
+      position: relative;
+  }
+
+  .input-currency {
+      border: none;
+      flex: 1;
+      padding-left: 50px; /* Increased space for the currency symbol "MX$" */
+  }
+
+  .input-currency-wrapper::before {
+      content: 'MX$'; /* Using "MX$" instead of just "$" */
+      position: absolute;
+      left: 10px;
+  }
+</style>
+<div class="col-lg-12" style="background-color: #f7f7f7;"> <!-- Light gray background for the outer container -->
   <div class="sticky-top">
     <div class="bg-white rounded p-3 shadow m-3">
-      <h2>Ticket Details</h2>
+      <center>
+        <h2 style="color: #333;"><%= @event.title %> tickets settings</h2>
+        <br>
+      </center>
       <%= form_with url: :community_event_tickets, method: :post, class: "form", data: { controller: "ticket-create" } do |form| %>
-        <%= form.fields_for :ticket_details, index: nil do |ticket_fields| %>
-          <div class="mb-3">
-            <%= form.label :name, "Free tickets quantity" %>
-            <%= ticket_fields.text_field :quantity, name: 'ticket_details[free][quantity]', placeholder: 'Quantity', class: "form-control m-2", value: 0 %>
-            Expiration date and time of the free ticket (optional)
-            <%= ticket_fields.datetime_field :expire_time, name: 'ticket_details[free][expire_time]', html5: true, input_html: {min: Date.current.to_s, id: 'expire_time', required: true }, class: "form-control m-2"%>
+        <div class="row">
+          <!-- Free Ticket Option -->
+          <div class="col-lg-4 col-md-6 col-sm-6 ticket-form">
+            <%= form.fields_for :ticket_details, index: nil do |ticket_fields| %>
+              <div class="mb-3 bg-light p-3 rounded shadow">
+                <h4 class="text-center" style="color: #007BFF; font-weight: bold;">Free Tickets</h4>
+                <!-- Blue color for the header -->
+                <hr>
+                <%= form.label :name, "Quantity" %>
+                <%= ticket_fields.text_field :quantity, name: 'ticket_details[free][quantity]', placeholder: 'Enter Quantity', class: "form-control m-2", value: 0 %>
+                <%= form.label :expire_time, "Expiration Date and Time (optional)" %>
+                <%= ticket_fields.datetime_field :expire_time, name: 'ticket_details[free][expire_time]', html5: true, input_html: {min: Date.current.to_s, id: 'expire_time', required: true }, class: "form-control m-2"%>
+              </div>
+            <% end %>
           </div>
-          <hr>
-          <%# <div class="mb-3"> %>
-          <%# <%= form.label :quantity, "Regular Admission tickets" %>
-          <%# <div class="d-flex"> %>
-          <%# <%= ticket_fields.text_field :quantity, name: 'ticket_details[regular][quantity]', placeholder: 'Quantity', class: "form-control m-2", value: 0 %>
-          <%# <%= ticket_fields.text_field :price, name: 'ticket_details[regular][price]', placeholder: 'price', class: "form-control m-2", value: 0 %>
-        <%# </div> %>
-        <%# <hr> %>
-        <div class="mb-3">
-          <%= form.label :quantity, "VIP" %>
-          <div class="d-flex">
-            <%= ticket_fields.text_field :quantity, name: 'ticket_details[vip][quantity]', placeholder: 'Quantity', class: "form-control m-2", value: 0 %>
-            <%= ticket_fields.text_field :code, name: 'ticket_details[vip][r_code]', placeholder: 'redeem code', class: "form-control m-2" %>
+          <!-- Regular Admission Ticket Option -->
+          <div class="col-lg-4 col-md-6 col-sm-6 ticket-form">
+            <%= form.fields_for :ticket_details, index: nil do |ticket_fields| %>
+              <div class="mb-3 bg-light p-3 rounded shadow">
+                <h4 class="text-center" style="color: #28a745; font-weight: bold;">Regular Admission</h4>
+                <!-- Green color for the header -->
+                <hr>
+                <%= form.label :quantity, "Quantity" %>
+                <%= ticket_fields.text_field :quantity, name: 'ticket_details[regular][quantity]', placeholder: 'Enter Quantity', class: "form-control m-2", value: 0 %>
+                <%= form.label :price, "Price" %>
+                <div class="input-currency-wrapper m-2">
+                  <%= ticket_fields.text_field :price, name: 'ticket_details[regular][price]', placeholder: 'Enter Price (e.g. MX$ 100)', class: "form-control input-currency", value: 0 %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <!-- VIP Ticket Option -->
+          <div class="col-lg-4 col-md-6 col-sm-6 ticket-form">
+            <%= form.fields_for :ticket_details, index: nil do |ticket_fields| %>
+              <div class="mb-3 bg-light p-3 rounded shadow">
+                <h4 class="text-center" style="color: #ffc107; font-weight: bold;">VIP</h4>
+                <!-- Gold color for the header -->
+                <hr>
+                <%= form.label :quantity, "Quantity" %>
+                <%= ticket_fields.text_field :quantity, name: 'ticket_details[vip][quantity]', placeholder: 'Enter Quantity', class: "form-control m-2", value: 0 %>
+                <%= form.label :code, "Redeem Code" %>
+                <%= ticket_fields.text_field :code, name: 'ticket_details[vip][r_code]', placeholder: 'Enter Redeem Code', class: "form-control m-2" %>
+              </div>
+            <% end %>
           </div>
         </div>
+        <%= form.submit "Create Tickets", class: "btn btn-outline-dark mt-3" %>
       <% end %>
-      <%= form.submit "Create Tickets", class: "btn btn-outline-dark" %>
-    <% end %>
+    </div>
   </div>
-</div>
-</div>
-</div>
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
