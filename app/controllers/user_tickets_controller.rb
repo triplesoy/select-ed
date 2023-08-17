@@ -27,120 +27,14 @@ class UserTicketsController < ApplicationController
     @user_ticket = UserTicket.new(ticket: @ticket)
     @user_ticket.user = current_user
     authorize @user_ticket
-    @event = @ticket.event
-    @community = @event.community
 
     if @user_ticket.save!
       @ticket.update(quantity: @ticket.quantity - 1)
 
       link = validation_page_url(ticket_id: @ticket.id, id: @user_ticket.id)
+      png = QrCodeService.new(link).generate
 
-      qrcode = RQRCode::QRCode.new(link)
-      png = qrcode.as_png(
-        bit_depth: 1,
-        border_modules: 4,
-        color_mode: ChunkyPNG::COLOR_GRAYSCALE,
-        color: "black",
-        file: nil,
-        fill: "white",
-        module_px_size: 6,
-        resize_exactly_to: false,
-        resize_gte_to: false,
-        size: 600
-      )
-
-      qr_image = MiniMagick::Image.read(png.to_s)
-      background = MiniMagick::Image.open(@event.photos.first)
-
-      # Resize the background image to a specific size
-      bg_width = 1200
-      bg_height = 1800
-      background.resize "#{bg_width}x#{bg_height}^"
-      background.gravity "center"
-      background.extent "#{bg_width}x#{bg_height}"
-
-      # Resize the QR code to a specific size
-      qr_code_size = 600
-      qr_image.resize "#{qr_code_size}x#{qr_code_size}"
-
-      # Calculate the position where the QR code should be placed to be centered
-      qr_position_x = ((background.width - qr_image.width) / 2).round
-      qr_position_y = ((background.height - qr_image.height) / 2).round
-
-      result = background.composite(qr_image) do |c|
-        c.compose "Over"
-        c.geometry "+#{qr_position_x}+#{qr_position_y}"
-      end
-
-      def escape_special_characters(text)
-        text.gsub(/['"\\$&]/) { |char| '\\' + char }
-      end
-
-      result.combine_options do |c|
-        c.gravity 'North'
-        c.pointsize '90'
-c.font "Glacial-Indifference-Regular"
-        c.fill 'black'
-        c.draw "text 2,82 '#{escape_special_characters(@community.title.upcase)}'"
-      end
-
-      result.combine_options do |c|
-        c.gravity 'North'
-        c.pointsize '90'
-c.font "Glacial-Indifference-Regular"
-        c.fill 'white'
-        c.draw "text 1,80 '#{escape_special_characters(@community.title.upcase)}'"
-      end
-
-       result.combine_options do |c|
-         c.gravity 'North'
-         c.pointsize '90'
- c.font "Glacial-Indifference-Regular"
-         c.draw "text 1,220 '#{escape_special_characters(@event.title.upcase)}'"
-         c.fill 'white'
-       end
-
-      result.combine_options do |c|
-        c.gravity 'North'
-        c.pointsize '70'
-c.font "Glacial-Indifference-Regular"
-        c.draw "text 1,420 '#{escape_special_characters(formatted_start_time)}'"
-        c.fill 'white'
-      end
-
-      result.combine_options do |c|
-        c.gravity 'South'
-        c.pointsize '70'
-c.font "Glacial-Indifference-Regular"
-        c.draw "text 1,220 '#{escape_special_characters(current_user.full_name.upcase)}'"
-        c.fill 'white'
-      end
-
-      if @user_ticket.ticket.model == "free" && @user_ticket.ticket.expire_time.present?
-        valid_until = formatted_expire_time(@user_ticket.ticket.expire_time)
-
-        result.combine_options do |c|
-          c.gravity 'South'
-          c.pointsize '50'
-  c.font "Glacial-Indifference-Regular"
-          c.draw "text 2,82 'Valid until: #{valid_until}'"
-          c.fill 'white'
-        end
-      end
-
-      if @user_ticket.ticket.model == "vip"
-        result.combine_options do |c|
-          c.gravity 'South'
-          c.pointsize '70'
-  c.font "Glacial-Indifference-Regular"
-          c.draw "text 2,82 'VIP TICKET'"
-          c.fill 'white'
-        end
-      end
-
-      composite_image_path = Rails.root.join('tmp', 'composite_image.png').to_s
-      result.write(composite_image_path)
-      limit_image_size(composite_image_path, 650) # Limit image size to 650 KB
+      composite_image_path = ImageService.new(png, @ticket.event, @ticket.event.community, current_user, @user_ticket).composite_image
 
       @user_ticket.qrcode.attach(io: File.open(composite_image_path), filename: "qr_code.png", content_type: "image/png")
 
@@ -150,6 +44,7 @@ c.font "Glacial-Indifference-Regular"
       render :new, status: :unprocessable_entity, alert: "Failed to buy the tickets."
     end
   end
+
 
   def edit
   end
