@@ -32,8 +32,17 @@ class TicketsController < ApplicationController
       @regular_ticket.quantity = params["ticket_details"]["regular"]["quantity"].to_i
       @regular_ticket.price = params["ticket_details"]["regular"]["price"].to_i # Ensure price is set
       authorize @regular_ticket
-      tickets_to_save << @regular_ticket
-    end
+  # Create a Stripe Price object
+  stripe_product = Stripe::Product.create(name: "Regular Ticket for #{@event.title}")
+  stripe_price = Stripe::Price.create(
+    product: stripe_product.id,
+    unit_amount: @regular_ticket.price * 100, # Stripe uses cents, so multiply by 100
+    currency: 'mxn' # or your preferred currency
+  )
+
+  @regular_ticket.stripe_price_id = stripe_price.id
+  tickets_to_save << @regular_ticket
+end
 
     # Create VIP ticket if quantity is present
     if params["ticket_details"]["vip"]["quantity"].to_i > 0

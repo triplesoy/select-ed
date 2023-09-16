@@ -17,6 +17,11 @@
 
   }
 </style>
+<br>
+<%= link_to "Home", root_path, style: "padding-left: 10px;" %> >
+<%= link_to @event.community.title, community_path(@event.community)%> >
+<%= @event.title %>
+
 <div class="container-fluid">
   <h3 class="text-center my-2"> <%= @event.title %>'s event dashboard</h3>
   <div class="row justify-content-center">
@@ -34,7 +39,6 @@
       </div>
     </div>
   </div>
-
   <div class="card shadow-lg  mb-3 bg-white rounded small-font">
     <div class="card-header" id="globalTicketsStats">
       <h4 class="mb-0">Global tickets statistics</h4>
@@ -168,5 +172,3 @@
   <div class="text-center">
     <%= link_to "Back to community", community_path(@event.community), class: "btn btn-dark" %>
   </div>
-
-

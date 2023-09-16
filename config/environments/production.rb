@@ -4,6 +4,10 @@ require "active_support/core_ext/integer/time"
 # host = 'localhost:3000'
 # config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
 
+Rails.application.routes.default_url_options[:host] = 'www.nubanuba.com'
+Rails.application.routes.default_url_options[:protocol] = 'https'
+
+
 Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   host = 'www.nubanuba.com'

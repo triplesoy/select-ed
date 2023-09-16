@@ -1,5 +1,14 @@
 RailsAdmin.config do |config|
   config.asset_source = :sprockets
+  
+  config.model 'CommunityUser' do
+    edit do
+      field :community
+      field :role
+      field :user
+      # Add any other fields from CommunityUser you want to display
+    end
+  end
 
   ### Popular gems integration
 

@@ -1,41 +1,88 @@
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12 col-md-6 my-4 d-flex">
-      <div class="banner h-100 w-100 border border-2 border-gray shadow" style="background-image: url('<%= cl_image_path(@event.photos.first.key) %>'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-        <div class="content-wrapper text-center text-white" style="background-color: rgba(256, 256, 256, 0.6);">
-          <h1 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">TICKET</h1>
-          <h2 class="card-title" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);"><%= @event.title.upcase %></h2>
-          <p class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); display: inline-block;"><%= @event.start_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></p>
-          <p class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); display: inline-block;"> - </p>
-          <p class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); display: inline-block;"><%= @event.end_time.in_time_zone("America/Mexico_City").strftime('%a,  %d/%m/%y, %H:%M') %></p>
-          <h5 class="card-text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);"><%= @event.address %></h5>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: #F7F7F7;
+      }
+      .container-ticket {
+        font-size: 13px;
+        width: 90%;
+        margin: 0 auto;
+        padding: 20px;
+        border: none;
+        background-color: white;
+      }
+       @media (min-width: 768px) {
+      .container-ticket {
+        font-size: initial;
+        width: 60%; /* for screens larger than 768px */
+      }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-ticket">
+      <%# taxonomy link %>
+      <%= link_to "Home", root_path %> > <%= link_to "My tickets", my_tickets_path(current_user)%> > Ticket #<%= @user_ticket.id %>
+      <%# taxonomy link end %>
+      <br>
+      <br>
+      <%# ticket and community title %>
+      <h5>  <%= @event.title.capitalize %> from <%= @event.community.title %> </h5>
+      <%# ticket and community title end %>
+      <div class="row">
+        <div class="col-lg-6 col-md-12">
+          <h5 style="background-color: #f2f2f2; padding: 10px;">
+            <i class="fas fa-ticket-alt fa-lg" style="color: #0077cc; margin-right: 5px;"></i>
+            My ticket</h5>
+          <center>
+            <%= link_to cl_image_path(@user_ticket.qrcode.key), target: "_blank" do %>
+              <%= image_tag(cl_image_path(@user_ticket.qrcode.key), style: "max-width: 50%;") %>
+            <% end %>
+          </center>
+          <br>
         </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-md-6 my-4">
-      <div class="card border border-2 border-gray shadow">
-        <div class="image-wrapper" style="height: 600px; overflow: hidden;">
-          <% if @user_ticket.qrcode.attached? %>
-            <a href="<%= url_for(@user_ticket.qrcode) %>" target="_blank">
-              <%= image_tag @user_ticket.qrcode, width: "100%", height: 600, alt: "QR code for user_ticket" %>
-            </a>
+        <!-- When? section -->
+        <div class="col-lg-6 col-md-12">
+          <h5 style="background-color: #f2f2f2; padding: 10px;">
+            <i class="fas fa-calendar-alt fa-lg" style="color: #0077cc; margin-right: 5px;"></i>
+            When ?</h5>
+          <%
+                # Format the start and end times
+                start_time_str = @event.start_time.strftime("%A, %B %d, %Y from %I:%M%p")
+                end_time_str = @event.end_time.strftime("%I:%M%p")
+                end_day_str = @event.end_time.strftime("%A, %B %d")
+                # Check if the event ends on the same day it starts
+                same_day = @event.start_time.to_date == @event.end_time.to_date
+                # Generate the final string
+                event_time_range = if same_day
+                  "#{start_time_str} to #{end_time_str}."
+                else
+                  "From #{start_time_str}, to #{end_day_str}, #{end_time_str}."
+                end
+              %>
+          <p><%= event_time_range %></p>
+          <% if @ticket.expire_time? %>
+    <span style="font-weight: bold;">Free entry until <%= @ticket.expire_time.strftime("%I:%M %p") %></span>
           <% end %>
-        </div>
+        </p>
       </div>
-    </div>
-    <div class="col-lg-8 col-md-6 my-4">
-      <div class="card h-100 border border-2 border-gray shadow">
-        <div class="card-body">
-          <div class="col-lg-6 col-md-4 my-3" style="width: 100%; height: 500px;"
-            data-controller="map"
-            data-map-markers-value="<%= @markers.to_json %>"
-            data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+      <!-- Where? section -->
+      <div class="col-12">
+        <h5 style="background-color: #f2f2f2; padding: 10px;">
+          <i class="fas fa-map-marker-alt fa-lg" style="color: #0077cc; margin-right: 5px;"></i>
+          Where ?</h5>
+        <p><%= @event.address %></p>
+        <center>
+          <div class="customer-map my-3" style="width: 100%; height: 180px;"
+      data-controller="map"
+      data-map-markers-value="<%= @markers.to_json %>"
+      data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
           </div>
-        </div>
-      </div>
+          <p> <%= link_to '(open in Google Maps)', "https://www.google.com/maps/search/?api=1&query=#{ERB::Util.url_encode(@event.address)}", target: '_blank' %> </p>
+        </center></div>
     </div>
   </div>
 </div>
-<div class="text-center">
-  <%= link_to "Back to communities", root_path, class: "btn btn-dark" %>
-</div>
+</body>
+</html>
