@@ -17,6 +17,8 @@
 
   }
 </style>
+<br>
+<%= link_to "Home", root_path, style: "padding-left: 10px;" %> > <%= @community.title %>
 <div class="container-fluid">
   <h3 class="text-center my-4"><%= @community.title %> community dashboard</h3>
   <% unless @community.public? %>

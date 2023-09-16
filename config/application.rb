@@ -17,6 +17,8 @@ module SelectEd
     config.load_defaults 7.0
     config.exceptions_app = routes # Add this line
     config.active_job.queue_adapter = :sidekiq
+#    config.active_storage.queues.analysis = nil
+
 
     # Configuration for the application, engines, and railties goes here.
     #

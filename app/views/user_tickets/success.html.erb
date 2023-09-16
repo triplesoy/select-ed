@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h3>Success!</h3>
+        </div>
+        <div class="card-body">
+          <h4>Thank you for your purchase!</h4>
+          <p>You've successfully purchased a ticket for <%= @event.title %>.</p>
+          <p>Date: <%= @event.start_time.strftime('%a, %d/%m/%y, %H:%M') %> - <%= @event.end_time.strftime('%a, %d/%m/%y, %H:%M') %></p>
+          <p>Location: <%= @event.address %></p>
+          <hr>
+          <h5>Ticket Details:</h5>
+          <p>Type: <%= @user_ticket.model.capitalize %></p>
+          <p>Price: $<%= @user_ticket.ticket.price %></p>
+          <hr>
+          <p>We've also sent a confirmation email with your ticket details. Please check your inbox.</p>
+        </div>
+        <div class="card-footer">
+          <%= link_to "Back to Events", root_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

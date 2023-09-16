@@ -215,7 +215,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                         </div>
                         <div class="card-body position-relative" style="height: 200px; overflow: hidden;">
                           <div class="card-title">
-                            <a href="<%= is_authorized ? community_event_path(event.community, event) : '#' %>" data-bs-toggle="<%= is_authorized ? '' : 'modal' %>" data-bs-target="<%= is_authorized ? '' : '#modal' %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+                            <a href="<%= is_authorized ? community_event_path(event.community, event) : '#' %>" data-bs-toggle="<%= is_authorized ? '' : 'modal' %>" data-bs-target="<%= is_authorized ? '' : '#modal' %>" class="btn btn-dark position-absolute top-0 start-0 end-0 btn-lg fs-6"><%= event.title %></a>
                           </div>
                           <br>
                           <br>
@@ -280,7 +280,7 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
                           </div>
                           <div class="card-body position-relative"style="height: 200px; overflow: hidden;">
                             <div class="card-title">
-                              <a href="#" class="btn btn-warning position-absolute top-0 start-0 end-0 btn-lg"><%= event.title %></a>
+                              <a href="#" class="btn btn-warning position-absolute top-0 start-0 end-0 btn-lg fs-6"><%= event.title %></a>
                             </div>
                             <br>
                             <br>

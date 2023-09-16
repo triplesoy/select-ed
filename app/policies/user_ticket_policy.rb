@@ -17,6 +17,42 @@ class UserTicketPolicy < ApplicationPolicy
     new?
   end
 
+  def check_processed?
+new?
+  end
+
+  def payment_success?
+    new?
+  end
+
+def get_payment_status?
+  new?
+end
+
+  def stripe_webhook?
+    new?
+  end
+
+  def create_ticket?
+    new?
+  end
+
+
+
+  def checkout?
+    new?
+  end
+
+  def success?
+new?
+  end
+
+  def cancel?
+    new?
+  end
+
+
+
   def edit?
     true
   end
@@ -28,6 +64,12 @@ class UserTicketPolicy < ApplicationPolicy
   def destroy?
     true
   end
+
+  def cancel?
+  new?
+  end
+
+  
 
   def confirmation?
     record.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin

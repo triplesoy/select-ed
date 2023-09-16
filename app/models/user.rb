@@ -32,7 +32,7 @@ class User < ApplicationRecord
    validates :instagram_handle, presence: true
    validates :occupation, presence: true
    validates :email, presence: true
-   validates :gender, presence: true, inclusion: { in: %w(Male Female) }
+   validates :gender, presence: true, inclusion: { in: %w(Male Female) }, unless: :resetting_password?
 
   before_validation :sanitize_instagram_handle
 
@@ -79,6 +79,10 @@ class User < ApplicationRecord
 
   def owned_communities
     self.communities.where(community_users: { role: 'admin' })
+  end
+
+  def resetting_password?
+    reset_password_token.present?
   end
 
 end

@@ -49,5 +49,18 @@ end
 
   mount Sidekiq::Web => '/sidekiq'
 
+# routes for stripe
+resources :user_tickets do
+  collection do
+    get :success
+    get :cancel
+    post :checkout
+    get :payment_success  # <--- This line is important
+    post :stripe_webhook  # If you're using a webhook
+  end
+end
+
+
+get 'user_tickets/:id/check_processed', to: 'user_tickets#check_processed', as: 'check_processed'
 
 end
