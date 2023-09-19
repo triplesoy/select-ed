@@ -3,8 +3,7 @@ class TicketProcessingWorker
   include Rails.application.routes.url_helpers  # Include URL Helpers
 
 
-
-  def perform(user_ticket_id)
+  def perform(user_ticket_id, stripe_session_id)
     user_ticket = UserTicket.find(user_ticket_id)
     ticket = user_ticket.ticket
     current_user = user_ticket.user
@@ -21,12 +20,26 @@ class TicketProcessingWorker
     # Attach QR code
     user_ticket.qrcode.attach(io: File.open(composite_image_path), filename: "qr_code.png", content_type: "image/png")
 
+        # Mark ticket as processed
+        user_ticket.update!(processed: true)
+
     # Send email
-    UserTicketMailer.with(user: current_user, user_ticket: user_ticket).send_ticket.deliver_now
+    UserTicketMailer.with(user: current_user, user_ticket: user_ticket, stripe_session_id: stripe_session_id).send_ticket.deliver_now
 
-    # Mark ticket as processed
-    user_ticket.update!(processed: true)
+
+
+
+# In your mailer
+Rails.logger.info "Stripe Session ID: #{@stripe_session_id}"
+Rails.logger.info "Stripe Session: #{@stripe_session.inspect}"
+
+# In your worker
+Rails.logger.info "Performing with user_ticket_id: #{user_ticket}, stripe_session_id: #{stripe_session_id}"
+
+
+
+
+
   end
-
 
 end

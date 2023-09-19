@@ -36,9 +36,15 @@
             <i class="fas fa-ticket-alt fa-lg" style="color: #0077cc; margin-right: 5px;"></i>
             My ticket</h5>
           <center>
-            <%= link_to cl_image_path(@user_ticket.qrcode.key), target: "_blank" do %>
-              <%= image_tag(cl_image_path(@user_ticket.qrcode.key), style: "max-width: 50%;") %>
-            <% end %>
+<% if @user_ticket.qrcode.key.nil? %>
+    Ticket not ready yet...
+  <% else %>
+    <%= link_to cl_image_path(@user_ticket.qrcode.key), target: "_blank" do %>
+      <%= image_tag(cl_image_path(@user_ticket.qrcode.key), style: "max-width: 50%;") %>
+
+  <% end %>
+<% end %>
+
           </center>
           <br>
         </div>
@@ -49,11 +55,11 @@
             When ?</h5>
           <%
                 # Format the start and end times
-                start_time_str = @event.start_time.strftime("%A, %B %d, %Y from %I:%M%p")
-                end_time_str = @event.end_time.strftime("%I:%M%p")
-                end_day_str = @event.end_time.strftime("%A, %B %d")
+                start_time_str = @event.start_time.in_time_zone("America/Mexico_City").strftime("%A, %B %d, %Y from %I:%M%p")
+                end_time_str = @event.end_time.in_time_zone("America/Mexico_City").strftime("%I:%M%p")
+                end_day_str = @event.end_time.in_time_zone("America/Mexico_City").strftime("%A, %B %d")
                 # Check if the event ends on the same day it starts
-                same_day = @event.start_time.to_date == @event.end_time.to_date
+                same_day = @event.start_time.to_date.in_time_zone("America/Mexico_City") == @event.end_time.in_time_zone("America/Mexico_City").to_date
                 # Generate the final string
                 event_time_range = if same_day
                   "#{start_time_str} to #{end_time_str}."
@@ -63,7 +69,7 @@
               %>
           <p><%= event_time_range %></p>
           <% if @ticket.expire_time? %>
-    <span style="font-weight: bold;">Free entry until <%= @ticket.expire_time.strftime("%I:%M %p") %></span>
+            <span style="font-weight: bold;">Free entry until <%= @ticket.expire_time.in_time_zone("America/Mexico_City").strftime("%I:%M %p") %></span>
           <% end %>
         </p>
       </div>

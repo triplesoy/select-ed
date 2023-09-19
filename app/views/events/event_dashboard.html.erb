@@ -20,7 +20,8 @@
 <br>
 <%= link_to "Home", root_path, style: "padding-left: 10px;" %> >
 <%= link_to @event.community.title, community_path(@event.community)%> >
-<%= @event.title %>
+<%= link_to @event.title , community_event_path(@event.community, @event) %> >
+Event dashboard
 
 <div class="container-fluid">
   <h3 class="text-center my-2"> <%= @event.title %>'s event dashboard</h3>

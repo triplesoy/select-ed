@@ -1,3 +1,9 @@
+<br>
+<%= link_to "Home", root_path, style: "padding-left: 10px;" %> >
+<%= link_to @event.community.title, community_path(@event.community)%> >
+<%= link_to @event.title , community_event_path(@event.community, @event) %> >
+<%= link_to "Event Dashboard", event_dashboard_path(@event.community, @event ) %> >
+Edit Ticket Details
 <div class="container">
   <div class="row">
     <div class="col-lg-12 col-md-6 col-sm-6 ticket-form">
@@ -11,7 +17,7 @@
                 <% time = Time.now %>
                 <%= form.number_field :quantity, class: "form-control m-2" %>
                 Ticket expiration time. Be careful, if free tickets were already emmitted, the new expiration time won't match the ticket.
-                <%= form.datetime_field :expire_time, class: "form-control m-2" %>
+                <%= form.datetime_field :expire_time, value: @ticket.expire_time&.in_time_zone("America/Mexico_City")&.strftime('%Y-%m-%dT%H:%M:%S'), class: "form-control m-2" %>
                 <%# INCLUDE SOMEWHERE in_time_zone("America/Mexico_City") %>
               </div>
             <% elsif @ticket.model == "regular" %>
@@ -43,3 +49,5 @@
 <div class="text-center">
   <%= link_to 'Back to dashboard', :back, class: "btn btn-dark" %>
 </div>
+<br>
+<br>

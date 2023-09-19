@@ -64,7 +64,7 @@
   <body>
     <div class="container-1">
       <h1 class="card-title" style="color: green; font-weight: bold;">Confirmation</h1>
-      <p>Hi <%= @user.first_name%>, your order for the <b><%= @event.title %></b>'s event has been successfully processed!</p>
+      <p>Hi <%= @user.first_name%>, your order for the <b><%= @event.title %></b>'s event from <%= @event.community.title %> has been successfully processed!</p>
       <div class="table-responsive">
         <table class="custom-table">
           <% if @stripe_session %>  <!-- If the ticket was paid for, show a more detailed table -->
@@ -78,7 +78,7 @@
             <tbody class="custom-table">
               <tr>
                 <td>Ticket type:</td>
-                <td><%= @user_ticket.ticket.model.capitalize %></td>
+                <td> Regular admission </td>
               </tr>
               <tr>
                 <td>Status:</td>
@@ -86,7 +86,7 @@
               </tr>
               <tr>
                 <td>Amount Paid:</td>
-                <td><%= number_to_currency(@stripe_session.amount_total / 100.0) %></td>
+                <td><%= number_to_currency(@stripe_session.amount_total / 100.0, unit: "MXN $") %></td>
               </tr>
               <tr>
                 <td>Payment date:</td>
@@ -106,7 +106,7 @@
                   <% if @user_ticket.processed %>
                     <div style="color: green; font-weight: bold;">QR code processed</div>
                   <% else %>
-                    <div style="color: orange; font-weight: bold;">QR code being processed (might take up to 5 minutes)</div>
+                    <div style="color: orange; font-weight: bold;">QR code being processed</div>
                   <% end %>
                 </td>
               </tr>
@@ -125,18 +125,18 @@
                 <% if @user_ticket.ticket.model == "free" %>
                   <td> Guest List</td>
                 <% else %>  <!-- VIP -->
-                  <td><%= @user_ticket.ticket.model.capitalize %></td>
+                  <td><%= @user_ticket.ticket.model.upcase %></td>
                 </tr>
               <% end %>
               <% if @ticket.expire_time? %>
                 <tr>
                   <td>Entry restriction:</td>
-                  <td>Ticket valid until <%= @ticket.expire_time.strftime("%I:%M %p") %></td>
+                  <td>Ticket valid until <%= @ticket.expire_time.in_time_zone("America/Mexico_City").strftime("%I:%M %p") %></td>
                 </tr>
               <% end %>
               <tr>
                 <td>Order date:</td>
-                <td><%= Time.at(@user_ticket.created_at).strftime("%d/%m/%Y") %></td>
+                <td><%= Time.at(@user_ticket.created_at).in_time_zone("America/Mexico_City").strftime("%d/%m/%Y") %></td>
               </tr>
               <tr>
                 <td>QR code status:</td>
@@ -157,11 +157,11 @@
       <i class="fas fa-calendar-alt fa-lg" style="color: #0077cc; margin-right: 5px;"></i>
       <b style="font-size: 15px;">When?</b> <%
   # Format the start and end times
-  start_time_str = @event.start_time.strftime("%A, %B %d, %Y from %I:%M%p")
-  end_time_str = @event.end_time.strftime("%I:%M%p")
-  end_day_str = @event.end_time.strftime("%A, %B %d")
+  start_time_str = @event.start_time.in_time_zone("America/Mexico_City").strftime("%A, %B %d, %Y from %I:%M%p")
+  end_time_str = @event.end_time.in_time_zone("America/Mexico_City").strftime("%I:%M%p")
+  end_day_str = @event.end_time.in_time_zone("America/Mexico_City").strftime("%A, %B %d")
   # Check if the event ends on the same day it starts
-  same_day = @event.start_time.to_date == @event.end_time.to_date
+  same_day = @event.start_time.in_time_zone("America/Mexico_City").to_date == @event.end_time.to_date
   # Generate the final string
   event_time_range = if same_day
     "#{start_time_str} to #{end_time_str}."
