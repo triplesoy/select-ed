@@ -20,8 +20,7 @@ class EventsController < ApplicationController
   def show
     authorize @event
 
-    @user_ticket = UserTicket.joins(:ticket).where(tickets: { event_id: @event.id })
-
+    @user_ticket = UserTicket.find_by(user: current_user, ticket: @ticket) if current_user
 
     @event = Event.friendly.find(params[:id])
     @regular_ticket = @event.tickets.find_by(model: 'regular')
@@ -32,13 +31,9 @@ class EventsController < ApplicationController
       lng: @event.longitude
     }]
     @user = current_user
-    @user_ticket = @event.user_tickets.each do |user_ticket|
-      if user_ticket.user_id == @user.id
-        @user_ticket = user_ticket
-      end
-      return @user_ticket
 
-    end
+
+
 
 
 
