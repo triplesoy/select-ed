@@ -120,7 +120,7 @@
                     <%= @free_ticket.quantity > 0 ? "Get free ticket" : "Sold out" %>
                   <% end %>
                   <% if @free_ticket.expire_time? %>
-                    <i style="font-size: 75%;">* if you arrive after <%= @free_ticket.expire_time.strftime("%I:%M %p") %>, you will have to purchase a ticket at the door.</i>
+                    <i style="font-size: 75%;">* if you arrive after <%= @free_ticket.expire_time.in_time_zone("America/Mexico_City").strftime("%I:%M %p") %>, you will have to purchase a ticket at the door.</i>
                   <% end %><br>
                   <hr>
                 <% end %>
