@@ -19,6 +19,10 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
+
+    @user_ticket = UserTicket.joins(:ticket).where(tickets: { event_id: @event.id })
+
+
     @event = Event.friendly.find(params[:id])
     @regular_ticket = @event.tickets.find_by(model: 'regular')
     @free_ticket = @event.tickets.find_by(model: 'free')
@@ -81,6 +85,10 @@ class EventsController < ApplicationController
 
   def edit
     authorize @event
+
+    # Convert the UTC time to Mexico City time for display in the form
+    @event.start_time = @event.start_time.in_time_zone('America/Mexico_City')
+    @event.end_time = @event.end_time.in_time_zone('America/Mexico_City')
   end
 
 def update
@@ -106,6 +114,7 @@ def update
 
   authorize @event
 end
+
 
   def destroy
     @event.destroy

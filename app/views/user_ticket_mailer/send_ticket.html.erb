@@ -6,6 +6,8 @@
       body, html {
         font-family: "Segoe UI", sans-serif;
         color: #ffffff;
+          font-size: calc(100% - 5%); /* Reduce the font size by 15% */
+
         background-color: black;
         line-height: 1.6;
       }
@@ -137,6 +139,43 @@
         font-family: "Font Awesome 5 Free";
         font-weight: 900;
       }
+
+         /* Add a border around the entire table */
+      .custom-table {
+            width: 100%;  /* New: Table takes full width */
+
+          border: none;  /* Adjust color and width as needed */
+          border-collapse: collapse;  /* Makes sure the table's border and cell borders collapse into a single border */
+          margin: 0px;  /* Space outside the table */
+      }
+
+      /* Remove borders between rows but preserve the one under the header */
+      .custom-table tbody tr td {
+          border-top: none;
+          padding: 3px;  /* Space inside cells */
+      }
+
+      .custom-table thead tr th {
+            background-color: #C5C5C5;
+
+          border-bottom: 1px solid;  /* Adjust as per your requirements */
+          padding: 5px;  /* Space inside cells */
+      }
+
+      /* Align content in the 2nd column to the right */
+      .custom-table tbody tr td:nth-child(2) {
+          text-align: right;
+      }
+
+      @media screen and (min-width: 1024px) { /* For laptop and above */
+        .logo {
+          max-width: 20%;
+        }
+        .container-fluid {
+          max-width: 66.66%; /* Limit width to 2/3 of the screen */
+          margin: auto; /* Center the div */
+        }
+      }
     </style>
   </head>
   <body>
@@ -149,53 +188,94 @@
       <div class="content-wrapper">
         <h2>Hey <%= @user.first_name %>, here's your ticket!</h2>
         <p>Thanks for purchasing a ticket to <%= @community.title %>'s <%= @event.title %>'s event!</p>
+        <br>
+        <% if @stripe_session %>
+          <div class="table-responsive">
+            <table class="custom-table"> <!-- If the ticket was paid for, show a more detailed table -->
+              <thead>
+                <tr>
+                  <th scope="col" colspan="2" style="background-color: #f2f2f2; padding: 10px; font-size: 18px;">
+                    Payment details ticket #<%= @user_ticket.id  %>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="custom-table">
+                <tr>
+                  <td>Ticket type:</td>
+                  <td> Regular admission </td>
+                </tr>
+                <tr>
+                  <td>Status:</td>
+                  <td><%= @stripe_session.payment_status.capitalize %></td>
+                </tr>
+                <tr>
+                  <td>Amount Paid:</td>
+                  <td><%= number_to_currency(@stripe_session.amount_total / 100.0, unit: "MXN $") %></td>
+                </tr>
+                <tr>
+                  <td>Payment date:</td>
+                  <td><%= Time.at(@stripe_session.created).strftime("%d/%m/%Y") %></td>
+                </tr>
+                <tr>
+                  <td>Payment Method:</td>
+                  <td><%= @stripe_session.payment_method_types.join(', ') %></td>
+                </tr>
+                <tr>
+                  <td>Transaction ID:</td>
+                  <td><%= @stripe_session.payment_intent %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+        <% end %>
         <p><b><i class="fas fa-calendar-alt fa-lg" style="color: #db6300;"></i> When?</b><br>
           The event will start at <b><%= @event.start_time.in_time_zone("America/Mexico_City").strftime("%l:%M %p on %A, %B #{ @event.start_time.in_time_zone("America/Mexico_City").day.ordinalize }") %></b>. <br>
-        <p>  <i class="fas fa-map-marker-alt fa-lg" style="color: #db6300;"></i></i><b> Where?</b><br>
-        It will be held at <b><%= @event.address %></b>.
-        <br>
+          <p>  <i class="fas fa-map-marker-alt fa-lg" style="color: #db6300;"></i></i><b> Where?</b><br>
+          It will be held at <b><%= @event.address %></b> <%=link_to '(open in Google Maps)', "https://www.google.com/maps/search/?api=1&query=#{ERB::Util.url_encode(@event.address)}", target: '_blank' %>.
 
-        <% if @user_ticket.ticket.expire_time.present? %>
-        <p>  Remember, your ticket is only valid until <b><%= @user_ticket.ticket.expire_time.in_time_zone("America/Mexico_City").strftime("%l:%M %p") %></b>. After that time, you might be charged to enter the event.
           <br>
-          <br>
-        <% end %>
-        <p>See you soon!</p>
-      </div>
-      <div class="qr-code">
-        <% if @user_ticket.qrcode.attached? %>
-          <div class="qr-image m-5">
-            <%= link_to(cl_image_tag(@user_ticket.qrcode.key, width: "50%", height: "auto", alt: "QR code for ticket", class: "img-fluid"), cl_image_path(@user_ticket.qrcode.key), target: "_blank") %>
+          <% if @user_ticket.ticket.expire_time.present? %>
+            <p>  Remember, your ticket is only valid until <b><%= @user_ticket.ticket.expire_time.in_time_zone("America/Mexico_City").strftime("%l:%M %p") %></b>. After that time, you might be charged to enter the event.
+              <br>
+              <br>
+            <% end %>
+            <p>See you soon!</p>
           </div>
-        <% end %>
+          <div class="qr-code">
+            <% if @user_ticket.qrcode.attached? %>
+              <div class="qr-image m-5">
+                <%= link_to(cl_image_tag(@user_ticket.qrcode.key, width: "50%", height: "auto", alt: "QR code for ticket", class: "img-fluid"), cl_image_path(@user_ticket.qrcode.key), target: "_blank") %>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-<footer class="footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <ul class="list-unstyled footer-contact">
-          <li>
-            <a href="mailto:contact@nubanuba.com" target="_blank" rel="noopener noreferrer">
-              <i class="fas fa-envelope"></i>
-              contact@nubanuba.com
-            </a>
-          </li>
-          <li>
-            <a href="https://www.instagram.com/nubanuba_app/" target="_blank" rel="noopener noreferrer">
-              <i class="fab fa-instagram"></i>
-              nubanuba_app
-            </a>
-          </li>
-        </ul>
-        <p class="text-center copyright">© 2023 nubanuba.com - enabling meaningful experiences</p>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <ul class="list-unstyled footer-contact">
+              <li>
+                <a href="mailto:contact@nubanuba.com" target="_blank" rel="noopener noreferrer">
+                  <i class="fas fa-envelope"></i>
+                  contact@nubanuba.com
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/nubanuba_app/" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-instagram"></i>
+                  nubanuba_app
+                </a>
+              </li>
+            </ul>
+            <p class="text-center copyright">© 2023 nubanuba.com - enabling meaningful experiences</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</footer>
-<!-- Include the Bootstrap JS -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
+    </footer>
+    <!-- Include the Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
 </html>

@@ -1,55 +1,33 @@
-import { Controller } from "@hotwired/stimulus";
+import { Controller } from "@hotwired/stimulus";import { Controller } from "stimulus";
 
 export default class extends Controller {
-  redeemCode(e) {
-    e.preventDefault();
-    console.log("Redeeming code...");
+  static targets = ["code", "buy", "form"];
 
-    const codeInput = e.target.querySelector('.code');
-    const code = codeInput.value;
+  redeemCode(event) {
+    event.preventDefault();
 
-    fetch(`/tickets/${e.target.dataset.id}/redeem?code=${code}`, {
-      method: 'GET',
+    const code = this.codeTarget.value;
+    const buyButton = this.buyTarget;
+    const form = this.formTarget;
+    const ticketId = form.getAttribute("data-ticket-id"); // Assuming you set this attribute in your form
+
+    fetch(`/tickets/${ticketId}/redeem?code=${code}`, {
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+        'Accept': 'application/json'
       }
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Code verification failed");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Code verified. Buying ticket...");
-
-      if (!data.error) {
-        const redeemURL = e.target.parentElement.querySelector('.buy').href;
-        console.log(`Redeem URL: ${redeemURL}`);
-
-        return fetch(redeemURL, {
-          method: 'POST',
-          headers: {
-            'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-          }
-        });
+    .then(response => response.json())
+    .then(data => {
+      if (data.code) {
+        form.classList.add("d-none"); // Hide the form
+        buyButton.classList.remove("d-none"); // Show the "Get your ticket" button
+        buyButton.classList.add("d-block");
       } else {
-        throw new Error(data.error);
+        alert("Wrong code");
       }
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Ticket redemption failed");
-      }
-      window.alert("Ticket redeemed successfully!");
     })
     .catch(error => {
-      console.error(error);
-      window.alert(error.message);
-    })
-    .finally(() => {
-      codeInput.value = ""; // Clear the input
+      console.error("There was an error redeeming the code", error);
     });
   }
 }

@@ -10,6 +10,7 @@ class UserTicketsController < ApplicationController
 
   def show
     @community = @ticket.event.community
+
     @event = @ticket.event
     authorize @user_ticket
 
@@ -28,35 +29,42 @@ class UserTicketsController < ApplicationController
 
   # user_tickets_controller.rb
 
-def checkout
-  @user_ticket = UserTicket.new(ticket: @ticket)
-  authorize @user_ticket
+  def checkout
+    @user_ticket = UserTicket.new(ticket: @ticket)
+    authorize @user_ticket
 
-  begin
-    @session = Stripe::Checkout::Session.create({
-      payment_method_types: ['card'],
-      line_items: [{
-        price: @ticket.stripe_price_id,
-        quantity: 1,
-      }],
-      mode: 'payment',
-      success_url: payment_success_user_tickets_url(ticket_id: @ticket.id),
-      cancel_url: cancel_user_tickets_url,
-      metadata: {
-        user_ticket_id: @user_ticket.id,
-        ticket_id: @ticket.id,
-      }
+    begin
+      @session = Stripe::Checkout::Session.create({
+        payment_method_types: ['card'],
+        line_items: [{
+          price: @ticket.stripe_price_id,
+          quantity: 1,
+        }],
+        mode: 'payment',
+        success_url: payment_success_user_tickets_url(ticket_id: @ticket.id),
+        cancel_url: cancel_user_tickets_url,
+        metadata: {
+          user_ticket_id: @user_ticket.id,
+          ticket_id: @ticket.id,
+        }
       })
 
-       stripe_session_id = @session.id
+      stripe_session_id = @session.id
 
-       session[:stripe_session_id] = stripe_session_id
+      # Log the Stripe session ID to the server logs
+      Rails.logger.info "Stripe session ID: #{stripe_session_id}"
 
-    redirect_to @session.url, allow_other_host: true
-  rescue => e
-    redirect_to root_path, alert: "There was an error with the checkout process: #{e.message}"
+      # Store the Stripe session ID in the session for later use
+session[:stripe_session_id] = stripe_session_id
+
+      redirect_to @session.url, allow_other_host: true
+    rescue => e
+      # Log the error to the server logs
+      Rails.logger.error "Error during checkout: #{e.message}"
+
+      redirect_to root_path, alert: "There was an error with the checkout process: #{e.message}"
+    end
   end
-end
 
 def payment_success
   # Get ticket_id from params and find the corresponding ticket
@@ -75,7 +83,7 @@ def create
     @ticket.update(quantity: @ticket.quantity - 1)
 
     # Enqueue the job for processing ticket
-    TicketProcessingWorker.perform_async(@user_ticket.id)
+TicketProcessingWorker.perform_async(@user_ticket.id, session[:stripe_session_id])
 
     # Redirect to the confirmation page (which will initially say "Processing...")
     redirect_to confirmation_page_path(@user_ticket)
@@ -217,13 +225,6 @@ end
     end
   end
 
-  def formatted_start_time
-    @event.start_time.in_time_zone("America/Mexico_City").strftime('%a, %d/%m/%y, %H:%M')
-  end
-
-  def formatted_expire_time(expire_time)
-    expire_time.to_datetime.in_time_zone("America/Mexico_City").strftime("%H:%M on %d/%m/%Y")
-  end
 
   def user_ticket_params
     params.require(:user_ticket).permit(:scanned)
