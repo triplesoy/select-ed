@@ -36,10 +36,6 @@ Rails.logger.info "Stripe Session: #{@stripe_session.inspect}"
 # In your worker
 Rails.logger.info "Performing with user_ticket_id: #{user_ticket}, stripe_session_id: #{stripe_session_id}"
 
-
-
-
-
   end
 
 end
