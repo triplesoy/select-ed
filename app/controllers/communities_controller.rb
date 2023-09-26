@@ -14,6 +14,13 @@ class CommunitiesController < ApplicationController
     @events = @community.events
     @join_request = CommunityJoinRequest.new
     @community_user = CommunityUser.new
+    @average_age = @community.members.average('EXTRACT(YEAR FROM AGE(birthdate))')&.round
+    @average_age = @average_age ? @average_age.round : nil
+    @average_age = @average_age.to_i if @average_age
+    @average_age = 0 if @average_age.nil?
+    @average_age = 100 if @average_age > 100
+    @average_age = 0 if @average_age < 0
+
 
 
     if current_user
@@ -112,19 +119,6 @@ end
     authorize @my_communities
   end
 
-  # def communities_owned
-  #   @communities_owned = Community.joins(:community_users).where(community_users: { user_id: current_user.id, role: 'admin' })
-
-
-  #   if @communities_owned.empty?
-  #     flash[:notice] = "You haven't created any communities yet!"
-  #     redirect_to root_path
-  #   else
-  #     @communities_owned.each { |community| authorize community }
-  #   end
-
-  #   authorize @communities_owned
-  # end
 
   def events_owned
     @events_owned = current_user.events
@@ -132,6 +126,7 @@ end
   end
 
   private
+
 
   def community_params
     params.require(:community).permit(:title, :description, :short_description, :category, :country, :instagram_handle_main, :instagram_handle_members, :city, :public, :youtube_banner, :is_visible, :video, photos: [], photos_delete: [])

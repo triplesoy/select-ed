@@ -43,6 +43,8 @@ class UserTicketsController < ApplicationController
         mode: 'payment',
         success_url: payment_success_user_tickets_url(ticket_id: @ticket.id),
         cancel_url: cancel_user_tickets_url,
+        customer_email: current_user.email, # Add this line to prefill the email
+
         metadata: {
           user_ticket_id: @user_ticket.id,
           ticket_id: @ticket.id,
@@ -81,16 +83,13 @@ def create
 
   if @user_ticket.save
     @ticket.update(quantity: @ticket.quantity - 1)
-
-    # Enqueue the job for processing ticket
-TicketProcessingWorker.perform_async(@user_ticket.id, session[:stripe_session_id])
-
-    # Redirect to the confirmation page (which will initially say "Processing...")
+    TicketProcessingWorker.perform_async(@user_ticket.id, session[:stripe_session_id])
     redirect_to confirmation_page_path(@user_ticket)
   else
-    render :new, status: :unprocessable_entity, alert: "Failed to acquire the ticket."
+    render json: { error: @user_ticket.errors.full_messages }, status: :unprocessable_entity
   end
 end
+
 
 
 

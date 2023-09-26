@@ -19,21 +19,6 @@ class CommunityUsersController < ApplicationController
   end
 
 
-
-  # Def make moderator
-  # if current user is admin of the website or admin of the community
-  # they can update role of the member to moderator
-  # but they can't update their roles (as admins) to moderator, and should get a message saying "you can't make yourself or an admin moderator"
-
-  # def remove moderator
-  # if current user is admin of the website or admin of the community
-  # they can update/revoke role of  moderator to member
-  # but they can't update their roles (as admins) to member
-
-  # write the code :
-
-
-
 def make_moderator
   @community_user = CommunityUser.find(params[:id])
   authorize @community_user

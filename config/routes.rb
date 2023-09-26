@@ -43,6 +43,9 @@ end
   get "communities/:community_id/user_history/:id", to: "community_users#user_history", as: :user_history
 
   get "tickets/:id/redeem", to: "tickets#redeem", as: :redeem_ticket
+  #second route test
+  post "tickets/:id/redeem", to: "tickets#redeem", as: :redeem_ticket_post
+
 
   delete "events/photos/:id", to: "events#destroy_event_photo", as: :destroy_event_photo
   delete "communities/photos/:id", to: "communities#destroy_community_photo", as: :destroy_community_photo

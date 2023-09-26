@@ -1,4 +1,9 @@
-<% community_user = CommunityUser.find_by(user: current_user, community: @community)
+<style>
+  .bold-red {
+    font-weight: bold;
+    color: red;
+  }
+</style><% community_user = CommunityUser.find_by(user: current_user, community: @community)
 join_request = CommunityJoinRequest.find_by(user: current_user, community: @community) %>
 <% if @community.owner == current_user || (current_user && current_user.is_moderator_of?(@community)) || (current_user && current_user.admin) %>
   <div class="container">
@@ -42,10 +47,23 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
           </div>
           <div class="card-body">
             <p class="card-text d-flex justify-content-around">
-              Members: <%= @community.members.count %> |
-              Ratio : <%= (@community.members.where(gender: "Male").count.to_i / @community.members.count) * 100 %>% M - <%= (@community.members.where(gender: "Female").count.to_i / @community.members.count) * 100 %>% F |
-              Pending requests: <%= @community.community_join_requests.where(status: "pending").count %> |
-              Events created: <%= @community.events.count %>
+              <%
+  male = @community.members.where(gender: "Male").count
+  female = @community.members.where(gender: "Female").count
+  total = @community.members.count
+
+  ratio_M = total > 0 ? (male.to_f / total) * 100 : 0
+  ratio_F = total > 0 ? (female.to_f / total) * 100 : 0
+%>
+              <center>
+                <%= "#{total} members - #{ratio_M.round(0)}% Male / #{ratio_F.round(0)}% Female" %> - <%= "#{@average_age || 'N/A'} years old on average" %> <br>
+                <% if @community.community_join_requests.where(status: "pending").count > 0 %>
+                  <span class="bold-red">
+                    <%= @community.community_join_requests.where(status: "pending").count %> pending requests -
+                  </span>
+                <% end %>
+                <%= @community.events.count %> events created
+              </center>
             </p>
           </div>
         </div>

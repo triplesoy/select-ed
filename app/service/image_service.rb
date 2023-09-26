@@ -38,25 +38,16 @@ class ImageService
     draw_text(result, 'North', 90, 'black', 2, 82, @community.title.upcase)
     draw_text(result, 'North', 90, 'white', 1, 80, @community.title.upcase)
     draw_text(result, 'North', 90, 'white', 1, 220, @event.title.upcase)
-
-   # display date only
-    draw_text(result, 'North', 70, 'white', 1, 320, formatted_start_date)
-    #display start to end time only
-    draw_text(result, 'North', 70, 'white', 1, 420, formated_start_to_end_time)
-
+    draw_text(result, 'North', 70, 'white', 1, 420, formatted_start_time)
     draw_text(result, 'South', 70, 'white', 1, 220, @user.full_name.upcase)
 
     if @user_ticket.ticket.model == "free" && @user_ticket.ticket.expire_time.present?
       valid_until = formatted_expire_time(@user_ticket.ticket.expire_time)
-      draw_text(result, 'South', 50, 'white', 2, 82, "Guest-list entry - valid before #{valid_until}")
+      draw_text(result, 'South', 50, 'white', 2, 82, "Valid until: #{valid_until}")
     end
 
     if @user_ticket.ticket.model == "vip"
       draw_text(result, 'South', 70, 'white', 2, 82, 'VIP TICKET')
-    end
-
-    if @user_ticket.ticket.model == "regular"
-      draw_text(result, 'South', 70, 'white', 2, 82, 'PAID - General Admission')
     end
 
     composite_image_path = Rails.root.join('tmp', 'composite_image.png').to_s
@@ -87,24 +78,11 @@ class ImageService
     end
   end
 
-
+  def formatted_start_time
+    @event.start_time.in_time_zone("America/Mexico_City").strftime('%a, %d/%m/%y, %H:%M')
+  end
 
   def formatted_expire_time(expire_time)
-    expire_time.in_time_zone("America/Mexico_City").strftime('%I:%M %p')
+    expire_time.in_time_zone("America/Mexico_City").strftime('%a, %d/%m/%y, %H:%M')
   end
-
-
-  def formatted_start_date
-    @event.start_time.in_time_zone("America/Mexico_City").strftime('%d/%m/%y')
-  end
-
-
-  def formated_start_to_end_time
-    @event.start_time.in_time_zone("America/Mexico_City").strftime('%I:%M %p') + " - " + @event.end_time.in_time_zone("America/Mexico_City").strftime('%I:%M %p')
-  end
-
-
-
-
-
 end
