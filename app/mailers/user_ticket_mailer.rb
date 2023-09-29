@@ -1,11 +1,18 @@
 class UserTicketMailer < ApplicationMailer
   def send_ticket
+    @user = params[:user] # Initialize @user. This will be nil if params[:user] is not present.
+
     @user_ticket = params[:user_ticket]
-    @user = params[:user]
-    @stripe_session_id = params[:stripe_session_id]  # Pass this in when you call the mailer
+    @stripe_session_id = params[:stripe_session_id]
     @community = @user_ticket.ticket.event.community
     @event = @user_ticket.ticket.event
     @ticket = @user_ticket.ticket
+
+
+    @qr_full_name = params[:qr_full_name] # Accessing qr_full_name parameter
+
+    @qr_email = params[:qr_email] # Accessing qr_email parameter
+    recipient_email = @user&.email ||   @qr_email
 
     if @ticket.model == 'regular' && @stripe_session_id.present?
       begin
@@ -18,6 +25,6 @@ class UserTicketMailer < ApplicationMailer
       @stripe_session = nil
     end
 
-    mail(to: @user.email, bcc: "guillaume@nubanuba.com", subject: "Here's your ticket for the #{@community.title} #{@event.title}'s event!")
+    mail(to: recipient_email, bcc: "guillaume@nubanuba.com", subject: "Here's your ticket for the #{@community.title} #{@event.title}'s event!")
   end
 end

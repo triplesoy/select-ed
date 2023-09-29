@@ -36,6 +36,9 @@ join_request = CommunityJoinRequest.find_by(user: current_user, community: @comm
               <% if policy(@community).edit? %>
                 <%= link_to "Edit my community", edit_community_path(@community), class: "btn btn-outline-warning ms-2" %>
               <% end %>
+
+              <%= link_to "Generate Manual Ticket", manual_new_community_events_path(@community), class: "btn btn-outline-dark me-2" %>
+
             </p>
           </div>
         </div>

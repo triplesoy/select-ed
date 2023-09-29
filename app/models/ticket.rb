@@ -10,4 +10,12 @@ class Ticket < ApplicationRecord
     event.user_tickets.select{ |user_ticket| user_ticket.ticket.model == self.model }.count
   end
 
+  def event_name
+    event.title
+    
+    @ticket = self
+    "#{event.title} - #{@ticket.model}"  # Adjust as needed to provide a meaningful representation.
+  end
+
+
 end

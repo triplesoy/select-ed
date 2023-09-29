@@ -22,7 +22,6 @@
 <%= link_to @event.community.title, community_path(@event.community)%> >
 <%= link_to @event.title , community_event_path(@event.community, @event) %> >
 Event dashboard
-
 <div class="container-fluid">
   <h3 class="text-center my-2"> <%= @event.title %>'s event dashboard</h3>
   <div class="row justify-content-center">
@@ -107,8 +106,9 @@ Event dashboard
       </div>
     </div>
   </div>
-  <div class="card shadow-lg  mb-3 bg-white rounded small-font">
-    <div class="card-header" id="eventPaticipants">
+  <!-- Existing code above this section remains unchanged -->
+  <div class="card shadow-lg mb-3 bg-white rounded small-font">
+    <div class="card-header" id="eventParticipants">
       <h4 class="mb-0">Event participants</h4>
     </div>
     <div class="card-body no-padding">
@@ -130,7 +130,7 @@ Event dashboard
           </thead>
           <tbody>
             <% @event.participants.each_with_index do |c, index| %>
-              <% if c.scanned == "accepted"  %>
+              <% if c.scanned == "accepted" %>
                 <tr class="table-success">
                 <% elsif c.scanned == "rejected" %>
                   <tr class="table-danger">
@@ -138,14 +138,14 @@ Event dashboard
                     <tr>
                     <% end %>
                     <td><%= index + 1 %></td>
-                    <td><%= c.user_id %></td>
-                    <td><%= c.user.first_name %></td>
-                    <td><%= c.user.last_name %></td>
-                    <td><%= c.user.email %></td>
-                    <td><%= Time.now.year - c.user.birthdate.year %></td>
-                    <td><%= c.user.nationality %></td>
-                    <td><%= c.user.occupation %></td>
-                    <td><%= link_to c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank"  %></td>
+                    <td><%= c.user_id || 'N/A' %></td>
+                    <td><%= c.user&.first_name || 'N/A' %></td>
+                    <td><%= c.user&.last_name || 'N/A' %></td>
+                    <td><%= c.user&.email || 'N/A' %></td>
+                    <td><%= c.user ? Time.now.year - c.user.birthdate.year : 'N/A' %></td>
+                    <td><%= c.user&.nationality || 'N/A' %></td>
+                    <td><%= c.user&.occupation || 'N/A' %></td>
+                    <td><%= c.user ? link_to(c.user.instagram_handle, "http://instagram.com/#{c.user.instagram_handle}/", target: "_blank") : 'N/A' %></td>
                     <td>
                       <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="dropdown-<%= c.id %>" aria-haspopup="true" aria-expanded="true">
@@ -154,20 +154,23 @@ Event dashboard
                         <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="#dropdown-<%= c.id %>">
                           <%= link_to "View QR code", ticket_user_ticket_path(c.ticket, c), class: "dropdown-item", target: "_blank"%>
                           <%= link_to "Modify QR code status", validation_page_path(c), class: "dropdown-item", target: "_blank"%>
-                          <% community_user = c.user.community_users.find_by(community: @event.community) %>
+                          <% community_user = c.user&.community_users&.find_by(community: @event.community) %>
                           <% if community_user.present? %>
                             <%= link_to "View history", user_history_path(@event.community, community_user), class: "dropdown-item" %>
                           <% end %>
                         </div>
                       </div>
                     </td>
-                  <% end %>
-                </tr>
+                  </tr>
+                <% end %>
               </tbody>
+
             </table>
+                         <br>               <br>     
           </div>
         </div>
       </div>
+      <!-- Existing code below this section remains unchanged -->
     </div>
   </div>
   <div class="text-center">

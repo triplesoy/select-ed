@@ -186,7 +186,7 @@
     </div>
     <div class="container-fluid">
       <div class="content-wrapper">
-        <h2>Hey <%= @user.first_name %>, here's your ticket!</h2>
+<h2>Hey <%= @user.present? ? @user.first_name : @qr_full_name %>, here's your ticket!</h2>
         <p>Thanks for purchasing a ticket to <%= @community.title %>'s <%= @event.title %>'s event!</p>
         <br>
         <% if @stripe_session %>

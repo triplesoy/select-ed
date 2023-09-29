@@ -53,9 +53,14 @@
       </h5>
       Ticket type: <%= @user_ticket.ticket.model.capitalize %><br>
       <br>
-      <b><%= @user_ticket_name %></b><br>
-      <%= Time.now.year - @user.birthdate.year %> years old<br>
-      <%=  @user.country %><br>
+      <% if @user.present? %>
+        <b><%= @user_ticket_name %></b><br>
+        <%= Time.now.year - @user.birthdate.year %> years old<br>
+        <%=  @user.country %><br>
+        <% else %>
+      <i> Manually generated ticket<br>
+      Ticket number: <%= @user_ticket.id%><br></i>
+      <% end %>
       <br>
       <% if Time.now.in_time_zone("America/Mexico_City") < @event.end_time.in_time_zone("America/Mexico_City") && (expire_time.nil? || (expire_time.present? && current_time < expire_time)) %>
         <div class="d-flex justify-content-center">

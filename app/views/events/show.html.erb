@@ -106,6 +106,12 @@
     </div>
   </div>
   <br>
+   <% if user_has_dashboard_access? %>
+   <center> <%= link_to "Admin event dashboard", event_dashboard_path(@event), class: "btn btn-dark me-2" %>  </center>
+
+   </center>
+    <br>
+<% end %>
   <div class="container-ticket">
     <i class="fas fa-ticket-alt fa-lg" style="color: orange; margin-right: 5px;"></i>
     <b>Tickets available</b>
@@ -213,6 +219,3 @@
 <%# <p><%= link_to "Home", root_path %>
 <%# <%= link_to @event.community.title, community_path(@event.community) %>
  <%# <%= @event.title.capitalize %>
-<%# <% if user_has_dashboard_access? %>
-    <%# <%= link_to "Go to the event dashboard", event_dashboard_path(@event), class: "red-button" %>
-  <%# <% end %>

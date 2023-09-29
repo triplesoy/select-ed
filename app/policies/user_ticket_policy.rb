@@ -21,6 +21,15 @@ class UserTicketPolicy < ApplicationPolicy
 new?
   end
 
+  def manual_new?
+    true
+  end
+
+  def manual_create?
+    true
+  end
+
+
   def payment_success?
     new?
   end
@@ -68,8 +77,10 @@ new?
   def cancel?
   new?
   end
+def confirmation_manual?
+  new?
+end 
 
-  
 
   def confirmation?
     record.user == user || record.community.community_users.where(user: user, role: "moderator").exists? || user.admin
