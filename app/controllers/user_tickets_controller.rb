@@ -1,7 +1,11 @@
 class UserTicketsController < ApplicationController
+  include ManualQrCodeGenerator
+
+
   before_action :set_ticket, only: [:edit, :update, :show, :new, :create, :update, :checkout]
-  before_action :set_user_ticket, only: [:edit, :update, :show, :destroy, :confirmation, :validation]
+  before_action :set_user_ticket, only: [:edit, :update, :show, :destroy, :confirmation, :validation, :confirmation_manual ]
   skip_after_action :verify_authorized, only: [:cancel]
+
 
 
 
@@ -88,13 +92,92 @@ def create
   else
     render json: { error: @user_ticket.errors.full_messages }, status: :unprocessable_entity
   end
+
+  @ticket.update(quantity: @ticket.quantity - 1)
+
+
+end
+
+
+def manual_new
+  @community = Community.find_by!(slug: params[:community_id])
+  @available_tickets = Ticket.joins(:event)
+    .where('events.end_time > ? AND events.id IN (?)',
+    Time.use_zone("America/Mexico_City") { Time.zone.yesterday },
+    @community.events.pluck(:id))
+    .where.not(model: 'regular')
+
+  @user_ticket = UserTicket.new
+  authorize @user_ticket
+end
+
+
+def manual_create
+  puts "PARAMS: #{params.inspect}"
+
+  # Separate :qr_full_name and :qr_email from user_ticket_params
+  ticket_params = user_ticket_params.except(:qr_full_name, :qr_email, :ticket_id)
+
+  # Initialize @user_ticket without :qr_full_name and :qr_email
+  @user_ticket = UserTicket.new(ticket_params.merge(processed: false))
+
+  @user_ticket.ticket = Ticket.find(params[:user_ticket][:ticket_id]) if params[:user_ticket][:ticket_id].present?
+
+
+  # Handle :qr_full_name and :qr_email separately
+  @qr_email = params[:user_ticket][:qr_email]
+  @qr_full_name = params[:user_ticket][:qr_full_name]
+
+
+
+  session[:qr_email] = @qr_email
+  session[:qr_full_name] = @qr_full_name
+
+   # Validate qr_full_name and qr_email before attempting to save the user_ticket.
+   if @qr_full_name.blank? || !@qr_full_name.match(/\A[a-zA-Z ]+\z/) || @qr_full_name.length > 50
+    @user_ticket.errors.add(:qr_full_name, "is invalid")
+  end
+
+  if @qr_email.present? && !URI::MailTo::EMAIL_REGEXP.match(@qr_email)
+    @user_ticket.errors.add(:qr_email, "is invalid")
+  end
+
+  authorize @user_ticket
+
+  if @user_ticket.errors.empty? && @user_ticket.save
+
+link = validation_page_url(ticket_id: @user_ticket.ticket.id, id: @user_ticket.id)
+    png = QrCodeService.new(link).generate
+
+    composite_image_path = ManualImageService.new(png, @user_ticket.ticket.event, @user_ticket.ticket.event.community, @qr_full_name, @user_ticket).composite_image
+
+    @user_ticket.qrcode.attach(io: File.open(composite_image_path), filename: "qr_code.png", content_type: "image/png")
+    @user_ticket.update!(processed: true)
+
+    send_email if params[:user_ticket][:qr_email].present?
+    redirect_to confirmation_manual_page_path(@user_ticket), alert: "You have successfully purchased a ticket!"
+  else
+    @qr_full_name = @qr_full_name  # setting instance variable for the view
+    @qr_email = @qr_email  # setting instance variable for the view
+
+    @community = Community.find_by!(slug: params[:community_id])
+    @available_tickets = Ticket.joins(:event)
+      .where('events.end_time > ? AND events.id IN (?)',
+      Time.use_zone("America/Mexico_City") { Time.zone.yesterday },
+      @community.events.pluck(:id))
+      .where.not(model: 'regular')
+
+    respond_to do |format|
+    format.html { render :new }
+    format.turbo_stream do
+      render turbo_stream: turbo_stream.replace(@user_ticket, partial: 'user_tickets/form', locals: { user_ticket: @user_ticket })
+    end
+  end
+  end
 end
 
 
 
-
-
-# app/controllers/user_tickets_controller.rb
 def cancel
   @ticket = Ticket.find_by(id: params[:id])
 
@@ -136,6 +219,8 @@ end
     @ticket = @user_ticket.ticket
     @event = @ticket.event
     @user = @user_ticket.user
+
+
     authorize @user_ticket
 
     if @ticket.model == 'regular'  # or any other criteria to determine it's a paid ticket
@@ -152,10 +237,33 @@ end
     ]
   end
 
+
+  def confirmation_manual
+    @ticket = @user_ticket.ticket
+    @event = @ticket.event
+    @community = @ticket.event.community
+
+    @user = @user_ticket.user
+
+    @qr_email = session[:qr_email]
+    @qr_full_name = session[:qr_full_name]
+
+      # Clearing session after use
+  session.delete(:qr_email)
+  session.delete(:qr_full_name)
+
+
+    authorize @user_ticket
+  end
+
+
+
+
   def validation
     @user = @user_ticket.user
     @event = @user_ticket.ticket.event
-    @user_ticket_name = @user_ticket.user.full_name
+
+    @user_ticket_name = @user&.full_name
 
     authorize @user_ticket
   end
@@ -197,7 +305,12 @@ def check_processed
 end
 
 
+
   private
+
+  def send_email
+    UserTicketMailer.with(user: @user_ticket.user, user_ticket: @user_ticket, qr_email: @qr_email, qr_full_name: @qr_full_name).send_ticket.deliver_now
+  end
 
   def set_user_ticket
     @user_ticket = UserTicket.find(params[:id])
@@ -226,7 +339,7 @@ end
 
 
   def user_ticket_params
-    params.require(:user_ticket).permit(:scanned)
+    params.require(:user_ticket).permit(:scanned, :qr_full_name, :qr_email, :ticket_id)
   end
 
 

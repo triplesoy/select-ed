@@ -1,0 +1,48 @@
+<style>
+  body {
+         background-color: #F7F7F7;
+       }
+       .container-x{
+         width: 90%;
+         margin: 0 auto;
+         padding: 20px;
+         border: none;
+         background-color: white;
+       }
+
+        @media (min-width: 800px) {
+       .container-x{
+         font-size: initial;
+         width: 60%; /* for screens larger than 768px */
+          max-width: 1000px;
+       }
+          }
+
+    @media only screen and (max-width: 450px) {
+      .container-x {
+                 width: 100%;
+
+          font-size: calc(100% - 5%);
+      }
+    }
+</style>
+<div  class="container-x">
+  <h1 class="card-title" style="color: black; font-weight: bold;"> Ticket confirmation</h1><br>
+
+  You have successfully generated a ticket for <%= @qr_full_name %></b> for the <b><%= @event.title %></b>'s event.<br>
+<br>
+<center>
+  <%= link_to cl_image_tag(@user_ticket.qrcode.key, width: "150px", height: "auto", alt: "QR code for ticket", class: "img-fluid", style: "box-shadow: 3px 3px 5px #888888;"), @user_ticket.qrcode, download: true %>
+  <br>
+ <br>
+  <%= link_to "Download QR Code", url_for(@user_ticket.qrcode), download: "qr_code.png" %><br>
+  <br>
+</center>
+<% if @qr_email.present? %>
+This ticket was also sent by e-mail to <%= @qr_email %>.<br>
+<% end %>
+<br>
+<br>
+<center><%= link_to "Generate another manual Ticket", manual_new_community_events_path(@community), class: "btn btn-dark" %>
+</center>
+</div>

@@ -1,0 +1,17 @@
+<%= simple_form_for @user_ticket, url: manual_create_community_events_path(@community) do |f| %>
+  <% if @user_ticket.errors.any? %>
+    <div id="error_explanation">
+      <h4><%= pluralize(@user_ticket.errors.count, "error") %> prohibited this event from being saved:</h4>
+      <ul>
+        <% @user_ticket.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<%= f.input :qr_full_name, label: 'Full name to display on ticket', required: true, input_html: { value: @qr_full_name || '' } %>
+<%= f.input :qr_email, label: 'E-mail to send the ticket to (optional)', input_html: { value: @qr_email || '' } %>
+
+  <%= f.input :ticket_id, as: :select, collection: @available_tickets, label_method: :event_name, value_method: :id, prompt: ' - Select an event and ticket type - ', label: 'Event and Ticket Type', required: true %>
+  <center><%= f.button :submit, class: "btn btn-success"%></center>
+<% end %>

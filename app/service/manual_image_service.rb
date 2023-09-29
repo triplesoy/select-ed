@@ -1,9 +1,9 @@
-class ImageService
-  def initialize(png, event, community, user, user_ticket)
+class ManualImageService
+  def initialize(png, event, community, qr_full_name, user_ticket )
     @png = png
     @event = event
     @community = community
-    @user = user
+    @qr_full_name = qr_full_name
     @user_ticket = user_ticket
   end
 
@@ -39,7 +39,7 @@ class ImageService
     draw_text(result, 'North', 90, 'white', 1, 80, @community.title.upcase)
     draw_text(result, 'North', 90, 'white', 1, 220, @event.title.upcase)
     draw_text(result, 'North', 70, 'white', 1, 420, formatted_start_time)
-    draw_text(result, 'South', 70, 'white', 1, 220, @user.full_name.upcase)
+    draw_text(result, 'South', 70, 'white', 1, 220, escape_special_characters(@qr_full_name.upcase))
 
     if @user_ticket.ticket.model == "free" && @user_ticket.ticket.expire_time.present?
       valid_until = formatted_expire_time(@user_ticket.ticket.expire_time)
@@ -49,11 +49,6 @@ class ImageService
     if @user_ticket.ticket.model == "vip"
       draw_text(result, 'South', 70, 'white', 2, 82, 'VIP TICKET')
     end
-
-    if @user_ticket.ticket.model == "regular"
-      draw_text(result, 'South', 70, 'white', 2, 82, 'General Admission')
-    end
-
 
     composite_image_path = Rails.root.join('tmp', 'composite_image.png').to_s
     result.write(composite_image_path)
